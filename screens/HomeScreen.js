@@ -32,9 +32,9 @@ const HomeScreen = () => {
       headerRight: () => (
         <Pressable style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
           <Ionicons name="notifications-outline" size={24} color="black" />
-          <EvilIcons name="location" size={24} color="black" />
+          <EvilIcons onPress={()=>navigation.navigate("Places")} name="location" size={24} color="black" />
 
-          <Pressable>
+          <Pressable onPress={()=>navigation.navigate("Places")}>
             <Animated.Text style={{ opacity: opacityAnim }}>
               <Text>Lublin</Text>
             </Animated.Text>
