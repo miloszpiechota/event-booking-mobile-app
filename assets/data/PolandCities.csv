@@ -1,466 +1,466 @@
-city;city_ascii;lat;lng;country
-Warsaw;Warsaw;52,23;21,0111;Poland
-Kraków;Krakow;50,0614;19,9372;Poland
-Wroc³aw;Wroclaw;51,11;17,0325;Poland
-£ódŸ;Lodz;51,7769;19,4547;Poland
-Poznañ;Poznan;52,4083;16,9336;Poland
-Gdañsk;Gdansk;54,3475;18,6453;Poland
-Szczecin;Szczecin;53,4325;14,5481;Poland
-Bydgoszcz;Bydgoszcz;53,1219;18,0003;Poland
-Lublin;Lublin;51,25;22,5667;Poland
-Bia³ystok;Bialystok;53,1353;23,1456;Poland
-Katowice;Katowice;50,2625;19,0217;Poland
-Gdynia;Gdynia;54,5175;18,54;Poland
-Zielona Góra;Zielona Gora;51,9333;15,5;Poland
-Czêstochowa;Czestochowa;50,8;19,1167;Poland
-Radom;Radom;51,4036;21,1567;Poland
-Toruñ;Torun;53,0222;18,6111;Poland
-Rzeszów;Rzeszow;50,0333;22;Poland
-Sosnowiec;Sosnowiec;50,2833;19,1333;Poland
-Kielce;Kielce;50,8742;20,6333;Poland
-Gliwice;Gliwice;50,2833;18,6667;Poland
-Olsztyn;Olsztyn;53,7778;20,4792;Poland
-Bielsko-Bia³a;Bielsko-Biala;49,8225;19,0444;Poland
-Zabrze;Zabrze;50,3025;18,7781;Poland
-Bytom;Bytom;50,3483;18,9156;Poland
-Ruda Œl¹ska;Ruda Slaska;50,2628;18,8536;Poland
-Rybnik;Rybnik;50,0833;18,55;Poland
-Opole;Opole;50,6667;17,9333;Poland
-Tychy;Tychy;50,1236;18,9867;Poland
-Gorzów Wielkopolski;Gorzow Wielkopolski;52,7333;15,25;Poland
-D¹browa Górnicza;Dabrowa Gornicza;50,3214;19,1872;Poland
-Elbl¹g;Elblag;54,1667;19,4;Poland
-P³ock;Plock;52,55;19,7;Poland
-Tarnów;Tarnow;50,0125;20,9886;Poland
-Koszalin;Koszalin;54,2;16,1833;Poland
-W³oc³awek;Wloclawek;52,6592;19,0681;Poland
-Wa³brzych;Walbrzych;50,7667;16,2833;Poland
-Chorzów;Chorzow;50,3;18,95;Poland
-Kalisz;Kalisz;51,7575;18,08;Poland
-Legnica;Legnica;51,2083;16,1603;Poland
-Grudzi¹dz;Grudziadz;53,4875;18,755;Poland
-Jaworzno;Jaworzno;50,2044;19,27;Poland
-S³upsk;Slupsk;54,4658;17,0292;Poland
-Jastrzêbie-Zdrój;Jastrzebie-Zdroj;49,95;18,5833;Poland
-Nowy S¹cz;Nowy Sacz;49,6239;20,6972;Poland
-Skar¿ysko-Kamienna;Skarzysko-Kamienna;51,1167;20,9167;Poland
-Jelenia Góra;Jelenia Gora;50,9033;15,7344;Poland
-Siedlce;Siedlce;52,165;22,2714;Poland
-Mys³owice;Myslowice;50,2333;19,1333;Poland
-Pi³a;Pila;53,15;16,7333;Poland
-Ostrów Wielkopolski;Ostrow Wielkopolski;51,6494;17,8164;Poland
-Lubin;Lubin;51,4;16,2;Poland
-Konin;Konin;52,2167;18,2667;Poland
-Inowroc³aw;Inowroclaw;52,7931;18,2611;Poland
-Piotrków Trybunalski;Piotrkow Trybunalski;51,4;19,6833;Poland
-Suwa³ki;Suwalki;54,0989;22,9286;Poland
-Stargard Szczeciñski;Stargard Szczecinski;53,3333;15,0333;Poland
-Gniezno;Gniezno;52,5358;17,5958;Poland
-Pruszków;Pruszkow;52,1667;20,8;Poland
-Ostrowiec Œwiêtokrzyski;Ostrowiec Swietokrzyski;50,9333;21,4;Poland
-Siemianowice Œl¹skie;Siemianowice Slaskie;50,2758;18,9858;Poland
-G³ogów;Glogow;51,6589;16,0803;Poland
-Pabianice;Pabianice;51,65;19,3833;Poland
-¯ory;Zory;50,05;18,7;Poland
-Leszno;Leszno;51,8458;16,5806;Poland
-Tarnowskie Góry;Tarnowskie Gory;50,4444;18,8583;Poland
-£om¿a;Lomza;53,1764;22,0731;Poland
-E³k;Elk;53,8214;22,3622;Poland
-Zamoœæ;Zamosc;50,7167;23,2528;Poland
-Che³m;Chelm;51,1322;23,4778;Poland
-Tomaszów Mazowiecki;Tomaszow Mazowiecki;51,5167;20,0167;Poland
-Przemyœl;Przemysl;49,7833;22,7667;Poland
-Mielec;Mielec;50,2833;21,4333;Poland
-Tczew;Tczew;54,0875;18,7972;Poland
-Stalowa Wola;Stalowa Wola;50,5667;22,05;Poland
-Kêdzierzyn-KoŸle;Kedzierzyn-Kozle;50,35;18,2;Poland
-Bêdzin;Bedzin;50,3333;19,1167;Poland
-Bia³a Podlaska;Biala Podlaska;52,0333;23,1167;Poland
-Zgierz;Zgierz;51,85;19,4167;Poland
-Œwidnica;Swidnica;50,85;16,4833;Poland
-Be³chatów;Belchatow;51,3667;19,3667;Poland
-Legionowo;Legionowo;52,4;20,8833;Poland
-Piekary Œl¹skie;Piekary Slaskie;50,3833;18,95;Poland
-Piaseczno;Piaseczno;52,0667;21,0167;Poland
-Rumia;Rumia;54,5667;18,4;Poland
-Racibórz;Raciborz;50,0833;18,2333;Poland
-Ostro³êka;Ostroleka;53,0667;21,5667;Poland
-Zawiercie;Zawiercie;50,5;19,4167;Poland
-Wejherowo;Wejherowo;54,6;18,25;Poland
-Œwiêtoch³owice;Swietochlowice;50,2919;18,9178;Poland
-Skierniewice;Skierniewice;51,9528;20,1417;Poland
-Starogard Gdañski;Starogard Gdanski;53,9667;18,5333;Poland
-Starachowice;Starachowice;51,05;21,0667;Poland
-Wodzis³aw Œl¹ski;Wodzislaw Slaski;50;18,45;Poland
-Pu³awy;Pulawy;51,4167;21,9667;Poland
-Krosno;Krosno;49,6833;21,75;Poland
-Tarnobrzeg;Tarnobrzeg;50,5833;21,6833;Poland
-Otwock;Otwock;52,1167;21,2667;Poland
-Radomsko;Radomsko;51,0667;19,45;Poland
-Ko³obrzeg;Kolobrzeg;54,1761;15,5761;Poland
-Dêbica;Debica;50,05;21,4167;Poland
-Z¹bki;Zabki;52,2928;21,1161;Poland
-Ciechanów;Ciechanow;52,8667;20,6333;Poland
-Kutno;Kutno;52,2333;19,3667;Poland
-Marki;Marki;52,3333;21,1;Poland
-Nysa;Nysa;50,4714;17,3339;Poland
-Miko³ów;Mikolow;50,1667;18,9;Poland
-Miñsk Mazowiecki;Minsk Mazowiecki;52,1833;21,5667;Poland
-Œwinoujœcie;Swinoujscie;53,9167;14,25;Poland
-Sieradz;Sieradz;51,6;18,75;Poland
-¯yrardów;Zyrardow;52,05;20,4333;Poland
-Chojnice;Chojnice;53,7;17,55;Poland
-Szczecinek;Szczecinek;53,7167;16,6833;Poland
-Œwidnik;Swidnik;51,2167;22,7;Poland
-Kwidzyn;Kwidzyn;53,7358;18,9308;Poland
-Malbork;Malbork;54,0333;19,0333;Poland
-Boles³awiec;Boleslawiec;51,2667;15,5667;Poland
-Oœwiêcim;Oswiecim;50,0381;19,2214;Poland
-Nowa Sól;Nowa Sol;51,8;15,7167;Poland
-Knurów;Knurow;50,2167;18,6833;Poland
-Wo³omin;Wolomin;52,35;21,2333;Poland
-Jaros³aw;Jaroslaw;50,0186;22,6797;Poland
-¯ary;Zary;51,6333;15,1333;Poland
-Oleœnica;Olesnica;51,2;17,3833;Poland
-Sanok;Sanok;49,55;22,2167;Poland
-Czechowice-Dziedzice;Czechowice-Dziedzice;49,9131;19,0064;Poland
-Chrzanów;Chrzanow;50,1333;19,4;Poland
-Lêbork;Lebork;54,55;17,75;Poland
-Brzeg;Brzeg;50,8667;17,4833;Poland
-Sochaczew;Sochaczew;52,2333;20,2333;Poland
-Podgórze;Podgorze;50,0417;19,9833;Poland
-Cieszyn;Cieszyn;49,7484;18,6332;Poland
-Jas³o;Jaslo;49,7478;21,4714;Poland
-Grodzisk Mazowiecki;Grodzisk Mazowiecki;52,1089;20,625;Poland
-Olkusz;Olkusz;50,2833;19,5667;Poland
-Nowy Targ;Nowy Targ;49,4667;20,0167;Poland
-O³awa;Olawa;50,9333;17,3;Poland
-Luboñ;Lubon;52,3333;16,8833;Poland
-Sopot;Sopot;54,4333;18,55;Poland
-I³awa;Ilawa;53,5964;19,5656;Poland
-Kraœnik;Krasnik;50,9167;22,2167;Poland
-Wrzeœnia;Wrzesnia;52,3333;17,5833;Poland
-Dzier¿oniów;Dzierzoniow;50,7281;16,6511;Poland
-Pruszcz Gdañski;Pruszcz Gdanski;54,2667;18,6333;Poland
-M³awa;Mlawa;53,1167;20,3667;Poland
-CzeladŸ;Czeladz;50,3333;19,0833;Poland
-Police;Police;53,5333;14,5667;Poland
-Myszków;Myszkow;50,5706;19,3144;Poland
-¯ywiec;Zywiec;49,6892;19,2058;Poland
-Rury;Rury;51,2386;22,5164;Poland
-Zgorzelec;Zgorzelec;51,15;15,0083;Poland
-Augustów;Augustow;53,8436;22,9794;Poland
-Swarzêdz;Swarzedz;52,4083;17,0714;Poland
-Bochnia;Bochnia;49,9833;20,4333;Poland
-Bielawa;Bielawa;50,7;16,6167;Poland
-Œrem;Srem;52,0886;17,0147;Poland
-Krotoszyn;Krotoszyn;51,6833;17,4333;Poland
-Nowy Dwór Mazowiecki;Nowy Dwor Mazowiecki;52,4333;20,7167;Poland
-Brodnica;Brodnica;53,2597;19,3956;Poland
-Gi¿ycko;Gizycko;54,04;21,7589;Poland
-Reda;Reda;54,6167;18,35;Poland
-£uków;Lukow;51,9272;22,3833;Poland
-Koby³ka;Kobylka;52,3333;21,2;Poland
-£owicz;Lowicz;52,1;19,9333;Poland
-Wieliczka;Wieliczka;49,9894;20,0661;Poland
-Jarocin;Jarocin;51,9667;17,5;Poland
-Gorlice;Gorlice;49,6547;21,1597;Poland
-Wyszków;Wyszkow;52,5928;21,4584;Poland
-Kêtrzyn;Ketrzyn;54,0833;21,3833;Poland
-Halemba;Halemba;50,2378;18,8633;Poland
-W¹growiec;Wagrowiec;52,8;17,2;Poland
-Zakopane;Zakopane;49,3;19,95;Poland
-K³odzko;Klodzko;50,4333;16,65;Poland
-Pszczyna;Pszczyna;49,9833;18,95;Poland
-Bi³goraj;Bilgoraj;50,55;22,7333;Poland
-Turek;Turek;52,0167;18,5;Poland
-Œwiecie;Swiecie;53,4167;18,4333;Poland
-Bielsk Podlaski;Bielsk Podlaski;52,7667;23,2;Poland
-¯agañ;Zagan;51,6167;15,3167;Poland
-Œroda Wielkopolska;Sroda Wielkopolska;52,2333;17,2833;Poland
-Skawina;Skawina;49,9833;19,8333;Poland
-Wa³cz;Walcz;53,2667;16,4667;Poland
-Koœcian;Koscian;52,0833;16,65;Poland
-Koœcierzyna;Koscierzyna;54,1167;17,9833;Poland
-Lubliniec;Lubliniec;50,6833;18,6833;Poland
-Piastów;Piastow;52,1833;20,85;Poland
-Bia³ogard;Bialogard;54;15,9833;Poland
-Zduñska Wola;Zdunska Wola;51,6;18,9667;Poland
-Kluczbork;Kluczbork;50,9833;18,2167;Poland
-Szczytno;Szczytno;53,5628;20,9853;Poland
-Bartoszyce;Bartoszyce;54,25;20,8;Poland
-Œwiebodzice;Swiebodzice;50,8667;16,3333;Poland
-Sandomierz;Sandomierz;50,6833;21,75;Poland
-Goleniów;Goleniow;53,5636;14,8281;Poland
-Aleksandrów £ódzki;Aleksandrow Lodzki;51,8194;19,3039;Poland
-Ostrów Mazowiecka;Ostrow Mazowiecka;52,8;21,9;Poland
-P³oñsk;Plonsk;52,6333;20,3833;Poland
-Polkowice;Polkowice;51,5;16,0667;Poland
-Orzesze;Orzesze;50,15;18,75;Poland
-£aziska Górne;Laziska Gorne;50,15;18,85;Poland
-Jawor;Jawor;51,05;16,2;Poland
-Œwiedbodzin;Swiedbodzin;52,25;15,5333;Poland
-Grajewo;Grajewo;53,65;22,45;Poland
-Zambrów;Zambrow;52,9833;22,25;Poland
-Mr¹gowo;Mragowo;53,8667;21,3;Poland
-Wieluñ;Wielun;51,2206;18,57;Poland
-Nowa Ruda;Nowa Ruda;50,5833;16,5;Poland
-Sulejówek;Sulejowek;52,2442;21,28;Poland
-Józefów;Jozefow;52,1356;21,2369;Poland
-Dzia³dowo;Dzialdowo;53,2333;20,1833;Poland
-Lubartów;Lubartow;51,4667;22,6;Poland
-Ko³o;Kolo;52,2;18,6333;Poland
-Rawicz;Rawicz;51,6092;16,8575;Poland
-Gryfino;Gryfino;53,2531;14,4875;Poland
-Gostyñ;Gostyn;51,8792;17,0125;Poland
-Lubañ;Luban;51,1181;15,2889;Poland
-Prudnik;Prudnik;50,3228;17,5767;Poland
-Opoczno;Opoczno;51,3772;20,2869;Poland
-Hajnówka;Hajnowka;52,7333;23,5667;Poland
-Bieruñ;Bierun;50,1333;19,1;Poland
-Pu³tusk;Pultusk;52,7;21,0833;Poland
-Andrychów;Andrychow;49,855;19,3414;Poland
-Trzebinia;Trzebinia;50,1667;19,4833;Poland
-Bieruñ Stary;Bierun Stary;50,0897;19,0928;Poland
-Konstantynów £ódzki;Konstantynow Lodzki;51,75;19,3333;Poland
-Che³mno;Chelmno;53,3492;18,4231;Poland
-Z³otów;Zlotow;53,3603;17,0408;Poland
-Ozorków;Ozorkow;51,9667;19,2833;Poland
-Szamotu³y;Szamotuly;52,6;16,5833;Poland
-Tomaszów Lubelski;Tomaszow Lubelski;50,45;23,4167;Poland
-Soko³ów Podlaski;Sokolow Podlaski;52,4067;22,2464;Poland
-Giszowiec;Giszowiec;50,2236;19,0694;Poland
-Pisz;Pisz;53,6167;21,8;Poland
-£êczna;Leczna;51,3;22,8833;Poland
-Zielonka;Zielonka;52,3008;21,1586;Poland
-Koñskie;Konskie;51,2;20,4167;Poland
-£omianki;Lomianki;52,3333;20,8833;Poland
-Kêty;Kety;49,9;19,2167;Poland
-Myœlenice;Myslenice;49,8347;19,9389;Poland
-Chodzie¿;Chodziez;52,9833;16,9;Poland
-Jasien;Jasien;54,3667;18,6333;Poland
-Kamienna Góra;Kamienna Gora;50,7833;16,0333;Poland
-Wadowice;Wadowice;49,8833;19,5;Poland
-Kostrzyn nad Odr¹;Kostrzyn nad Odra;52,5883;14,6667;Poland
-£añcut;Lancut;50,0667;22,2333;Poland
-Oborniki;Oborniki;52,65;16,8167;Poland
-Gostynin;Gostynin;52,4167;19,4667;Poland
-Nak³o nad Noteci¹;Naklo nad Notecia;53,1403;17,5928;Poland
-Sokó³ka;Sokolka;53,4;23,5;Poland
-Krasnystaw;Krasnystaw;51;23,1667;Poland
-Strzelce Opolskie;Strzelce Opolskie;50,5;18,2833;Poland
-Miêdzyrzecz;Miedzyrzecz;52,4483;15,5883;Poland
-Pyskowice;Pyskowice;50,3833;18,6167;Poland
-Sierpc;Sierpc;52,8833;19,6667;Poland
-Garwolin;Garwolin;51,9;21,6333;Poland
-Konstancin-Jeziorna;Konstancin-Jeziorna;52,0833;21,1167;Poland
-Grójec;Grojec;51,8656;20,8675;Poland
-Namys³ów;Namyslow;51,0728;17,7069;Poland
-Pleszew;Pleszew;51,8833;17,7833;Poland
-Hrubieszów;Hrubieszow;50,8167;23,8833;Poland
-Trzcianka;Trzcianka;53,05;16,4667;Poland
-Pionki;Pionki;51,4833;21,45;Poland
-Bytów;Bytow;54,1333;17,5;Poland
-Przasnysz;Przasnysz;53,0167;20,8833;Poland
-Bogatynia;Bogatynia;50,9069;14,9569;Poland
-£ask;Lask;51,5903;19,1333;Poland
-Bogucice;Bogucice;50,2668;19,0397;Poland
-S³ubice;Slubice;52,35;14,5667;Poland
-Milanówek;Milanowek;52,1167;20,65;Poland
-Braniewo;Braniewo;54,3833;19,8333;Poland
-Rawa Mazowiecka;Rawa Mazowiecka;51,7658;20,2533;Poland
-Libi¹¿;Libiaz;50,1;19,3167;Poland
-Radzionków Nowy;Radzionkow Nowy;50,3833;18,8833;Poland
-Brzesko;Brzesko;49,9667;20,6167;Poland
-Kozienice;Kozienice;51,5833;21,5667;Poland
-Ustroñ;Ustron;49,7194;18,8119;Poland
-Gubin;Gubin;51,95;14,7167;Poland
-Nowogard;Nowogard;53,6667;15,1167;Poland
-Olecko;Olecko;54,0333;22,5;Poland
-Czernica;Czernica;51,0464;17,2439;Poland
-Sulechów;Sulechow;52,0833;15,6167;Poland
-Gryfice;Gryfice;53,9147;15,1986;Poland
-Osowa;Osowa;54,4272;18,4708;Poland
-Rypin;Rypin;53,0667;19,45;Poland
-Miêdzyrzec Podlaski;Miedzyrzec Podlaski;51,9833;22,7833;Poland
-Ropczyce;Ropczyce;50,0861;21,6333;Poland
-Krapkowice;Krapkowice;50,4667;17,9667;Poland
-Niepo³omice;Niepolomice;50,0339;20,2172;Poland
-Solec Kujawski;Solec Kujawski;53,0833;18,2333;Poland
-Jelcz-Laskowice;Jelcz-Laskowice;51,0333;17,3333;Poland
-Strzegom;Strzegom;50,9611;16,3444;Poland
-Grodzisk Wielkopolski;Grodzisk Wielkopolski;52,2333;16,3667;Poland
-Busko-Zdrój;Busko-Zdroj;50,4667;20,7167;Poland
-Œwidwin;Swidwin;53,7833;15,7667;Poland
-Przeworsk;Przeworsk;50,0667;22,5;Poland
-Lidzbark Warmiñski;Lidzbark Warminski;54,1167;20,5833;Poland
-Nisko;Nisko;50,52;22,1394;Poland
-Józefos³aw;Jozefoslaw;52,1069;21,0392;Poland
-Radzyñ Podlaski;Radzyn Podlaski;51,7828;22,6242;Poland
-Dêblin;Deblin;51,5667;21,8614;Poland
-£apy;Lapy;52,9833;22,8833;Poland
-Z³otoryja;Zlotoryja;51,1333;15,9167;Poland
-Boguszów-Gorce;Boguszow-Gorce;50,7667;16,2;Poland
-Limanowa;Limanowa;49,7006;20,4267;Poland
-Jêdrzejów;Jedrzejow;50,6333;20,3;Poland
-Z¹bkowice Œl¹skie;Zabkowice Slaskie;50,5833;16,8167;Poland
-Mosina;Mosina;52,2467;16,845;Poland
-Brwinów;Brwinow;52,1417;20,7167;Poland
-Choszczno;Choszczno;53,1667;15,4;Poland
-O¿arów Mazowiecki;Ozarow Mazowiecki;52,2167;20,8;Poland
-Ustka;Ustka;54,5833;16,85;Poland
-Radzymin;Radzymin;52,4167;21,1833;Poland
-Bia³y Kamieñ;Bialy Kamien;50,7814;16,2539;Poland
-Kartuzy;Kartuzy;54,3333;18,2;Poland
-Plewiska;Plewiska;52,3664;16,8089;Poland
-Staszów;Staszow;50,5633;21,1717;Poland
-Nowy Tomyœl;Nowy Tomysl;52,3167;16,1333;Poland
-Che³m¿a;Chelmza;53,1847;18,6042;Poland
-Ostrzeszów;Ostrzeszow;51,4167;17,9333;Poland
-Kêpno;Kepno;51,2833;17,9833;Poland
-Skoczów;Skoczow;49,8006;18,7883;Poland
-Siemiatycze;Siemiatycze;52,4272;22,8625;Poland
-Lipno;Lipno;52,85;19,1667;Poland
-Trzebnica;Trzebnica;51,305;17,0614;Poland
-£êczyca;Leczyca;52,05;19,2;Poland
-Wschowa;Wschowa;51,8;16,3;Poland
-G³owno;Glowno;51,9642;19,7117;Poland
-Tuchola;Tuchola;53,6;17,85;Poland
-Zawodzie;Zawodzie;50,2585;19,0449;Poland
-Go³dap;Goldap;54,3161;22,3094;Poland
-S³upca;Slupca;52,3;17,8667;Poland
-Cz³uchów;Czluchow;53,65;17,3667;Poland
-Barlinek;Barlinek;53;15,2;Poland
-Mor¹g;Morag;53,9167;19,9333;Poland
-W¹brzeŸno;Wabrzezno;53,2833;18,95;Poland
-Dêbno;Debno;52,7333;14,7;Poland
-¯nin;Znin;52,85;17,7;Poland
-Lubsko;Lubsko;51,7833;14,9667;Poland
-Le¿ajsk;Lezajsk;50,2667;22,4333;Poland
-G³ucho³azy;Glucholazy;50,3131;17,3742;Poland
-Kozy;Kozy;49,845;19,1417;Poland
-Dar³owo;Darlowo;54,4208;16,4097;Poland
-Nidzica;Nidzica;53,3583;20,425;Poland
-Sidlice;Sidlice;54,3471;18,6171;Poland
-Chojnów;Chojnow;51,2667;15,9333;Poland
-Brzeg Dolny;Brzeg Dolny;51,2708;16,7208;Poland
-Koch³owice;Kochlowice;50,2538;18,9015;Poland
-Chropaczów;Chropaczow;50,3131;18,915;Poland
-K³obuck;Klobuck;50,9167;18,9333;Poland
-Wolsztyn;Wolsztyn;52,1167;16,1167;Poland
-W³odawa;Wlodawa;51,55;23,55;Poland
-Koszutka;Koszutka;50,2711;19,0211;Poland
-Koluszki;Koluszki;51,75;19,8;Poland
-Z³ocieniec;Zlocieniec;53,5269;16,0122;Poland
-Sêdziszów Ma³opolski;Sedziszow Malopolski;50,0694;21,7014;Poland
-Wo³ów;Wolow;51,3414;16,6283;Poland
-B³onie;Blonie;52,2;20,6167;Poland
-Wasilków;Wasilkow;53,205;23,2044;Poland
-Strzelin;Strzelin;50,7833;17,0667;Poland
-Brzeziny;Brzeziny;51,8;19,75;Poland
-G³ubczyce;Glubczyce;50,2011;17,8247;Poland
-Giera³towice;Gieraltowice;50,2167;18,7167;Poland
-Pas³êk;Paslek;54,05;19,6667;Poland
-Pyrzyce;Pyrzyce;53,1333;14,8833;Poland
-S³awno;Slawno;54,3667;16,6833;Poland
-Warka;Warka;51,7833;21,2;Poland
-Wêgrów;Wegrow;52,4;22,0167;Poland
-Góra Kalwaria;Gora Kalwaria;51,9733;21,2144;Poland
-Golub-Dobrzyñ;Golub-Dobrzyn;53,1;19,05;Poland
-Aleksandrów Kujawski;Aleksandrow Kujawski;52,8767;18,6936;Poland
-Lubaczów;Lubaczow;50,1667;23,1167;Poland
-D¹browa Tarnowska;Dabrowa Tarnowska;50,1667;20,9833;Poland
-Drawsko Pomorskie;Drawsko Pomorskie;53,5333;15,8;Poland
-Mogilno;Mogilno;52,65;17,95;Poland
-Janów Lubelski;Janow Lubelski;50,7167;22,4167;Poland
-Miechów;Miechow;50,3578;20,0325;Poland
-Góra;Gora;51,6667;16,55;Poland
-Szprotawa;Szprotawa;51,5667;15,5;Poland
-Brzeszcze;Brzeszcze;50;19,15;Poland
-Milicz;Milicz;51,5333;17,2833;Poland
-Komorniki;Komorniki;52,3361;16,8069;Poland
-Koronowo;Koronowo;53,3167;17,9333;Poland
-Szyd³owiec;Szydlowiec;51,2333;20,85;Poland
-RogoŸno;Rogozno;52,7492;16,9997;Poland
-Wronki;Wronki;52,7;16,3833;Poland
-Krosno Odrzañskie;Krosno Odrzanskie;52,0333;15,1;Poland
-Wis³a;Wisla;49,6549;18,8595;Poland
-Wêgorzewo;Wegorzewo;54,2167;21,75;Poland
-Puck;Puck;54,7;18,4;Poland
-Myœlibórz;Mysliborz;52,9333;14,8667;Poland
-Nowa Dêba;Nowa Deba;50,4167;21,7667;Poland
-Lubawa;Lubawa;53,5;19,75;Poland
-Kie³czów;Kielczow;51,1406;17,1783;Poland
-Parczew;Parczew;51,6333;22,8667;Poland
-Nowe Miasto Lubawskie;Nowe Miasto Lubawskie;53,4256;19,5878;Poland
-Wapienica;Wapienica;49,8083;18,9839;Poland
-Ciechocinek;Ciechocinek;52,8833;18,7833;Poland
-Suchanino;Suchanino;54,3667;18,65;Poland
-Zdzieszowice;Zdzieszowice;50,4192;18,1236;Poland
-Czarnków;Czarnkow;52,9;16,5667;Poland
-Miêdzychód;Miedzychod;52,6;15,8833;Poland
-Murowana Goœlina;Murowana Goslina;52,5667;17,0167;Poland
-G³ogów Ma³opolski;Glogow Malopolski;50,1667;21,9667;Poland
-Kowary;Kowary;50,7917;15,8333;Poland
-Za³ê¿e;Zaleze;50,2672;18,9892;Poland
-Biskupiec;Biskupiec;53,85;20,95;Poland
-Komorowice;Komorowice;49,8544;19,0406;Poland
-Syców;Sycow;51,31;17,7236;Poland
-Piñczów;Pinczow;50,5333;20,5333;Poland
-Mikuszowice;Mikuszowice;49,7833;19,0703;Poland
-Krynica;Krynica;49,4117;20,955;Poland
-Kolno;Kolno;53,4106;21,9339;Poland
-Czersk Pomorski;Czersk Pomorski;53,7928;17,9739;Poland
-Sulêcin;Sulecin;52,45;15,1167;Poland
-Siechnice;Siechnice;51,0367;17,1525;Poland
-Strzelce Krajeñskie;Strzelce Krajenskie;52,8756;15,5319;Poland
-Krzeszowice;Krzeszowice;50,1333;19,6333;Poland
-Kostrzyñ;Kostrzyn;52,3941;17,2221;Poland
-Banino;Banino;54,3933;18,4083;Poland
-Drezdenko;Drezdenko;52,8333;15,8333;Poland
-£obez;Lobez;53,6333;15,6167;Poland
-Bukowno;Bukowno;50,2681;19,4631;Poland
-Miastko;Miastko;54,0167;16,9833;Poland
-Gaszowice;Gaszowice;50,1089;18,4308;Poland
-Pobiedziska;Pobiedziska;52,4833;17,4833;Poland
-W³oszczowa;Wloszczowa;50,8542;19,9669;Poland
-Go³uchów;Goluchow;51,8494;17,9314;Poland
-Kokoszki;Kokoszki;54,3541;18,4915;Poland
-Moñki;Monki;53,4;22,8;Poland
-Dobre Miasto;Dobre Miasto;53,9875;20,3958;Poland
-Kudowa-Zdrój;Kudowa-Zdroj;50,4383;16,2397;Poland
-Nowy Dwór Gdañski;Nowy Dwor Gdanski;54,2167;19,1167;Poland
-W³adys³awowo;Wladyslawowo;54,8339;18,3156;Poland
-Trzebiatów;Trzebiatow;54,0572;15,2786;Poland
-Karczew;Karczew;52,0833;21,25;Poland
-Szubin;Szubin;53,0167;17,75;Poland
-Œroda Œl¹ska;Sroda Slaska;51,15;16,5833;Poland
-Sztum;Sztum;53,9217;19,0336;Poland
-Puszczykowo;Puszczykowo;52,2817;16,8542;Poland
-Bystrzyca K³odzka;Bystrzyca Klodzka;50,3;16,65;Poland
-Ostróda;Ostroda;53,7;19,9667;Poland
-Opalenica;Opalenica;52,3078;16,4136;Poland
-Blachownia;Blachownia;50,7833;18,9667;Poland
-Imielin;Imielin;50,1478;19,1814;Poland
-Kruszwica;Kruszwica;52,6772;18,3292;Poland
-Skwierzyna;Skwierzyna;52,6;15,5;Poland
-Ryki;Ryki;51,6333;21,9333;Poland
-Maków Mazowiecki;Makow Mazowiecki;52,8667;21,1;Poland
-Wysokie Mazowieckie;Wysokie Mazowieckie;52,9192;22,5144;Poland
-Olesno;Olesno;50,875;18,4167;Poland
-Oborniki Œl¹skie;Oborniki Slaskie;51,2986;16,9017;Poland
-Ko¿uchów;Kozuchow;51,75;15,6;Poland
-Sucha Beskidzka;Sucha Beskidzka;49,7403;19,5886;Poland
-Czarna Bia³ostocka;Czarna Bialostocka;53,3;23,2833;Poland
-Sêpólno Krajeñskie;Sepolno Krajenskie;53,45;17,53;Poland
-Bolszewo;Bolszewo;54,6242;18,1753;Poland
-Stary S¹cz;Stary Sacz;49,5625;20,6364;Poland
-Ustrzyki Dolne;Ustrzyki Dolne;49,4297;22,5867;Poland
-Kolbuszowa;Kolbuszowa;50,25;21,7667;Poland
-Goworowo;Goworowo;52,9006;21,5544;Poland
-Che³mek;Chelmek;50,1167;19,25;Poland
-Koœcielisko;Koscielisko;49,2908;19,8883;Poland
-¯uromin;Zuromin;53,0667;19,9;Poland
-Kamieñ Pomorski;Kamien Pomorski;53,97;14,7725;Poland
-Poniatowa;Poniatowa;51,1928;22,0647;Poland
-Wieruszów;Wieruszow;51,3;18,15;Poland
+city;city_ascii;lat;lng
+Warsaw;Warsaw;52,23;21,0111
+Kraków;Krakow;50,0614;19,9372
+Wroc³aw;Wroclaw;51,11;17,0325
+£ódŸ;Lodz;51,7769;19,4547
+Poznañ;Poznan;52,4083;16,9336
+Gdañsk;Gdansk;54,3475;18,6453
+Szczecin;Szczecin;53,4325;14,5481
+Bydgoszcz;Bydgoszcz;53,1219;18,0003
+Lublin;Lublin;51,25;22,5667
+Bia³ystok;Bialystok;53,1353;23,1456
+Katowice;Katowice;50,2625;19,0217
+Gdynia;Gdynia;54,5175;18,54
+Zielona Góra;Zielona Gora;51,9333;15,5
+Czêstochowa;Czestochowa;50,8;19,1167
+Radom;Radom;51,4036;21,1567
+Toruñ;Torun;53,0222;18,6111
+Rzeszów;Rzeszow;50,0333;22
+Sosnowiec;Sosnowiec;50,2833;19,1333
+Kielce;Kielce;50,8742;20,6333
+Gliwice;Gliwice;50,2833;18,6667
+Olsztyn;Olsztyn;53,7778;20,4792
+Bielsko-Bia³a;Bielsko-Biala;49,8225;19,0444
+Zabrze;Zabrze;50,3025;18,7781
+Bytom;Bytom;50,3483;18,9156
+Ruda Œl¹ska;Ruda Slaska;50,2628;18,8536
+Rybnik;Rybnik;50,0833;18,55
+Opole;Opole;50,6667;17,9333
+Tychy;Tychy;50,1236;18,9867
+Gorzów Wielkopolski;Gorzow Wielkopolski;52,7333;15,25
+D¹browa Górnicza;Dabrowa Gornicza;50,3214;19,1872
+Elbl¹g;Elblag;54,1667;19,4
+P³ock;Plock;52,55;19,7
+Tarnów;Tarnow;50,0125;20,9886
+Koszalin;Koszalin;54,2;16,1833
+W³oc³awek;Wloclawek;52,6592;19,0681
+Wa³brzych;Walbrzych;50,7667;16,2833
+Chorzów;Chorzow;50,3;18,95
+Kalisz;Kalisz;51,7575;18,08
+Legnica;Legnica;51,2083;16,1603
+Grudzi¹dz;Grudziadz;53,4875;18,755
+Jaworzno;Jaworzno;50,2044;19,27
+S³upsk;Slupsk;54,4658;17,0292
+Jastrzêbie-Zdrój;Jastrzebie-Zdroj;49,95;18,5833
+Nowy S¹cz;Nowy Sacz;49,6239;20,6972
+Skar¿ysko-Kamienna;Skarzysko-Kamienna;51,1167;20,9167
+Jelenia Góra;Jelenia Gora;50,9033;15,7344
+Siedlce;Siedlce;52,165;22,2714
+Mys³owice;Myslowice;50,2333;19,1333
+Pi³a;Pila;53,15;16,7333
+Ostrów Wielkopolski;Ostrow Wielkopolski;51,6494;17,8164
+Lubin;Lubin;51,4;16,2
+Konin;Konin;52,2167;18,2667
+Inowroc³aw;Inowroclaw;52,7931;18,2611
+Piotrków Trybunalski;Piotrkow Trybunalski;51,4;19,6833
+Suwa³ki;Suwalki;54,0989;22,9286
+Stargard Szczeciñski;Stargard Szczecinski;53,3333;15,0333
+Gniezno;Gniezno;52,5358;17,5958
+Pruszków;Pruszkow;52,1667;20,8
+Ostrowiec Œwiêtokrzyski;Ostrowiec Swietokrzyski;50,9333;21,4
+Siemianowice Œl¹skie;Siemianowice Slaskie;50,2758;18,9858
+G³ogów;Glogow;51,6589;16,0803
+Pabianice;Pabianice;51,65;19,3833
+¯ory;Zory;50,05;18,7
+Leszno;Leszno;51,8458;16,5806
+Tarnowskie Góry;Tarnowskie Gory;50,4444;18,8583
+£om¿a;Lomza;53,1764;22,0731
+E³k;Elk;53,8214;22,3622
+Zamoœæ;Zamosc;50,7167;23,2528
+Che³m;Chelm;51,1322;23,4778
+Tomaszów Mazowiecki;Tomaszow Mazowiecki;51,5167;20,0167
+Przemyœl;Przemysl;49,7833;22,7667
+Mielec;Mielec;50,2833;21,4333
+Tczew;Tczew;54,0875;18,7972
+Stalowa Wola;Stalowa Wola;50,5667;22,05
+Kêdzierzyn-KoŸle;Kedzierzyn-Kozle;50,35;18,2
+Bêdzin;Bedzin;50,3333;19,1167
+Bia³a Podlaska;Biala Podlaska;52,0333;23,1167
+Zgierz;Zgierz;51,85;19,4167
+Œwidnica;Swidnica;50,85;16,4833
+Be³chatów;Belchatow;51,3667;19,3667
+Legionowo;Legionowo;52,4;20,8833
+Piekary Œl¹skie;Piekary Slaskie;50,3833;18,95
+Piaseczno;Piaseczno;52,0667;21,0167
+Rumia;Rumia;54,5667;18,4
+Racibórz;Raciborz;50,0833;18,2333
+Ostro³êka;Ostroleka;53,0667;21,5667
+Zawiercie;Zawiercie;50,5;19,4167
+Wejherowo;Wejherowo;54,6;18,25
+Œwiêtoch³owice;Swietochlowice;50,2919;18,9178
+Skierniewice;Skierniewice;51,9528;20,1417
+Starogard Gdañski;Starogard Gdanski;53,9667;18,5333
+Starachowice;Starachowice;51,05;21,0667
+Wodzis³aw Œl¹ski;Wodzislaw Slaski;50;18,45
+Pu³awy;Pulawy;51,4167;21,9667
+Krosno;Krosno;49,6833;21,75
+Tarnobrzeg;Tarnobrzeg;50,5833;21,6833
+Otwock;Otwock;52,1167;21,2667
+Radomsko;Radomsko;51,0667;19,45
+Ko³obrzeg;Kolobrzeg;54,1761;15,5761
+Dêbica;Debica;50,05;21,4167
+Z¹bki;Zabki;52,2928;21,1161
+Ciechanów;Ciechanow;52,8667;20,6333
+Kutno;Kutno;52,2333;19,3667
+Marki;Marki;52,3333;21,1
+Nysa;Nysa;50,4714;17,3339
+Miko³ów;Mikolow;50,1667;18,9
+Miñsk Mazowiecki;Minsk Mazowiecki;52,1833;21,5667
+Œwinoujœcie;Swinoujscie;53,9167;14,25
+Sieradz;Sieradz;51,6;18,75
+¯yrardów;Zyrardow;52,05;20,4333
+Chojnice;Chojnice;53,7;17,55
+Szczecinek;Szczecinek;53,7167;16,6833
+Œwidnik;Swidnik;51,2167;22,7
+Kwidzyn;Kwidzyn;53,7358;18,9308
+Malbork;Malbork;54,0333;19,0333
+Boles³awiec;Boleslawiec;51,2667;15,5667
+Oœwiêcim;Oswiecim;50,0381;19,2214
+Nowa Sól;Nowa Sol;51,8;15,7167
+Knurów;Knurow;50,2167;18,6833
+Wo³omin;Wolomin;52,35;21,2333
+Jaros³aw;Jaroslaw;50,0186;22,6797
+¯ary;Zary;51,6333;15,1333
+Oleœnica;Olesnica;51,2;17,3833
+Sanok;Sanok;49,55;22,2167
+Czechowice-Dziedzice;Czechowice-Dziedzice;49,9131;19,0064
+Chrzanów;Chrzanow;50,1333;19,4
+Lêbork;Lebork;54,55;17,75
+Brzeg;Brzeg;50,8667;17,4833
+Sochaczew;Sochaczew;52,2333;20,2333
+Podgórze;Podgorze;50,0417;19,9833
+Cieszyn;Cieszyn;49,7484;18,6332
+Jas³o;Jaslo;49,7478;21,4714
+Grodzisk Mazowiecki;Grodzisk Mazowiecki;52,1089;20,625
+Olkusz;Olkusz;50,2833;19,5667
+Nowy Targ;Nowy Targ;49,4667;20,0167
+O³awa;Olawa;50,9333;17,3
+Luboñ;Lubon;52,3333;16,8833
+Sopot;Sopot;54,4333;18,55
+I³awa;Ilawa;53,5964;19,5656
+Kraœnik;Krasnik;50,9167;22,2167
+Wrzeœnia;Wrzesnia;52,3333;17,5833
+Dzier¿oniów;Dzierzoniow;50,7281;16,6511
+Pruszcz Gdañski;Pruszcz Gdanski;54,2667;18,6333
+M³awa;Mlawa;53,1167;20,3667
+CzeladŸ;Czeladz;50,3333;19,0833
+Police;Police;53,5333;14,5667
+Myszków;Myszkow;50,5706;19,3144
+¯ywiec;Zywiec;49,6892;19,2058
+Rury;Rury;51,2386;22,5164
+Zgorzelec;Zgorzelec;51,15;15,0083
+Augustów;Augustow;53,8436;22,9794
+Swarzêdz;Swarzedz;52,4083;17,0714
+Bochnia;Bochnia;49,9833;20,4333
+Bielawa;Bielawa;50,7;16,6167
+Œrem;Srem;52,0886;17,0147
+Krotoszyn;Krotoszyn;51,6833;17,4333
+Nowy Dwór Mazowiecki;Nowy Dwor Mazowiecki;52,4333;20,7167
+Brodnica;Brodnica;53,2597;19,3956
+Gi¿ycko;Gizycko;54,04;21,7589
+Reda;Reda;54,6167;18,35
+£uków;Lukow;51,9272;22,3833
+Koby³ka;Kobylka;52,3333;21,2
+£owicz;Lowicz;52,1;19,9333
+Wieliczka;Wieliczka;49,9894;20,0661
+Jarocin;Jarocin;51,9667;17,5
+Gorlice;Gorlice;49,6547;21,1597
+Wyszków;Wyszkow;52,5928;21,4584
+Kêtrzyn;Ketrzyn;54,0833;21,3833
+Halemba;Halemba;50,2378;18,8633
+W¹growiec;Wagrowiec;52,8;17,2
+Zakopane;Zakopane;49,3;19,95
+K³odzko;Klodzko;50,4333;16,65
+Pszczyna;Pszczyna;49,9833;18,95
+Bi³goraj;Bilgoraj;50,55;22,7333
+Turek;Turek;52,0167;18,5
+Œwiecie;Swiecie;53,4167;18,4333
+Bielsk Podlaski;Bielsk Podlaski;52,7667;23,2
+¯agañ;Zagan;51,6167;15,3167
+Œroda Wielkopolska;Sroda Wielkopolska;52,2333;17,2833
+Skawina;Skawina;49,9833;19,8333
+Wa³cz;Walcz;53,2667;16,4667
+Koœcian;Koscian;52,0833;16,65
+Koœcierzyna;Koscierzyna;54,1167;17,9833
+Lubliniec;Lubliniec;50,6833;18,6833
+Piastów;Piastow;52,1833;20,85
+Bia³ogard;Bialogard;54;15,9833
+Zduñska Wola;Zdunska Wola;51,6;18,9667
+Kluczbork;Kluczbork;50,9833;18,2167
+Szczytno;Szczytno;53,5628;20,9853
+Bartoszyce;Bartoszyce;54,25;20,8
+Œwiebodzice;Swiebodzice;50,8667;16,3333
+Sandomierz;Sandomierz;50,6833;21,75
+Goleniów;Goleniow;53,5636;14,8281
+Aleksandrów £ódzki;Aleksandrow Lodzki;51,8194;19,3039
+Ostrów Mazowiecka;Ostrow Mazowiecka;52,8;21,9
+P³oñsk;Plonsk;52,6333;20,3833
+Polkowice;Polkowice;51,5;16,0667
+Orzesze;Orzesze;50,15;18,75
+£aziska Górne;Laziska Gorne;50,15;18,85
+Jawor;Jawor;51,05;16,2
+Œwiedbodzin;Swiedbodzin;52,25;15,5333
+Grajewo;Grajewo;53,65;22,45
+Zambrów;Zambrow;52,9833;22,25
+Mr¹gowo;Mragowo;53,8667;21,3
+Wieluñ;Wielun;51,2206;18,57
+Nowa Ruda;Nowa Ruda;50,5833;16,5
+Sulejówek;Sulejowek;52,2442;21,28
+Józefów;Jozefow;52,1356;21,2369
+Dzia³dowo;Dzialdowo;53,2333;20,1833
+Lubartów;Lubartow;51,4667;22,6
+Ko³o;Kolo;52,2;18,6333
+Rawicz;Rawicz;51,6092;16,8575
+Gryfino;Gryfino;53,2531;14,4875
+Gostyñ;Gostyn;51,8792;17,0125
+Lubañ;Luban;51,1181;15,2889
+Prudnik;Prudnik;50,3228;17,5767
+Opoczno;Opoczno;51,3772;20,2869
+Hajnówka;Hajnowka;52,7333;23,5667
+Bieruñ;Bierun;50,1333;19,1
+Pu³tusk;Pultusk;52,7;21,0833
+Andrychów;Andrychow;49,855;19,3414
+Trzebinia;Trzebinia;50,1667;19,4833
+Bieruñ Stary;Bierun Stary;50,0897;19,0928
+Konstantynów £ódzki;Konstantynow Lodzki;51,75;19,3333
+Che³mno;Chelmno;53,3492;18,4231
+Z³otów;Zlotow;53,3603;17,0408
+Ozorków;Ozorkow;51,9667;19,2833
+Szamotu³y;Szamotuly;52,6;16,5833
+Tomaszów Lubelski;Tomaszow Lubelski;50,45;23,4167
+Soko³ów Podlaski;Sokolow Podlaski;52,4067;22,2464
+Giszowiec;Giszowiec;50,2236;19,0694
+Pisz;Pisz;53,6167;21,8
+£êczna;Leczna;51,3;22,8833
+Zielonka;Zielonka;52,3008;21,1586
+Koñskie;Konskie;51,2;20,4167
+£omianki;Lomianki;52,3333;20,8833
+Kêty;Kety;49,9;19,2167
+Myœlenice;Myslenice;49,8347;19,9389
+Chodzie¿;Chodziez;52,9833;16,9
+Jasien;Jasien;54,3667;18,6333
+Kamienna Góra;Kamienna Gora;50,7833;16,0333
+Wadowice;Wadowice;49,8833;19,5
+Kostrzyn nad Odr¹;Kostrzyn nad Odra;52,5883;14,6667
+£añcut;Lancut;50,0667;22,2333
+Oborniki;Oborniki;52,65;16,8167
+Gostynin;Gostynin;52,4167;19,4667
+Nak³o nad Noteci¹;Naklo nad Notecia;53,1403;17,5928
+Sokó³ka;Sokolka;53,4;23,5
+Krasnystaw;Krasnystaw;51;23,1667
+Strzelce Opolskie;Strzelce Opolskie;50,5;18,2833
+Miêdzyrzecz;Miedzyrzecz;52,4483;15,5883
+Pyskowice;Pyskowice;50,3833;18,6167
+Sierpc;Sierpc;52,8833;19,6667
+Garwolin;Garwolin;51,9;21,6333
+Konstancin-Jeziorna;Konstancin-Jeziorna;52,0833;21,1167
+Grójec;Grojec;51,8656;20,8675
+Namys³ów;Namyslow;51,0728;17,7069
+Pleszew;Pleszew;51,8833;17,7833
+Hrubieszów;Hrubieszow;50,8167;23,8833
+Trzcianka;Trzcianka;53,05;16,4667
+Pionki;Pionki;51,4833;21,45
+Bytów;Bytow;54,1333;17,5
+Przasnysz;Przasnysz;53,0167;20,8833
+Bogatynia;Bogatynia;50,9069;14,9569
+£ask;Lask;51,5903;19,1333
+Bogucice;Bogucice;50,2668;19,0397
+S³ubice;Slubice;52,35;14,5667
+Milanówek;Milanowek;52,1167;20,65
+Braniewo;Braniewo;54,3833;19,8333
+Rawa Mazowiecka;Rawa Mazowiecka;51,7658;20,2533
+Libi¹¿;Libiaz;50,1;19,3167
+Radzionków Nowy;Radzionkow Nowy;50,3833;18,8833
+Brzesko;Brzesko;49,9667;20,6167
+Kozienice;Kozienice;51,5833;21,5667
+Ustroñ;Ustron;49,7194;18,8119
+Gubin;Gubin;51,95;14,7167
+Nowogard;Nowogard;53,6667;15,1167
+Olecko;Olecko;54,0333;22,5
+Czernica;Czernica;51,0464;17,2439
+Sulechów;Sulechow;52,0833;15,6167
+Gryfice;Gryfice;53,9147;15,1986
+Osowa;Osowa;54,4272;18,4708
+Rypin;Rypin;53,0667;19,45
+Miêdzyrzec Podlaski;Miedzyrzec Podlaski;51,9833;22,7833
+Ropczyce;Ropczyce;50,0861;21,6333
+Krapkowice;Krapkowice;50,4667;17,9667
+Niepo³omice;Niepolomice;50,0339;20,2172
+Solec Kujawski;Solec Kujawski;53,0833;18,2333
+Jelcz-Laskowice;Jelcz-Laskowice;51,0333;17,3333
+Strzegom;Strzegom;50,9611;16,3444
+Grodzisk Wielkopolski;Grodzisk Wielkopolski;52,2333;16,3667
+Busko-Zdrój;Busko-Zdroj;50,4667;20,7167
+Œwidwin;Swidwin;53,7833;15,7667
+Przeworsk;Przeworsk;50,0667;22,5
+Lidzbark Warmiñski;Lidzbark Warminski;54,1167;20,5833
+Nisko;Nisko;50,52;22,1394
+Józefos³aw;Jozefoslaw;52,1069;21,0392
+Radzyñ Podlaski;Radzyn Podlaski;51,7828;22,6242
+Dêblin;Deblin;51,5667;21,8614
+£apy;Lapy;52,9833;22,8833
+Z³otoryja;Zlotoryja;51,1333;15,9167
+Boguszów-Gorce;Boguszow-Gorce;50,7667;16,2
+Limanowa;Limanowa;49,7006;20,4267
+Jêdrzejów;Jedrzejow;50,6333;20,3
+Z¹bkowice Œl¹skie;Zabkowice Slaskie;50,5833;16,8167
+Mosina;Mosina;52,2467;16,845
+Brwinów;Brwinow;52,1417;20,7167
+Choszczno;Choszczno;53,1667;15,4
+O¿arów Mazowiecki;Ozarow Mazowiecki;52,2167;20,8
+Ustka;Ustka;54,5833;16,85
+Radzymin;Radzymin;52,4167;21,1833
+Bia³y Kamieñ;Bialy Kamien;50,7814;16,2539
+Kartuzy;Kartuzy;54,3333;18,2
+Plewiska;Plewiska;52,3664;16,8089
+Staszów;Staszow;50,5633;21,1717
+Nowy Tomyœl;Nowy Tomysl;52,3167;16,1333
+Che³m¿a;Chelmza;53,1847;18,6042
+Ostrzeszów;Ostrzeszow;51,4167;17,9333
+Kêpno;Kepno;51,2833;17,9833
+Skoczów;Skoczow;49,8006;18,7883
+Siemiatycze;Siemiatycze;52,4272;22,8625
+Lipno;Lipno;52,85;19,1667
+Trzebnica;Trzebnica;51,305;17,0614
+£êczyca;Leczyca;52,05;19,2
+Wschowa;Wschowa;51,8;16,3
+G³owno;Glowno;51,9642;19,7117
+Tuchola;Tuchola;53,6;17,85
+Zawodzie;Zawodzie;50,2585;19,0449
+Go³dap;Goldap;54,3161;22,3094
+S³upca;Slupca;52,3;17,8667
+Cz³uchów;Czluchow;53,65;17,3667
+Barlinek;Barlinek;53;15,2
+Mor¹g;Morag;53,9167;19,9333
+W¹brzeŸno;Wabrzezno;53,2833;18,95
+Dêbno;Debno;52,7333;14,7
+¯nin;Znin;52,85;17,7
+Lubsko;Lubsko;51,7833;14,9667
+Le¿ajsk;Lezajsk;50,2667;22,4333
+G³ucho³azy;Glucholazy;50,3131;17,3742
+Kozy;Kozy;49,845;19,1417
+Dar³owo;Darlowo;54,4208;16,4097
+Nidzica;Nidzica;53,3583;20,425
+Sidlice;Sidlice;54,3471;18,6171
+Chojnów;Chojnow;51,2667;15,9333
+Brzeg Dolny;Brzeg Dolny;51,2708;16,7208
+Koch³owice;Kochlowice;50,2538;18,9015
+Chropaczów;Chropaczow;50,3131;18,915
+K³obuck;Klobuck;50,9167;18,9333
+Wolsztyn;Wolsztyn;52,1167;16,1167
+W³odawa;Wlodawa;51,55;23,55
+Koszutka;Koszutka;50,2711;19,0211
+Koluszki;Koluszki;51,75;19,8
+Z³ocieniec;Zlocieniec;53,5269;16,0122
+Sêdziszów Ma³opolski;Sedziszow Malopolski;50,0694;21,7014
+Wo³ów;Wolow;51,3414;16,6283
+B³onie;Blonie;52,2;20,6167
+Wasilków;Wasilkow;53,205;23,2044
+Strzelin;Strzelin;50,7833;17,0667
+Brzeziny;Brzeziny;51,8;19,75
+G³ubczyce;Glubczyce;50,2011;17,8247
+Giera³towice;Gieraltowice;50,2167;18,7167
+Pas³êk;Paslek;54,05;19,6667
+Pyrzyce;Pyrzyce;53,1333;14,8833
+S³awno;Slawno;54,3667;16,6833
+Warka;Warka;51,7833;21,2
+Wêgrów;Wegrow;52,4;22,0167
+Góra Kalwaria;Gora Kalwaria;51,9733;21,2144
+Golub-Dobrzyñ;Golub-Dobrzyn;53,1;19,05
+Aleksandrów Kujawski;Aleksandrow Kujawski;52,8767;18,6936
+Lubaczów;Lubaczow;50,1667;23,1167
+D¹browa Tarnowska;Dabrowa Tarnowska;50,1667;20,9833
+Drawsko Pomorskie;Drawsko Pomorskie;53,5333;15,8
+Mogilno;Mogilno;52,65;17,95
+Janów Lubelski;Janow Lubelski;50,7167;22,4167
+Miechów;Miechow;50,3578;20,0325
+Góra;Gora;51,6667;16,55
+Szprotawa;Szprotawa;51,5667;15,5
+Brzeszcze;Brzeszcze;50;19,15
+Milicz;Milicz;51,5333;17,2833
+Komorniki;Komorniki;52,3361;16,8069
+Koronowo;Koronowo;53,3167;17,9333
+Szyd³owiec;Szydlowiec;51,2333;20,85
+RogoŸno;Rogozno;52,7492;16,9997
+Wronki;Wronki;52,7;16,3833
+Krosno Odrzañskie;Krosno Odrzanskie;52,0333;15,1
+Wis³a;Wisla;49,6549;18,8595
+Wêgorzewo;Wegorzewo;54,2167;21,75
+Puck;Puck;54,7;18,4
+Myœlibórz;Mysliborz;52,9333;14,8667
+Nowa Dêba;Nowa Deba;50,4167;21,7667
+Lubawa;Lubawa;53,5;19,75
+Kie³czów;Kielczow;51,1406;17,1783
+Parczew;Parczew;51,6333;22,8667
+Nowe Miasto Lubawskie;Nowe Miasto Lubawskie;53,4256;19,5878
+Wapienica;Wapienica;49,8083;18,9839
+Ciechocinek;Ciechocinek;52,8833;18,7833
+Suchanino;Suchanino;54,3667;18,65
+Zdzieszowice;Zdzieszowice;50,4192;18,1236
+Czarnków;Czarnkow;52,9;16,5667
+Miêdzychód;Miedzychod;52,6;15,8833
+Murowana Goœlina;Murowana Goslina;52,5667;17,0167
+G³ogów Ma³opolski;Glogow Malopolski;50,1667;21,9667
+Kowary;Kowary;50,7917;15,8333
+Za³ê¿e;Zaleze;50,2672;18,9892
+Biskupiec;Biskupiec;53,85;20,95
+Komorowice;Komorowice;49,8544;19,0406
+Syców;Sycow;51,31;17,7236
+Piñczów;Pinczow;50,5333;20,5333
+Mikuszowice;Mikuszowice;49,7833;19,0703
+Krynica;Krynica;49,4117;20,955
+Kolno;Kolno;53,4106;21,9339
+Czersk Pomorski;Czersk Pomorski;53,7928;17,9739
+Sulêcin;Sulecin;52,45;15,1167
+Siechnice;Siechnice;51,0367;17,1525
+Strzelce Krajeñskie;Strzelce Krajenskie;52,8756;15,5319
+Krzeszowice;Krzeszowice;50,1333;19,6333
+Kostrzyñ;Kostrzyn;52,3941;17,2221
+Banino;Banino;54,3933;18,4083
+Drezdenko;Drezdenko;52,8333;15,8333
+£obez;Lobez;53,6333;15,6167
+Bukowno;Bukowno;50,2681;19,4631
+Miastko;Miastko;54,0167;16,9833
+Gaszowice;Gaszowice;50,1089;18,4308
+Pobiedziska;Pobiedziska;52,4833;17,4833
+W³oszczowa;Wloszczowa;50,8542;19,9669
+Go³uchów;Goluchow;51,8494;17,9314
+Kokoszki;Kokoszki;54,3541;18,4915
+Moñki;Monki;53,4;22,8
+Dobre Miasto;Dobre Miasto;53,9875;20,3958
+Kudowa-Zdrój;Kudowa-Zdroj;50,4383;16,2397
+Nowy Dwór Gdañski;Nowy Dwor Gdanski;54,2167;19,1167
+W³adys³awowo;Wladyslawowo;54,8339;18,3156
+Trzebiatów;Trzebiatow;54,0572;15,2786
+Karczew;Karczew;52,0833;21,25
+Szubin;Szubin;53,0167;17,75
+Œroda Œl¹ska;Sroda Slaska;51,15;16,5833
+Sztum;Sztum;53,9217;19,0336
+Puszczykowo;Puszczykowo;52,2817;16,8542
+Bystrzyca K³odzka;Bystrzyca Klodzka;50,3;16,65
+Ostróda;Ostroda;53,7;19,9667
+Opalenica;Opalenica;52,3078;16,4136
+Blachownia;Blachownia;50,7833;18,9667
+Imielin;Imielin;50,1478;19,1814
+Kruszwica;Kruszwica;52,6772;18,3292
+Skwierzyna;Skwierzyna;52,6;15,5
+Ryki;Ryki;51,6333;21,9333
+Maków Mazowiecki;Makow Mazowiecki;52,8667;21,1
+Wysokie Mazowieckie;Wysokie Mazowieckie;52,9192;22,5144
+Olesno;Olesno;50,875;18,4167
+Oborniki Œl¹skie;Oborniki Slaskie;51,2986;16,9017
+Ko¿uchów;Kozuchow;51,75;15,6
+Sucha Beskidzka;Sucha Beskidzka;49,7403;19,5886
+Czarna Bia³ostocka;Czarna Bialostocka;53,3;23,2833
+Sêpólno Krajeñskie;Sepolno Krajenskie;53,45;17,53
+Bolszewo;Bolszewo;54,6242;18,1753
+Stary S¹cz;Stary Sacz;49,5625;20,6364
+Ustrzyki Dolne;Ustrzyki Dolne;49,4297;22,5867
+Kolbuszowa;Kolbuszowa;50,25;21,7667
+Goworowo;Goworowo;52,9006;21,5544
+Che³mek;Chelmek;50,1167;19,25
+Koœcielisko;Koscielisko;49,2908;19,8883
+¯uromin;Zuromin;53,0667;19,9
+Kamieñ Pomorski;Kamien Pomorski;53,97;14,7725
+Poniatowa;Poniatowa;51,1928;22,0647
+Wieruszów;Wieruszow;51,3;18,15

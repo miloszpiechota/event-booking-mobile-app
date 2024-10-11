@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View, TextInput, FlatList } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import React, { useLayoutEffect, useState, useContext } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MapView, { Marker } from 'react-native-maps';
@@ -11,7 +11,7 @@ const cities = [
   { name: "Wrocław", latitude: 51.1079, longitude: 17.0385 },
   { name: "Gdańsk", latitude: 54.3520, longitude: 18.6466 },
   { name: "Poznań", latitude: 52.4064, longitude: 16.9252 },
-  // Dodaj więcej miast
+  // Add more cities here
 ];
 
 const PlacesScreen = () => {
@@ -44,7 +44,7 @@ const PlacesScreen = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Wyszukiwarka */}
+      {/* Search Bar */}
       <View
         style={{
           margin: 10,
@@ -65,7 +65,7 @@ const PlacesScreen = () => {
         <FontAwesome name="search" size={24} color="black" />
       </View>
 
-      {/* Lista miast */}
+      {/* Cities List */}
       <FlatList
         data={filteredCities}
         keyExtractor={(item) => item.name}
@@ -80,21 +80,22 @@ const PlacesScreen = () => {
         style={{ marginHorizontal: 20 }}
       />
 
-      {/* Wybrane miasto */}
+      {/* Selected City */}
       {selectedCity && (
         <View style={{ marginHorizontal: 20, marginTop: 20 }}>
           <Text>Selected Location</Text>
           <Text>{selectedCity.name}</Text>
 
-          {/* Mapa */}
+          {/* Map */}
           <MapView
             style={{ width: '100%', height: 300, marginTop: 10 }}
-            initialRegion={{
+            region={{
               latitude: selectedCity.latitude,
               longitude: selectedCity.longitude,
               latitudeDelta: 0.1,
               longitudeDelta: 0.1,
             }}
+            showsUserLocation={true} // Optional: show the user's location on the map
           >
             <Marker
               coordinate={{
