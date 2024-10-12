@@ -12,7 +12,7 @@ import EvilIcons from "@expo/vector-icons/EvilIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Place } from "../PlacesContext";
 import { events } from "../assets/data/events";
-import MovieCard from "../components/MovieCard";
+import MovieCard from "../components/EventCard";
 import Header from "../components/Header";
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -64,7 +64,11 @@ const HomeScreen = () => {
 
   return (
     <View>
-      <FlatList ListHeaderComponent={Header} data={events} renderItems={({ item }) => <MovieCard />} />
+      <FlatList
+        ListHeaderComponent={Header}
+        data={events}
+        renderItem={({ item, index }) => <MovieCard item={item} key={index} />}
+      />
     </View>
   );
 };
