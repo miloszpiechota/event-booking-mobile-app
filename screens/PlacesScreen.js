@@ -22,7 +22,7 @@ const PlacesScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCities, setFilteredCities] = useState(cities);
 
-  //use PlacesContext to update selectCity globally
+  //use PlacesContext to update selectCity
   const { selectedCity, setSelectedCity } = useContext(Place);
 //Added
  
