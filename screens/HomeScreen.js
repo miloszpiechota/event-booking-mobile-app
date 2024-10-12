@@ -1,13 +1,14 @@
 import { Pressable, StyleSheet, Text, View, Animated } from 'react-native';
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef, useContext } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Place } from "../PlacesContext";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const opacityAnim = useRef(new Animated.Value(0)).current;
-
+  const { selectedCity } = useContext(Place); //added
   useFocusEffect(
     React.useCallback(() => {
       opacityAnim.setValue(0);
@@ -36,13 +37,13 @@ const HomeScreen = () => {
 
           <Pressable onPress={()=>navigation.navigate("Places")}>
             <Animated.Text style={{ opacity: opacityAnim }}>
-              <Text>Lublin</Text>
+            <Text>{selectedCity ? selectedCity.name : "Lublin"}</Text> 
             </Animated.Text>
           </Pressable>
         </Pressable>
       ),
     });
-  }, [navigation, opacityAnim]);
+  }, [navigation, opacityAnim, selectedCity]);
 
   return (
     <View>

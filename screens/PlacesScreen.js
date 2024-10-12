@@ -1,30 +1,40 @@
-import { Pressable, StyleSheet, Text, View, TextInput, FlatList } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  FlatList,
+} from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker } from "react-native-maps";
 
-const cities = [
-  { name: "Warszawa", latitude: 52.2297, longitude: 21.0122 },
-  { name: "Kraków", latitude: 50.0647, longitude: 19.9450 },
-  { name: "Wrocław", latitude: 51.1079, longitude: 17.0385 },
-  { name: "Gdańsk", latitude: 54.3520, longitude: 18.6466 },
-  { name: "Poznań", latitude: 52.4064, longitude: 16.9252 },
-  // Add more cities here
-];
+import { cities } from "../assets/data/cities";
+
+
+import { Place } from "../PlacesContext"; //Added
 
 const PlacesScreen = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCities, setFilteredCities] = useState(cities);
-  const [selectedCity, setSelectedCity] = useState(null);
 
+  //use PlacesContext to update selectCity globally
+  const { selectedCity, setSelectedCity } = useContext(Place);
+//Added
+ 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
-        <Pressable style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-          <Text style={{ fontSize: 15, letterSpacing: 1 }}>CHANGE LOCATION</Text>
+        <Pressable
+          style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+        >
+          <Text style={{ fontSize: 15, letterSpacing: 1 }}>
+            CHANGE LOCATION
+          </Text>
         </Pressable>
       ),
     });
@@ -72,7 +82,11 @@ const PlacesScreen = () => {
         renderItem={({ item }) => (
           <Pressable
             onPress={() => handleCitySelect(item)}
-            style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: "#e0e0e0" }}
+            style={{
+              padding: 10,
+              borderBottomWidth: 1,
+              borderBottomColor: "#e0e0e0",
+            }}
           >
             <Text>{item.name}</Text>
           </Pressable>
@@ -83,12 +97,23 @@ const PlacesScreen = () => {
       {/* Selected City */}
       {selectedCity && (
         <View style={{ marginHorizontal: 20, marginTop: 20 }}>
-          <Text>Selected Location</Text>
-          <Text>{selectedCity.name}</Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              color: "#333",
+              marginBottom: 5,
+            }}
+          >
+            Selected Location:
+          </Text>
+          <Text style={{ fontSize: 20, color: "#007bff", fontWeight: "600" }}>
+            {selectedCity.name}
+          </Text>
 
           {/* Map */}
           <MapView
-            style={{ width: '100%', height: 300, marginTop: 10 }}
+            style={{ width: "100%", height: 300, marginTop: 10 }}
             region={{
               latitude: selectedCity.latitude,
               longitude: selectedCity.longitude,
