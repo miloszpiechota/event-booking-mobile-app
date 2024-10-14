@@ -15,13 +15,66 @@ import { events } from "../assets/data/events";
 import MovieCard from "../components/EventCard";
 import Header from "../components/Header";
 import { BottomModal, ModalFooter, ModalTitle } from "react-native-modals";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { SlideAnimation } from "react-native-modals";
+import { ModalContent } from "react-native-modals";
 const HomeScreen = () => {
   const navigation = useNavigation();
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const { selectedCity } = useContext(Place); //added
   const [modalVisible, setModalVisible] = useState(false);
+  const languages = [
+    {
+      id: "0",
+      language: "English",
+    },
+    {
+      id: "10",
+      language: "Polish",
+    },
+    {
+      id: "1",
+      language: "German",
+    },
+    {
+      id: "2",
+      language: "Spanish",
+    },
+    {
+      id: "3",
+      language: "Italian",
+    },
+    {
+      id: "5",
+      language: "Malayalam",
+    },
+  ];
+  const genres = [
+    {
+      id: "0",
+      language: "Horror",
+    },
+    {
+      id: "1",
+      language: "Comedy",
+    },
+    {
+      id: "2",
+      language: "Action",
+    },
+    {
+      id: "3",
+      language: "Romance",
+    },
+    {
+      id: "5",
+      language: "Thriller",
+    },
+    {
+      id: "6",
+      language: "Drama",
+    },
+  ];
   useFocusEffect(
     React.useCallback(() => {
       opacityAnim.setValue(0);
@@ -73,7 +126,7 @@ const HomeScreen = () => {
         renderItem={({ item, index }) => <MovieCard item={item} key={index} />}
       />
       <Pressable
-      onPress={()=>setModalVisible(!modalVisible)}
+        onPress={() => setModalVisible(!modalVisible)}
         style={{
           position: "absolute",
           bottom: 30,
@@ -82,11 +135,9 @@ const HomeScreen = () => {
           height: 60,
           borderRadius: 30,
           right: 20,
-          justifyContent:"center",
-          alignItems:"center"
-
+          justifyContent: "center",
+          alignItems: "center",
         }}
-        
       >
         <FontAwesome name="filter" size={24} color="black" />
       </Pressable>
@@ -110,12 +161,33 @@ const HomeScreen = () => {
             </Pressable>
           </ModalFooter>
         }
-        modalTitle={<ModalTitle title="Filters"/>}
-        modalAnimation={new SlideAnimation({slideForm:"bottom"})}
+        modalTitle={<ModalTitle title="Filters" />}
+        modalAnimation={new SlideAnimation({ slideForm: "bottom" })}
         visible={modalVisible}
-        onHardwareBackPress={()=>setModalVisible(!modalVisible)}
-        onTouchOutside={()=>setModalVisible(!modalVisible)}
-      ></BottomModal>
+        onHardwareBackPress={() => setModalVisible(!modalVisible)}
+        onTouchOutside={() => setModalVisible(!modalVisible)}
+      >
+        <ModalContent style={{ width: "100%", height: 200 }}>
+          <Text
+            style={{
+              paddingVertical: 5,
+              fontSize: 15,
+              fontWeight: "500",
+              marginTop: 10,
+            }}
+          >
+            Languages
+          </Text>
+          {languages.map((item, index) => {
+            return (
+              // Dodano return
+              <Pressable key={item.id} style={{ paddingVertical: 5 }}>
+                <Text>{item.language}</Text>
+              </Pressable>
+            );
+          })}
+        </ModalContent>
+      </BottomModal>
     </View>
   );
 };
