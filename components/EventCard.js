@@ -11,7 +11,7 @@ const EventCard = ({ item }) => {
           source={require("../assets/backgroundImage.jpg")} // Load image from assets folder
         />
         <View style={ec_s.info_right}>
-          <Text>{item.title}</Text>
+          <Text>{item.name}</Text>
           <Pressable style={ec_s.bookButton} onPress={() => console.log('Book button pressed!')}>
             <Text style={ec_s.bookButtonText}>Book</Text>
           </Pressable>
