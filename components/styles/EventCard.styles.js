@@ -17,7 +17,7 @@ export const ec_s = StyleSheet.create({
     paddingHorizontal: 10,
     alignItems: "center",
     marginBottom: 10,
-    marginTop: 15
+    marginTop: 15,
   },
   img_left: {
     width: "50%", // Image takes up half of the card's width
@@ -29,5 +29,18 @@ export const ec_s = StyleSheet.create({
     width: "50%", // Text section takes up the other half of the card
     paddingHorizontal: 10,
     justifyContent: "center",
+  },
+  bookButton: {
+    backgroundColor: "#007bff",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    marginTop: 10,
+    alignSelf: "flex-end",
+  },
+  bookButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

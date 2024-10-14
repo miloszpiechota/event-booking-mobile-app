@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, SafeAreaView, Pressable, Image } from "react-native";
 import React from "react";
 import { ec_s } from "./styles/EventCard.styles";
+
 const EventCard = ({ item }) => {
   return (
     <SafeAreaView>
@@ -11,7 +12,9 @@ const EventCard = ({ item }) => {
         />
         <View style={ec_s.info_right}>
           <Text>{item.title}</Text>
-          
+          <Pressable style={ec_s.bookButton} onPress={() => console.log('Book button pressed!')}>
+            <Text style={ec_s.bookButtonText}>Book</Text>
+          </Pressable>
         </View>
       </Pressable>
     </SafeAreaView>
@@ -19,5 +22,3 @@ const EventCard = ({ item }) => {
 };
 
 export default EventCard;
-
-const styles = StyleSheet.create({});
