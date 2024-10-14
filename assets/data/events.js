@@ -49,4 +49,21 @@ export const events =[
       video: false,
       vote_average: 7.1,
       vote_count: 356,
+    },
+    {
+      adult: false,
+      backdrop_path: "/7bWxAsNPv9CXHOhZbJVlj2KxgfP.jpg",
+      genre_ids: [28],
+      id: 713705,
+      original_language: "English",
+      original_title: "Evil Dead Rise",
+      overview:
+        "Two sisters find an ancient vinyl that gives birth to bloodthirsty demons that run amok in a Los Angeles apartment building and thrusts them into a primal battle for survival as they face the most nightmarish version of family imaginable.",
+      popularity: 1136.358,
+      poster_path: "/5ik4ATKmNtmJU6AYD0bLm56BCVM.jpg",
+      release_date: "2023-04-21",
+      title: "Evil Dead Rise",
+      video: false,
+      vote_average: 7.1,
+      vote_count: 356,
     },];
