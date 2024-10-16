@@ -7,8 +7,8 @@ const EventCard = ({ item }) => {
     <SafeAreaView>
       <Pressable style={ec_s.card}>
         <Image
-          style={ec_s.img_left}
-          source={require("../assets/backgroundImage.jpg")} // Load image from assets folder
+         style={ec_s.img_left}
+         source={{ uri: item.photo }} // Load image from assets folder
         />
         <View style={ec_s.info_right}>
           <Text>{item.name}</Text>
