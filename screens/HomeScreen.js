@@ -25,12 +25,15 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [events, setEvents] = useState([]); // State to store events
 
-  // Fetch events from Supabase
+  // Pobieranie wydarzeń z Supabase
   useEffect(() => {
     const fetchEvents = async () => {
       const { data, error } = await supabase
         .from('event')
-        .select('*'); // Fetch all columns
+        .select(`
+          *,
+          event_locations (name)  -- Łączenie tabeli event_locations, pobierając kolumnę name
+        `);
 
       if (error) {
         console.error('Error fetching events:', error);
@@ -40,7 +43,7 @@ const HomeScreen = () => {
     };
 
     fetchEvents();
-  }, []); // Fetch events on component mount
+  }, []); // Pobieranie danych przy montowaniu komponentu
 
   useFocusEffect(
     React.useCallback(() => {
@@ -85,10 +88,18 @@ const HomeScreen = () => {
   return (
     <View>
       <FlatList
-        ListHeaderComponent={Header}
-        data={events}
-        renderItem={({ item, index }) => <MovieCard item={item} key={index} />}
-      />
+      ListHeaderComponent={Header}
+      data={events}
+      renderItem={({ item, index }) => (
+        <MovieCard
+          item={{
+            ...item,
+            location_name: item.event_locations ? item.event_locations.name : "Unknown Location"  // Przekazywanie nazwy lokalizacji
+          }}
+          key={index}
+        />
+      )}
+    />
       <Pressable
         onPress={() => setModalVisible(!modalVisible)}
         style={{
