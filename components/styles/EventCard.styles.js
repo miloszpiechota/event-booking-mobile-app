@@ -30,6 +30,7 @@ export const ec_s = StyleSheet.create({
     justifyContent: "center",
   },
   eventName: {
+    marginTop: 5,
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -45,10 +46,10 @@ export const ec_s = StyleSheet.create({
   },
   bookButton: {
     backgroundColor: "#007bff",
-    paddingVertical: 8,
+    paddingVertical: 5,
     paddingHorizontal: 12,
     borderRadius: 5,
-    marginTop: 10,
+    marginTop: 6,
     alignSelf: "flex-end",
   },
   bookButtonText: {

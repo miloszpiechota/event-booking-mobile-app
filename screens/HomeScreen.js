@@ -24,7 +24,7 @@ const HomeScreen = () => {
   const { selectedCity } = useContext(Place);
   const [modalVisible, setModalVisible] = useState(false);
   const [events, setEvents] = useState([]); // State to store events
-
+  const [categories, setCategories] = useState([]); // State to store categories
   useEffect(() => {
     const fetchEvents = async () => {
       const { data, error } = await supabase
@@ -45,8 +45,21 @@ const HomeScreen = () => {
         setEvents(data);
       }
     };
-  
+
+    const fetchCategories = async () => {
+      const { data, error } = await supabase
+        .from('event_category')
+        .select('*'); // Fetch all categories
+
+      if (error) {
+        console.error('Error fetching categories:', error);
+      } else {
+        setCategories(data);
+      }
+    };
+
     fetchEvents();
+    fetchCategories();
   }, []); // Pobieranie danych przy montowaniu komponentu
   
 
@@ -60,7 +73,6 @@ const HomeScreen = () => {
       }).start();
     }, [opacityAnim])
   );
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <Text>Hello Miłosz</Text>,
@@ -110,7 +122,7 @@ const HomeScreen = () => {
         onPress={() => setModalVisible(!modalVisible)}
         style={{
           position: "absolute",
-          bottom: 30,
+          bottom: 10,
           backgroundColor: "#3facab",
           width: 60,
           height: 60,
@@ -148,7 +160,7 @@ const HomeScreen = () => {
         onHardwareBackPress={() => setModalVisible(!modalVisible)}
         onTouchOutside={() => setModalVisible(!modalVisible)}
       >
-        <ModalContent style={{ width: "100%", height: 200 }}>
+         <ModalContent style={{ width: "100%", height: 280 }}>
           <Text
             style={{
               paddingVertical: 5,
@@ -157,9 +169,17 @@ const HomeScreen = () => {
               marginTop: 10,
             }}
           >
-            Languages
+            Event Category
           </Text>
-          {/* Your languages selection UI here */}
+          {categories.length > 0 ? (
+            categories.map((category, index) => (
+              <Text key={index} style={{ paddingVertical: 5 }}>
+                {category.category_type} {/* Wyświetlanie kategorii */}
+              </Text>
+            ))
+          ) : (
+            <Text>No categories available</Text> // Komunikat, jeśli brak kategorii
+          )}
         </ModalContent>
       </BottomModal>
     </View>
