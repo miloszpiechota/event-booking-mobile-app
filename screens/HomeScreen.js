@@ -73,6 +73,9 @@ const HomeScreen = () => {
 
   // Filtering function based on selected category
   const applyFilter = (filter) => {
+    if (filter === "All") {
+      return events; // Return all events if filter is "All"
+    }
     switch (filter) {
       case "Koncert":
         return events.filter(event => event.fk_idevent_category === 1); // Assuming 1 is the id for concerts
@@ -212,6 +215,32 @@ const HomeScreen = () => {
           </Text>
 
           <Pressable style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+            {/* Add "All" filter option */}
+            <Pressable
+              style={{
+                margin: 10,
+                borderColor: selectedCategory === "All" ? 'orange' : '#CBCBCB',
+                borderWidth: 1,
+                paddingVertical: 5,
+                borderRadius: 25,
+                paddingHorizontal: 11,
+                backgroundColor: selectedCategory === "All" ? 'orange' : 'white',
+              }}
+              onPress={() => {
+                setSelectedCategory(selectedCategory === "All" ? null : "All"); // Toggle "All" selection
+                console.log(`Selected category: ${selectedCategory === "All" ? null : "All"}`);
+              }}
+            >
+              <Text
+                style={{
+                  color: selectedCategory === "All" ? 'white' : 'black',
+                  fontWeight: selectedCategory === "All" ? '500' : 'normal',
+                }}
+              >
+                All
+              </Text>
+            </Pressable>
+
             {categories.length > 0 ? (
               categories.map((category) => (
                 <Pressable
