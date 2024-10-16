@@ -6,17 +6,28 @@ import {
   Animated,
   FlatList,
 } from "react-native";
-import React, { useLayoutEffect, useRef, useContext, useState, useEffect } from "react";
+import React, {
+  useLayoutEffect,
+  useRef,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Place } from "../PlacesContext";
 import MovieCard from "../components/EventCard";
 import Header from "../components/Header";
-import { BottomModal, ModalFooter, ModalTitle, ModalContent } from "react-native-modals";
+import {
+  BottomModal,
+  ModalFooter,
+  ModalTitle,
+  ModalContent,
+} from "react-native-modals";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { SlideAnimation } from "react-native-modals";
-import { supabase } from '../database/superbaseClient.ts'; // Import your Supabase client
+import { supabase } from "../database/superbaseClient.ts"; // Import your Supabase client
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -25,11 +36,10 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [events, setEvents] = useState([]); // State to store events
   const [categories, setCategories] = useState([]); // State to store categories
+  const [selectedCategory, setSelectedCategory] = useState(); //state for Filter
   useEffect(() => {
     const fetchEvents = async () => {
-      const { data, error } = await supabase
-        .from('event')
-        .select(`
+      const { data, error } = await supabase.from("event").select(`
           *,
           event_locations (
             name,
@@ -38,21 +48,19 @@ const HomeScreen = () => {
             )
           )
         `);
-  
+
       if (error) {
-        console.error('Error fetching events:', error);
+        console.error("Error fetching events:", error);
       } else {
         setEvents(data);
       }
     };
 
     const fetchCategories = async () => {
-      const { data, error } = await supabase
-        .from('event_category')
-        .select('*'); // Fetch all categories
+      const { data, error } = await supabase.from("event_category").select("*"); // Fetch all categories
 
       if (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       } else {
         setCategories(data);
       }
@@ -61,7 +69,6 @@ const HomeScreen = () => {
     fetchEvents();
     fetchCategories();
   }, []); // Pobieranie danych przy montowaniu komponentu
-  
 
   useFocusEffect(
     React.useCallback(() => {
@@ -84,7 +91,9 @@ const HomeScreen = () => {
         shadowRadius: 3,
       },
       headerRight: () => (
-        <Pressable style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+        <Pressable
+          style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+        >
           <Ionicons name="notifications-outline" size={24} color="black" />
           <EvilIcons
             onPress={() => navigation.navigate("Places")}
@@ -105,19 +114,22 @@ const HomeScreen = () => {
   return (
     <View>
       <FlatList
-      ListHeaderComponent={Header}
-      data={events}
-      renderItem={({ item, index }) => (
-        <MovieCard
-          item={{
-            ...item,
-            location_name: item.event_locations ? item.event_locations.name : "Unknown Location",  // Przekazywanie nazwy lokalizacji
-            city_name: item.event_locations?.fk_idcity?.city || "Unknown City"  // Przekazywanie nazwy miasta
-          }}
-          key={index}
-        />
-      )}
-    />
+        ListHeaderComponent={Header}
+        data={events}
+        renderItem={({ item, index }) => (
+          <MovieCard
+            item={{
+              ...item,
+              location_name: item.event_locations
+                ? item.event_locations.name
+                : "Unknown Location", // Przekazywanie nazwy lokalizacji
+              city_name:
+                item.event_locations?.fk_idcity?.city || "Unknown City", // Przekazywanie nazwy miasta
+            }}
+            key={index}
+          />
+        )}
+      />
       <Pressable
         onPress={() => setModalVisible(!modalVisible)}
         style={{
@@ -160,7 +172,7 @@ const HomeScreen = () => {
         onHardwareBackPress={() => setModalVisible(!modalVisible)}
         onTouchOutside={() => setModalVisible(!modalVisible)}
       >
-         <ModalContent style={{ width: "100%", height: 280 }}>
+        <ModalContent style={{ width: "100%", height: 280 }}>
           <Text
             style={{
               paddingVertical: 5,
@@ -171,15 +183,46 @@ const HomeScreen = () => {
           >
             Event Category
           </Text>
-          {categories.length > 0 ? (
-            categories.map((category, index) => (
-              <Text key={index} style={{ paddingVertical: 5 }}>
+
+          <Pressable style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+        {categories.length > 0 ? (
+          categories.map((category) => (
+            <Pressable
+              key={category.id} // Upewnij się, że `id` jest unikalne
+              style={{
+                margin: 10,
+                borderColor: selectedCategory === category.category_type ? 'orange' : '#CBCBCB',
+                borderWidth: 1,
+                paddingVertical: 5,
+                borderRadius: 25,
+                paddingHorizontal: 11,
+                backgroundColor: selectedCategory === category.category_type ? 'orange' : 'white',
+              }}
+              onPress={() => {
+                // Logika kliknięcia
+                if (selectedCategory === category.category_type) {
+                  setSelectedCategory(null); // Resetowanie zaznaczenia
+                } else {
+                  setSelectedCategory(category.category_type); // Ustawianie zaznaczonej kategorii
+                }
+                console.log(`Selected category: ${category.category_type}`);
+              }}
+            >
+              <Text
+                style={{
+                  color: selectedCategory === category.category_type ? 'white' : 'black',
+                  fontWeight: selectedCategory === category.category_type ? '500' : 'normal',
+                }}
+              >
                 {category.category_type} {/* Wyświetlanie kategorii */}
               </Text>
-            ))
-          ) : (
-            <Text>No categories available</Text> // Komunikat, jeśli brak kategorii
-          )}
+            </Pressable>
+          ))
+        ) : (
+          <Text>No categories available</Text> // Komunikat, jeśli brak kategorii
+        )}
+      </Pressable>
+
         </ModalContent>
       </BottomModal>
     </View>
