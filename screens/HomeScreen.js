@@ -36,7 +36,8 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [events, setEvents] = useState([]); // State to store events
   const [categories, setCategories] = useState([]); // State to store categories
-  const [selectedCategory, setSelectedCategory] = useState(); //state for Filter
+  const [selectedCategory, setSelectedCategory] = useState(); // State for filter
+
   useEffect(() => {
     const fetchEvents = async () => {
       const { data, error } = await supabase.from("event").select(`
@@ -68,7 +69,31 @@ const HomeScreen = () => {
 
     fetchEvents();
     fetchCategories();
-  }, []); // Pobieranie danych przy montowaniu komponentu
+  }, []); // Fetch data on component mount
+
+  // Filtering function based on selected category
+  const applyFilter = (filter) => {
+    switch (filter) {
+      case "Koncert":
+        return events.filter(event => event.fk_idevent_category === 1); // Assuming 1 is the id for concerts
+      case "Festiwal":
+        return events.filter(event => event.fk_idevent_category === 2); // Assuming 2 is the id for festivals
+      case "Wystawa":
+        return events.filter(event => event.fk_idevent_category === 3); // Assuming 3 is the id for exhibitions
+      case "Maraton":
+        return events.filter(event => event.fk_idevent_category === 4); // Assuming 4 is the id for marathons
+      case "Konferencja":
+        return events.filter(event => event.fk_idevent_category === 5); // Assuming 5 is the id for conferences
+      case "Warsztaty":
+        return events.filter(event => event.fk_idevent_category === 6); // Assuming 6 is the id for workshops
+      case "Zawody":
+        return events.filter(event => event.fk_idevent_category === 7); // Assuming 7 is the id for competitions
+      case "Festyn":
+        return events.filter(event => event.fk_idevent_category === 10); // Assuming 10 is the id for fairs
+      default:
+        return events; // If no filter is selected, return all events
+    }
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -80,6 +105,7 @@ const HomeScreen = () => {
       }).start();
     }, [opacityAnim])
   );
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <Text>Hello Miłosz</Text>,
@@ -115,16 +141,16 @@ const HomeScreen = () => {
     <View>
       <FlatList
         ListHeaderComponent={Header}
-        data={events}
+        data={applyFilter(selectedCategory)} // Apply filter based on selected category
         renderItem={({ item, index }) => (
           <MovieCard
             item={{
               ...item,
               location_name: item.event_locations
                 ? item.event_locations.name
-                : "Unknown Location", // Przekazywanie nazwy lokalizacji
+                : "Unknown Location",
               city_name:
-                item.event_locations?.fk_idcity?.city || "Unknown City", // Przekazywanie nazwy miasta
+                item.event_locations?.fk_idcity?.city || "Unknown City",
             }}
             key={index}
           />
@@ -161,6 +187,7 @@ const HomeScreen = () => {
                 marginVertical: 10,
                 marginBottom: 30,
               }}
+              onPress={() => setModalVisible(false)} // Close modal on apply
             >
               <Text>Apply</Text>
             </Pressable>
@@ -185,44 +212,43 @@ const HomeScreen = () => {
           </Text>
 
           <Pressable style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
-        {categories.length > 0 ? (
-          categories.map((category) => (
-            <Pressable
-              key={category.id} // Upewnij się, że `id` jest unikalne
-              style={{
-                margin: 10,
-                borderColor: selectedCategory === category.category_type ? 'orange' : '#CBCBCB',
-                borderWidth: 1,
-                paddingVertical: 5,
-                borderRadius: 25,
-                paddingHorizontal: 11,
-                backgroundColor: selectedCategory === category.category_type ? 'orange' : 'white',
-              }}
-              onPress={() => {
-                // Logika kliknięcia
-                if (selectedCategory === category.category_type) {
-                  setSelectedCategory(null); // Resetowanie zaznaczenia
-                } else {
-                  setSelectedCategory(category.category_type); // Ustawianie zaznaczonej kategorii
-                }
-                console.log(`Selected category: ${category.category_type}`);
-              }}
-            >
-              <Text
-                style={{
-                  color: selectedCategory === category.category_type ? 'white' : 'black',
-                  fontWeight: selectedCategory === category.category_type ? '500' : 'normal',
-                }}
-              >
-                {category.category_type} {/* Wyświetlanie kategorii */}
-              </Text>
-            </Pressable>
-          ))
-        ) : (
-          <Text>No categories available</Text> // Komunikat, jeśli brak kategorii
-        )}
-      </Pressable>
-
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <Pressable
+                  key={category.id}
+                  style={{
+                    margin: 10,
+                    borderColor: selectedCategory === category.category_type ? 'orange' : '#CBCBCB',
+                    borderWidth: 1,
+                    paddingVertical: 5,
+                    borderRadius: 25,
+                    paddingHorizontal: 11,
+                    backgroundColor: selectedCategory === category.category_type ? 'orange' : 'white',
+                  }}
+                  onPress={() => {
+                    // Logic for clicking
+                    if (selectedCategory === category.category_type) {
+                      setSelectedCategory(null); // Reset selection
+                    } else {
+                      setSelectedCategory(category.category_type); // Set selected category
+                    }
+                    console.log(`Selected category: ${category.category_type}`);
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: selectedCategory === category.category_type ? 'white' : 'black',
+                      fontWeight: selectedCategory === category.category_type ? '500' : 'normal',
+                    }}
+                  >
+                    {category.category_type}
+                  </Text>
+                </Pressable>
+              ))
+            ) : (
+              <Text>No categories available</Text>
+            )}
+          </Pressable>
         </ModalContent>
       </BottomModal>
     </View>
