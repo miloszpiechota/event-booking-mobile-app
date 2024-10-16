@@ -25,25 +25,30 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [events, setEvents] = useState([]); // State to store events
 
-  // Pobieranie wydarzeń z Supabase
   useEffect(() => {
     const fetchEvents = async () => {
       const { data, error } = await supabase
         .from('event')
         .select(`
           *,
-          event_locations (name)  -- Łączenie tabeli event_locations, pobierając kolumnę name
+          event_locations (
+            name,
+            fk_idcity (
+              city
+            )
+          )
         `);
-
+  
       if (error) {
         console.error('Error fetching events:', error);
       } else {
         setEvents(data);
       }
     };
-
+  
     fetchEvents();
   }, []); // Pobieranie danych przy montowaniu komponentu
+  
 
   useFocusEffect(
     React.useCallback(() => {
@@ -94,7 +99,8 @@ const HomeScreen = () => {
         <MovieCard
           item={{
             ...item,
-            location_name: item.event_locations ? item.event_locations.name : "Unknown Location"  // Przekazywanie nazwy lokalizacji
+            location_name: item.event_locations ? item.event_locations.name : "Unknown Location",  // Przekazywanie nazwy lokalizacji
+            city_name: item.event_locations?.fk_idcity?.city || "Unknown City"  // Przekazywanie nazwy miasta
           }}
           key={index}
         />

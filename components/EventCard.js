@@ -14,6 +14,7 @@ const EventCard = ({ item }) => {
   const formattedStartDate = formatDate(item.start_date);
   const formattedEndDate = formatDate(item.end_date);
   const locationName = item.location_name;  // Użycie nazwy lokalizacji
+  const cityName = item.city_name;  // Użycie nazwy miasta
 
   return (
     <SafeAreaView>
@@ -27,8 +28,7 @@ const EventCard = ({ item }) => {
           <Text style={ec_s.eventDates}>
             {formattedStartDate === formattedEndDate ? formattedStartDate : `${formattedStartDate} - ${formattedEndDate}`}
           </Text>
-          <Text style={ec_s.eventLocation}>
-            {locationName}  {/* Wyświetlenie nazwy lokalizacji */}
+          <Text style={ec_s.eventLocation}>{locationName}, {cityName}  {/* Wyświetlenie nazwy lokalizacji i miasta */}
           </Text>
           <Pressable style={ec_s.bookButton} onPress={() => console.log('Book button pressed!')}>
             <Text style={ec_s.bookButtonText}>Book</Text>
