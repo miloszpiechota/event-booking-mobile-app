@@ -1,9 +1,8 @@
 import { StyleSheet } from "react-native";
-
 export const ec_s = StyleSheet.create({
   card: {
     backgroundColor: "white",
-    height: 115,
+    height: 140, // Zwiększona wysokość, aby zmieścić dodatkowe informacje
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -13,22 +12,36 @@ export const ec_s = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     borderRadius: 13,
-    flexDirection: "row", // Arrange children in a row
+    flexDirection: "row", // Rozmieszczenie dzieci w wierszu
     paddingHorizontal: 10,
     alignItems: "center",
     marginBottom: 10,
     marginTop: 15,
   },
   img_left: {
-    width: "50%", // Image takes up half of the card's width
-    height: "100%", // Occupy the full height of the card
+    width: "50%", // Obraz zajmuje połowę szerokości karty
+    height: "100%", // Cała wysokość karty
     borderTopLeftRadius: 13,
     borderBottomLeftRadius: 13,
   },
   info_right: {
-    width: "50%", // Text section takes up the other half of the card
+    width: "50%", // Sekcja tekstu zajmuje drugą połowę karty
     paddingHorizontal: 10,
     justifyContent: "center",
+  },
+  eventName: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  eventDates: {
+    fontSize: 14,
+    color: "#555",
+    marginTop: 5,
+  },
+  eventLocation: {
+    fontSize: 14,
+    color: "#777",
+    marginTop: 5,
   },
   bookButton: {
     backgroundColor: "#007bff",
