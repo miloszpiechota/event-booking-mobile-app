@@ -134,6 +134,8 @@ const HomeScreen = () => {
                 : "Unknown Location",
               city_name:
                 item.event_locations?.fk_idcity?.city || "Unknown City",
+                photo: item.photo, // Przekazujemy zdjęcie
+    description: item.description, // Przekazujemy opis wydarzenia
             }}
             key={index}
           />
