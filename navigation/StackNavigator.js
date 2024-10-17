@@ -7,6 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import EventScreen from "../screens/EventScreen";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ function HomeStackScreens() {
         options={{ title: "" }}
       />
       <HomeStack.Screen name="Places" component={PlacesScreen} />
+      <HomeStack.Screen name="Event" component={EventScreen} />
     </HomeStack.Navigator>
   );
 }

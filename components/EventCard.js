@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, SafeAreaView, Pressable, Image } from "react-native";
 import React from "react";
 import { ec_s } from "./styles/EventCard.styles";
-
+import {useNavigation} from "@react-navigation/native"
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, '0');
@@ -15,6 +15,7 @@ const EventCard = ({ item }) => {
   const formattedEndDate = formatDate(item.end_date);
   const locationName = item.location_name;  // Użycie nazwy lokalizacji
   const cityName = item.city_name;  // Użycie nazwy miasta
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView>
@@ -30,7 +31,9 @@ const EventCard = ({ item }) => {
           </Text>
           <Text style={ec_s.eventLocation}>{locationName}, {cityName}  {/* Wyświetlenie nazwy lokalizacji i miasta */}
           </Text>
-          <Pressable style={ec_s.bookButton} onPress={() => console.log('Book button pressed!')}>
+          <Pressable style={ec_s.bookButton} onPress={() => navigation.navigate("Event",{
+            title:item.title
+          })}>
             <Text style={ec_s.bookButtonText}>Book</Text>
           </Pressable>
         </View>
