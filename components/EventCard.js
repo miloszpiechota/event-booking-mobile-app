@@ -47,6 +47,9 @@ const EventCard = ({ item }) => {
                 title: item.name,
                 photo: item.photo, // Przekazujemy zdjęcie
                 description: item.description, // Przekazujemy opis
+                location: locationName,
+                city: cityName
+
               })
             }
           >

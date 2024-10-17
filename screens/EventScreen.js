@@ -6,7 +6,7 @@ const EventScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   
-  const { title, photo, description } = route.params; // Odbieramy przekazane dane
+  const { title, photo, description ,location, city} = route.params; // Odbieramy przekazane dane
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -28,8 +28,12 @@ const EventScreen = () => {
           source={{ uri: photo }} // Używamy przekazanego zdjęcia
         />
 
-        <Text>Opis</Text>
+        <Text>Opis:</Text>
         <Text style={{ padding: 10, fontSize: 18 }}>{description}</Text>
+        <Text >
+            {location}, {city}
+            
+          </Text>
       </View>
     </SafeAreaView>
   );

@@ -58,21 +58,21 @@ const HomeScreen = () => {
     }
     switch (filter) {
       case "Koncert":
-        return events.filter(event => event.fk_idevent_category === 1); // Assuming 1 is the id for concerts
+        return events.filter((event) => event.fk_idevent_category === 1); // Assuming 1 is the id for concerts
       case "Festiwal":
-        return events.filter(event => event.fk_idevent_category === 2); // Assuming 2 is the id for festivals
+        return events.filter((event) => event.fk_idevent_category === 2); // Assuming 2 is the id for festivals
       case "Wystawa":
-        return events.filter(event => event.fk_idevent_category === 3); // Assuming 3 is the id for exhibitions
+        return events.filter((event) => event.fk_idevent_category === 3); // Assuming 3 is the id for exhibitions
       case "Maraton":
-        return events.filter(event => event.fk_idevent_category === 4); // Assuming 4 is the id for marathons
+        return events.filter((event) => event.fk_idevent_category === 4); // Assuming 4 is the id for marathons
       case "Konferencja":
-        return events.filter(event => event.fk_idevent_category === 5); // Assuming 5 is the id for conferences
+        return events.filter((event) => event.fk_idevent_category === 5); // Assuming 5 is the id for conferences
       case "Warsztaty":
-        return events.filter(event => event.fk_idevent_category === 6); // Assuming 6 is the id for workshops
+        return events.filter((event) => event.fk_idevent_category === 6); // Assuming 6 is the id for workshops
       case "Zawody":
-        return events.filter(event => event.fk_idevent_category === 7); // Assuming 7 is the id for competitions
+        return events.filter((event) => event.fk_idevent_category === 7); // Assuming 7 is the id for competitions
       case "Festyn":
-        return events.filter(event => event.fk_idevent_category === 10); // Assuming 10 is the id for fairs
+        return events.filter((event) => event.fk_idevent_category === 10); // Assuming 10 is the id for fairs
       default:
         return events; // If no filter is selected, return all events
     }
@@ -134,8 +134,9 @@ const HomeScreen = () => {
                 : "Unknown Location",
               city_name:
                 item.event_locations?.fk_idcity?.city || "Unknown City",
-                photo: item.photo, // Przekazujemy zdjęcie
-    description: item.description, // Przekazujemy opis wydarzenia
+              photo: item.photo, // Przekazujemy zdjęcie
+              description: item.description, // Przekazujemy opis wydarzenia
+              
             }}
             key={index}
           />
@@ -196,27 +197,38 @@ const HomeScreen = () => {
             Event Category
           </Text>
 
-          <Pressable style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+          <Pressable
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
             {/* Add "All" filter option */}
             <Pressable
               style={{
                 margin: 10,
-                borderColor: selectedCategory === "All" ? 'orange' : '#CBCBCB',
+                borderColor: selectedCategory === "All" ? "orange" : "#CBCBCB",
                 borderWidth: 1,
                 paddingVertical: 5,
                 borderRadius: 25,
                 paddingHorizontal: 11,
-                backgroundColor: selectedCategory === "All" ? 'orange' : 'white',
+                backgroundColor:
+                  selectedCategory === "All" ? "orange" : "white",
               }}
               onPress={() => {
                 setSelectedCategory(selectedCategory === "All" ? null : "All"); // Toggle "All" selection
-                console.log(`Selected category: ${selectedCategory === "All" ? null : "All"}`);
+                console.log(
+                  `Selected category: ${
+                    selectedCategory === "All" ? null : "All"
+                  }`
+                );
               }}
             >
               <Text
                 style={{
-                  color: selectedCategory === "All" ? 'white' : 'black',
-                  fontWeight: selectedCategory === "All" ? '500' : 'normal',
+                  color: selectedCategory === "All" ? "white" : "black",
+                  fontWeight: selectedCategory === "All" ? "500" : "normal",
                 }}
               >
                 All
@@ -229,12 +241,18 @@ const HomeScreen = () => {
                   key={category.id}
                   style={{
                     margin: 10,
-                    borderColor: selectedCategory === category.category_type ? 'orange' : '#CBCBCB',
+                    borderColor:
+                      selectedCategory === category.category_type
+                        ? "orange"
+                        : "#CBCBCB",
                     borderWidth: 1,
                     paddingVertical: 5,
                     borderRadius: 25,
                     paddingHorizontal: 11,
-                    backgroundColor: selectedCategory === category.category_type ? 'orange' : 'white',
+                    backgroundColor:
+                      selectedCategory === category.category_type
+                        ? "orange"
+                        : "white",
                   }}
                   onPress={() => {
                     // Logic for clicking
@@ -248,8 +266,14 @@ const HomeScreen = () => {
                 >
                   <Text
                     style={{
-                      color: selectedCategory === category.category_type ? 'white' : 'black',
-                      fontWeight: selectedCategory === category.category_type ? '500' : 'normal',
+                      color:
+                        selectedCategory === category.category_type
+                          ? "white"
+                          : "black",
+                      fontWeight:
+                        selectedCategory === category.category_type
+                          ? "500"
+                          : "normal",
                     }}
                   >
                     {category.category_type}
