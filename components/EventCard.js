@@ -2,6 +2,8 @@ import { StyleSheet, Text, View, SafeAreaView, Pressable, Image } from "react-na
 import React from "react";
 import { ec_s } from "./EventCard.styles";
 import {useNavigation} from "@react-navigation/native"
+
+
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, '0');

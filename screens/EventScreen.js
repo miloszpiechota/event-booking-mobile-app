@@ -1,8 +1,13 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View,SafeAreaView } from 'react-native'
 import React,{useState, useLayoutEffect} from 'react'
 import {useNavigation, useRoute} from "@react-navigation/native"
+import {
+  ImageBackground,
+  Pressable,
+} from "react-native";
 
-const EventScreen = () => {
+import { events } from "../assets/data/events";
+const EventScreen = ({ item }) => {
     const navigation = useNavigation();
     const route = useRoute();
     const [selectedDate,setSelectedDate] = useState();
@@ -22,12 +27,17 @@ const EventScreen = () => {
       
     }, []);
   return (
-    <View>
-        
-      <Text>
-        Event
-      </Text>
+    <SafeAreaView>
+    <View style={{marginBottom:55}}>
+      <ImageBackground
+        style={{ height: 200, resizeMode: "container" }}
+        source={require("../assets/backgroundImage.jpg")}
+      >  
+      </ImageBackground>
+
+
     </View>
+    </SafeAreaView>
   )
 }
 

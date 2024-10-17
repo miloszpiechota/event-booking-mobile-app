@@ -17,7 +17,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Place } from "../PlacesContext";
-import MovieCard from "../components/EventCard";
+import EventCard from "../components/EventCard";
 import Header from "../components/Header";
 import {
   BottomModal,
@@ -27,7 +27,8 @@ import {
 } from "react-native-modals";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { SlideAnimation } from "react-native-modals";
-import { supabase } from "../database/superbaseClient.ts"; // Import your Supabase client
+import { fetchEvents } from "../database/FetchEvents"; // Import the fetchEvents function
+import { fetchCategories } from "../database/FetchCategories"; // Import the fetchCategories function
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -39,36 +40,15 @@ const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(); // State for filter
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const { data, error } = await supabase.from("event").select(`
-          *,
-          event_locations (
-            name,
-            fk_idcity (
-              city
-            )
-          )
-        `);
+    const loadData = async () => {
+      const fetchedEvents = await fetchEvents();
+      setEvents(fetchedEvents);
 
-      if (error) {
-        console.error("Error fetching events:", error);
-      } else {
-        setEvents(data);
-      }
+      const fetchedCategories = await fetchCategories();
+      setCategories(fetchedCategories);
     };
 
-    const fetchCategories = async () => {
-      const { data, error } = await supabase.from("event_category").select("*"); // Fetch all categories
-
-      if (error) {
-        console.error("Error fetching categories:", error);
-      } else {
-        setCategories(data);
-      }
-    };
-
-    fetchEvents();
-    fetchCategories();
+    loadData();
   }, []); // Fetch data on component mount
 
   // Filtering function based on selected category
@@ -146,7 +126,7 @@ const HomeScreen = () => {
         ListHeaderComponent={Header}
         data={applyFilter(selectedCategory)} // Apply filter based on selected category
         renderItem={({ item, index }) => (
-          <MovieCard
+          <EventCard
             item={{
               ...item,
               location_name: item.event_locations
