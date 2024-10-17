@@ -48,7 +48,9 @@ const EventCard = ({ item }) => {
                 photo: item.photo, // Przekazujemy zdjęcie
                 description: item.description, // Przekazujemy opis
                 location: locationName,
-                city: cityName
+                city: cityName,
+                startDate: item.start_date,
+                endDate: item.end_date
 
               })
             }
