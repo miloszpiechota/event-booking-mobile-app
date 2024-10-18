@@ -22,7 +22,8 @@ const EventScreen = () => {
     startDate,
     endDate,
     isSeatCategorized,
-    price
+    price,
+    categoryType,
   } = route.params; // Receiving the passed data
 
   // Function to format the date to DD-MM-YYYY
@@ -85,7 +86,8 @@ const EventScreen = () => {
 
         {/* Displaying the event duration */}
         <Text style={{ paddingHorizontal: 10, fontSize: 16, marginTop: 5 }}>
-          <Text>Czas trwania:</Text> {calculateDuration(startDate, endDate)} {calculateDuration(startDate, endDate) === 1 ? 'dzień' : 'dni'}
+          <Text>Czas trwania:</Text> {calculateDuration(startDate, endDate)}{" "}
+          {calculateDuration(startDate, endDate) === 1 ? "dzień" : "dni"}
         </Text>
 
         {/* Separator line */}
@@ -110,7 +112,8 @@ const EventScreen = () => {
 
         <Text>Dodatkowe informacje: </Text>
         <Text>
-          Czy na wydarzeniu obowiązuje podział na kategorie miejsc: {isSeatCategorized ? "Nie" : "Tak"}
+          Czy na wydarzeniu obowiązuje podział na kategorie miejsc:{" "}
+          {isSeatCategorized ? "Nie" : "Tak"}
         </Text>
 
         {/* Conditional rendering based on isSeatCategorized */}
@@ -123,6 +126,10 @@ const EventScreen = () => {
         ) : (
           <Text>Cena za bilet: {price}</Text>
         )}
+
+        <Text style={{ fontSize: 16 }}>
+          <Text>Kategoria:</Text> {categoryType || "Nieznana kategoria"}
+        </Text>
       </View>
     </SafeAreaView>
   );

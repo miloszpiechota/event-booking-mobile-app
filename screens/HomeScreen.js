@@ -133,6 +133,7 @@ const HomeScreen = () => {
               description: item.description,
               price: item.price,
               isSeatCategorized: item.is_seat_categorized,
+              categoryType: item.categoryType 
             }}
             key={index}
           />
