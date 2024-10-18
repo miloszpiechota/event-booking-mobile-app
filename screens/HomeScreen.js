@@ -58,21 +58,21 @@ const HomeScreen = () => {
     }
     switch (filter) {
       case "Koncert":
-        return events.filter((event) => event.fk_idevent_category === 1); // Assuming 1 is the id for concerts
+        return events.filter((event) => event.fk_idevent_category === 1);
       case "Festiwal":
-        return events.filter((event) => event.fk_idevent_category === 2); // Assuming 2 is the id for festivals
+        return events.filter((event) => event.fk_idevent_category === 2);
       case "Wystawa":
-        return events.filter((event) => event.fk_idevent_category === 3); // Assuming 3 is the id for exhibitions
+        return events.filter((event) => event.fk_idevent_category === 3);
       case "Maraton":
-        return events.filter((event) => event.fk_idevent_category === 4); // Assuming 4 is the id for marathons
+        return events.filter((event) => event.fk_idevent_category === 4);
       case "Konferencja":
-        return events.filter((event) => event.fk_idevent_category === 5); // Assuming 5 is the id for conferences
+        return events.filter((event) => event.fk_idevent_category === 5);
       case "Warsztaty":
-        return events.filter((event) => event.fk_idevent_category === 6); // Assuming 6 is the id for workshops
+        return events.filter((event) => event.fk_idevent_category === 6);
       case "Zawody":
-        return events.filter((event) => event.fk_idevent_category === 7); // Assuming 7 is the id for competitions
+        return events.filter((event) => event.fk_idevent_category === 7);
       case "Festyn":
-        return events.filter((event) => event.fk_idevent_category === 10); // Assuming 10 is the id for fairs
+        return events.filter((event) => event.fk_idevent_category === 10);
       default:
         return events; // If no filter is selected, return all events
     }
@@ -100,9 +100,7 @@ const HomeScreen = () => {
         shadowRadius: 3,
       },
       headerRight: () => (
-        <Pressable
-          style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-        >
+        <Pressable style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
           <Ionicons name="notifications-outline" size={24} color="black" />
           <EvilIcons
             onPress={() => navigation.navigate("Places")}
@@ -121,33 +119,34 @@ const HomeScreen = () => {
   }, [navigation, opacityAnim, selectedCity]);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <FlatList
         ListHeaderComponent={Header}
-        data={applyFilter(selectedCategory)} // Apply filter based on selected category
+        data={applyFilter(selectedCategory)}
         renderItem={({ item, index }) => (
           <EventCard
             item={{
               ...item,
-              location_name: item.event_locations
-                ? item.event_locations.name
-                : "Unknown Location",
-              city_name:
-                item.event_locations?.fk_idcity?.city || "Unknown City",
-              photo: item.photo, // Przekazujemy zdjęcie
-              description: item.description, // Przekazujemy opis wydarzenia
-              
+              location_name: item.event_locations ? item.event_locations.name : "Unknown Location",
+              city_name: item.event_locations?.fk_idcity?.city || "Unknown City",
+              photo: item.photo,
+              description: item.description,
+              price: item.price,
+              isSeatCategorized: item.is_seat_categorized,
             }}
             key={index}
           />
         )}
+        contentContainerStyle={{ paddingBottom: 100 }}
       />
       <Pressable
         onPress={() => setModalVisible(!modalVisible)}
         style={{
           position: "absolute",
           bottom: 10,
-          backgroundColor: "#3facab",
+          backgroundColor: "rgba(63, 172, 171, 0.8)", // Lekko przezroczysty kolor
+
+         // backgroundColor: "#3facab",
           width: 60,
           height: 60,
           borderRadius: 30,
@@ -159,52 +158,26 @@ const HomeScreen = () => {
         <FontAwesome name="filter" size={24} color="black" />
       </Pressable>
 
+      {/* Modal filtering interface */}
       <BottomModal
         onBackDropPress={() => setModalVisible(!modalVisible)}
-        setDirection={["up", "down"]}
+        swipeDirection={["up", "down"]}
         swipeThreshold={200}
-        footer={
-          <ModalFooter>
-            <Pressable
-              style={{
-                paddinRight: 10,
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginVertical: 10,
-                marginBottom: 30,
-              }}
-              onPress={() => setModalVisible(false)} // Close modal on apply
-            >
-              <Text>Apply</Text>
-            </Pressable>
-          </ModalFooter>
-        }
-        modalTitle={<ModalTitle title="Filters" />}
-        modalAnimation={new SlideAnimation({ slideForm: "bottom" })}
+        modalAnimation={new SlideAnimation({ slideFrom: "bottom" })}
         visible={modalVisible}
         onHardwareBackPress={() => setModalVisible(!modalVisible)}
         onTouchOutside={() => setModalVisible(!modalVisible)}
+        style={{
+          justifyContent: "flex-end",
+          margin: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.4)", // Slight transparency
+        }}
       >
-        <ModalContent style={{ width: "100%", height: 280 }}>
-          <Text
-            style={{
-              paddingVertical: 5,
-              fontSize: 15,
-              fontWeight: "500",
-              marginTop: 10,
-            }}
-          >
+        <ModalContent style={{ width: "100%", height: 280, backgroundColor: "white" }}>
+          <Text style={{ paddingVertical: 5, fontSize: 15, fontWeight: "500", marginTop: 10 }}>
             Event Category
           </Text>
-
-          <Pressable
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            {/* Add "All" filter option */}
+          <Pressable style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap" }}>
             <Pressable
               style={{
                 margin: 10,
@@ -213,17 +186,9 @@ const HomeScreen = () => {
                 paddingVertical: 5,
                 borderRadius: 25,
                 paddingHorizontal: 11,
-                backgroundColor:
-                  selectedCategory === "All" ? "orange" : "white",
+                backgroundColor: selectedCategory === "All" ? "orange" : "white",
               }}
-              onPress={() => {
-                setSelectedCategory(selectedCategory === "All" ? null : "All"); // Toggle "All" selection
-                console.log(
-                  `Selected category: ${
-                    selectedCategory === "All" ? null : "All"
-                  }`
-                );
-              }}
+              onPress={() => setSelectedCategory(selectedCategory === "All" ? null : "All")}
             >
               <Text
                 style={{
@@ -241,39 +206,23 @@ const HomeScreen = () => {
                   key={category.id}
                   style={{
                     margin: 10,
-                    borderColor:
-                      selectedCategory === category.category_type
-                        ? "orange"
-                        : "#CBCBCB",
+                    borderColor: selectedCategory === category.category_type ? "orange" : "#CBCBCB",
                     borderWidth: 1,
                     paddingVertical: 5,
                     borderRadius: 25,
                     paddingHorizontal: 11,
-                    backgroundColor:
-                      selectedCategory === category.category_type
-                        ? "orange"
-                        : "white",
+                    backgroundColor: selectedCategory === category.category_type ? "orange" : "white",
                   }}
-                  onPress={() => {
-                    // Logic for clicking
-                    if (selectedCategory === category.category_type) {
-                      setSelectedCategory(null); // Reset selection
-                    } else {
-                      setSelectedCategory(category.category_type); // Set selected category
-                    }
-                    console.log(`Selected category: ${category.category_type}`);
-                  }}
+                  onPress={() =>
+                    setSelectedCategory(
+                      selectedCategory === category.category_type ? null : category.category_type
+                    )
+                  }
                 >
                   <Text
                     style={{
-                      color:
-                        selectedCategory === category.category_type
-                          ? "white"
-                          : "black",
-                      fontWeight:
-                        selectedCategory === category.category_type
-                          ? "500"
-                          : "normal",
+                      color: selectedCategory === category.category_type ? "white" : "black",
+                      fontWeight: selectedCategory === category.category_type ? "500" : "normal",
                     }}
                   >
                     {category.category_type}
