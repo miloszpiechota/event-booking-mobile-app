@@ -110,11 +110,11 @@ const EventScreen = () => {
 
         <Text>Dodatkowe informacje: </Text>
         <Text>
-          Czy na wydarzeniu obowiązuje podział na kategorie miejsc: {isSeatCategorized ? "Tak" : "Nie"}
+          Czy na wydarzeniu obowiązuje podział na kategorie miejsc: {isSeatCategorized ? "Nie" : "Tak"}
         </Text>
 
         {/* Conditional rendering based on isSeatCategorized */}
-        {isSeatCategorized ? (
+        {!isSeatCategorized ? (
           <>
             <Text>Cena za pierwsza kategorie: {price * 3.0}</Text>
             <Text>Cena za druga kategorie: {price * 2.0}</Text>

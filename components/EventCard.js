@@ -50,7 +50,8 @@ const EventCard = ({ item }) => {
                 location: locationName,
                 city: cityName,
                 startDate: item.start_date,
-                endDate: item.end_date
+                endDate: item.end_date,
+                price: item.price
 
               })
             }
