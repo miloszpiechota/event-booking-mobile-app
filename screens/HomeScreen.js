@@ -39,6 +39,20 @@ const HomeScreen = () => {
   const [categories, setCategories] = useState([]); // State to store categories
   const [selectedCategory, setSelectedCategory] = useState(); // State for filter
 
+  //   // Call the fetchCategories function
+  // const displayFirstCategory = async () => {
+  //   const categories = await fetchCategories();
+  //   if (categories.length > 0) {
+  //       // Log the first category in JSON format
+  //       console.log(JSON.stringify(categories[0], null, 2));
+  //   } else {
+  //       console.log("No categories found");
+  //   }
+  // };
+
+  // // Execute the function
+  // displayFirstCategory();
+
   useEffect(() => {
     const loadData = async () => {
       const fetchedEvents = await fetchEvents();
@@ -100,7 +114,9 @@ const HomeScreen = () => {
         shadowRadius: 3,
       },
       headerRight: () => (
-        <Pressable style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+        <Pressable
+          style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+        >
           <Ionicons name="notifications-outline" size={24} color="black" />
           <EvilIcons
             onPress={() => navigation.navigate("Places")}
@@ -127,13 +143,16 @@ const HomeScreen = () => {
           <EventCard
             item={{
               ...item,
-              location_name: item.event_locations ? item.event_locations.name : "Unknown Location",
-              city_name: item.event_locations?.fk_idcity?.city || "Unknown City",
+              location_name: item.event_location
+                ? item.event_location.name
+                : "Unknown Location",
+              city_name: item.event_location?.city?.city || "Unknown City",
+
               photo: item.photo,
               description: item.description,
               price: item.price,
               isSeatCategorized: item.is_seat_categorized,
-              categoryType: item.categoryType 
+              categoryType: item.categoryType,
             }}
             key={index}
           />
@@ -147,7 +166,7 @@ const HomeScreen = () => {
           bottom: 10,
           backgroundColor: "rgba(63, 172, 171, 0.8)", // Lekko przezroczysty kolor
 
-         // backgroundColor: "#3facab",
+          // backgroundColor: "#3facab",
           width: 60,
           height: 60,
           borderRadius: 30,
@@ -174,11 +193,26 @@ const HomeScreen = () => {
           backgroundColor: "rgba(0, 0, 0, 0.4)", // Slight transparency
         }}
       >
-        <ModalContent style={{ width: "100%", height: 280, backgroundColor: "white" }}>
-          <Text style={{ paddingVertical: 5, fontSize: 15, fontWeight: "500", marginTop: 10 }}>
+        <ModalContent
+          style={{ width: "100%", height: 280, backgroundColor: "white" }}
+        >
+          <Text
+            style={{
+              paddingVertical: 5,
+              fontSize: 15,
+              fontWeight: "500",
+              marginTop: 10,
+            }}
+          >
             Event Category
           </Text>
-          <Pressable style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap" }}>
+          <Pressable
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
             <Pressable
               style={{
                 margin: 10,
@@ -187,9 +221,12 @@ const HomeScreen = () => {
                 paddingVertical: 5,
                 borderRadius: 25,
                 paddingHorizontal: 11,
-                backgroundColor: selectedCategory === "All" ? "orange" : "white",
+                backgroundColor:
+                  selectedCategory === "All" ? "orange" : "white",
               }}
-              onPress={() => setSelectedCategory(selectedCategory === "All" ? null : "All")}
+              onPress={() =>
+                setSelectedCategory(selectedCategory === "All" ? null : "All")
+              }
             >
               <Text
                 style={{
@@ -207,23 +244,37 @@ const HomeScreen = () => {
                   key={category.id}
                   style={{
                     margin: 10,
-                    borderColor: selectedCategory === category.category_type ? "orange" : "#CBCBCB",
+                    borderColor:
+                      selectedCategory === category.category_type
+                        ? "orange"
+                        : "#CBCBCB",
                     borderWidth: 1,
                     paddingVertical: 5,
                     borderRadius: 25,
                     paddingHorizontal: 11,
-                    backgroundColor: selectedCategory === category.category_type ? "orange" : "white",
+                    backgroundColor:
+                      selectedCategory === category.category_type
+                        ? "orange"
+                        : "white",
                   }}
                   onPress={() =>
                     setSelectedCategory(
-                      selectedCategory === category.category_type ? null : category.category_type
+                      selectedCategory === category.category_type
+                        ? null
+                        : category.category_type
                     )
                   }
                 >
                   <Text
                     style={{
-                      color: selectedCategory === category.category_type ? "white" : "black",
-                      fontWeight: selectedCategory === category.category_type ? "500" : "normal",
+                      color:
+                        selectedCategory === category.category_type
+                          ? "white"
+                          : "black",
+                      fontWeight:
+                        selectedCategory === category.category_type
+                          ? "500"
+                          : "normal",
                     }}
                   >
                     {category.category_type}

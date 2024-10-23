@@ -1,31 +1,22 @@
-// event-booking-app/database/FetchEvents.js
-
-import { supabase } from './superbaseClient.ts'; // Upewnij się, że ścieżka jest poprawna
-
+// FetchEvents.js
 export const fetchEvents = async () => {
-    const { data, error } = await supabase.from("event").select(`
-        *,
-        event_locations (
-            name,
-            fk_idcity (
-                city
-            )
-        ),
-        event_category (
-            category_type
-        )
-    `);
-
-    if (error) {
+    try {
+        const response = await fetch("http://192.168.56.1:3000/api/events");
+        if (!response.ok) {
+            throw new Error("Failed to fetch events");
+        }
+        const data = await response.json();
+        // Add categoryType from the related data for convenience
+        const eventsWithCategory = data.map(event => ({
+            ...event,
+            categoryType: event.event_category?.category_type || "Unknown Category",
+            location_name: event.event_location?.name || "Unknown Location",
+            city_name: event.event_location?.city?.city || "Unknown City"
+        }));
+        
+        return eventsWithCategory;
+    } catch (error) {
         console.error("Error fetching events:", error);
-        return []; // Zwróć pustą tablicę w przypadku błędu
+        return [];
     }
-
-    // Zmodyfikuj dane, aby dodać category_type do każdego wydarzenia
-    const eventsWithCategory = data.map(event => ({
-        ...event,
-        categoryType: event.event_category?.category_type || "Nieznana kategoria" // Dodaj category_type
-    }));
-
-    return eventsWithCategory; // Zwróć zmodyfikowane dane
 };
