@@ -5,6 +5,7 @@ import {
   View,
   SafeAreaView,
   Image,
+  TouchableOpacity, // Importujemy TouchableOpacity
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -62,56 +63,59 @@ const EventScreen = () => {
     });
   }, [navigation, title]);
 
+  // Function to handle booking
+  const handleBooking = () => {
+    // Here you can handle the booking logic (e.g., navigate to a booking page)
+    console.log("Booking for:", title); // For demonstration, log the event title
+  };
+
   return (
     <SafeAreaView>
       <View style={{ marginBottom: 55 }}>
         <Image
-          style={{ height: 200, width: "100%", resizeMode: "cover" }} // Setting image style
+          style={styles.image} // Using the style defined below
           source={{ uri: photo }} // Using the passed photo
         />
 
-        <Text style={{ paddingHorizontal: 10, fontSize: 16, color: "gray" }}>
-          {locationName}, {cityName}
+<Text style={styles.descriptionLabel}>Opis:</Text>
+        <Text style={styles.locationText}>
+          {locationName}, {cityName} dsfsdf
         </Text>
 
         {/* Displaying the event date in DD-MM-YYYY format */}
-        <Text style={{ paddingHorizontal: 10, fontSize: 16, marginTop: 10 }}>
-          <Text>Data:</Text> {formatDate(startDate)} - {formatDate(endDate)}
+        <Text style={styles.infoText}>
+          <Text style={styles.label}>Data:</Text> {formatDate(startDate)} -{" "}
+          {formatDate(endDate)}
         </Text>
 
         {/* Displaying the event time */}
-        <Text style={{ paddingHorizontal: 10, fontSize: 16, marginTop: 5 }}>
-          <Text>Godzina:</Text> {formatTime(startDate)} - {formatTime(endDate)}
+        <Text style={styles.infoText}>
+          <Text style={styles.label}>Godzina:</Text> {formatTime(startDate)} -{" "}
+          {formatTime(endDate)}
+        </Text>
+
+        <Text style={styles.infoText}>
+          <Text style={styles.label}>Kategoria:</Text>{" "}
+          {categoryType || "Nieznana kategoria"}
         </Text>
 
         {/* Displaying the event duration */}
-        <Text style={{ paddingHorizontal: 10, fontSize: 16, marginTop: 5 }}>
-          <Text>Czas trwania:</Text> {calculateDuration(startDate, endDate)}{" "}
+        <Text style={styles.infoText}>
+          <Text style={styles.label}>Czas trwania:</Text>{" "}
+          {calculateDuration(startDate, endDate)}{" "}
           {calculateDuration(startDate, endDate) === 1 ? "dzień" : "dni"}
         </Text>
 
         {/* Separator line */}
-        <View
-          style={{
-            borderBottomColor: "#ccc",
-            borderBottomWidth: 1,
-            marginVertical: 10,
-            marginHorizontal: 10,
-          }}
-        />
-        <Text>Opis:</Text>
-        <Text style={{ padding: 10, fontSize: 18 }}>{description}</Text>
-        <View
-          style={{
-            borderBottomColor: "#ccc",
-            borderBottomWidth: 1,
-            marginVertical: 10,
-            marginHorizontal: 10,
-          }}
-        />
+        <View style={styles.separator} />
 
-        <Text>Dodatkowe informacje: </Text>
-        <Text>
+        <Text style={styles.descriptionLabel}>Opis:</Text>
+        <Text style={styles.descriptionText}>{description}</Text>
+
+        <View style={styles.separator} />
+
+        <Text style={styles.additionalInfoLabel}>Dodatkowe informacje: </Text>
+        <Text style={styles.additionalInfoText}>
           Czy na wydarzeniu obowiązuje podział na kategorie miejsc:{" "}
           {isSeatCategorized ? "Nie" : "Tak"}
         </Text>
@@ -119,17 +123,24 @@ const EventScreen = () => {
         {/* Conditional rendering based on isSeatCategorized */}
         {!isSeatCategorized ? (
           <>
-            <Text>Cena za pierwsza kategorie: {price * 3.0}</Text>
-            <Text>Cena za druga kategorie: {price * 2.0}</Text>
-            <Text>Cena za trzecia kategorie: {price * 1.0}</Text>
+            <Text style={styles.priceText}>
+              Cena za pierwszą kategorię: {price * 3.0}
+            </Text>
+            <Text style={styles.priceText}>
+              Cena za drugą kategorię: {price * 2.0}
+            </Text>
+            <Text style={styles.priceText}>
+              Cena za trzecią kategorię: {price * 1.0}
+            </Text>
           </>
         ) : (
-          <Text>Cena za bilet: {price}</Text>
+          <Text style={styles.priceText}>Cena za bilet: {price}</Text>
         )}
 
-        <Text style={{ fontSize: 16 }}>
-          <Text>Kategoria:</Text> {categoryType || "Nieznana kategoria"}
-        </Text>
+        {/* Button to book the event */}
+        <TouchableOpacity style={styles.button} onPress={handleBooking}>
+          <Text style={styles.buttonText}>BOOK</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -137,4 +148,76 @@ const EventScreen = () => {
 
 export default EventScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  image: {
+    height: 200,
+    width: "100%",
+    resizeMode: "cover",
+  },
+  locationText: {
+    paddingHorizontal: 5,
+    fontSize: 16,
+    color: "gray",
+    marginTop: 10,
+  },
+  infoText: {
+    paddingHorizontal: 10,
+    fontSize: 16,
+    marginTop: 5,
+  },
+  label: {
+    fontWeight: "bold",
+    color: "#333",
+  },
+  separator: {
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 1,
+    marginVertical: 10,
+    marginHorizontal: 10,
+  },
+  descriptionLabel: {
+    paddingHorizontal: 5,
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 7,
+  },
+  descriptionText: {
+    padding: 10,
+    fontSize: 16,
+  },
+  additionalInfoLabel: {
+    paddingHorizontal: 10,
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 10,
+  },
+  additionalInfoText: {
+    padding: 10,
+    fontSize: 16,
+  },
+  priceText: {
+    paddingHorizontal: 10,
+    fontSize: 16,
+    marginTop: 5,
+  },
+  button: {
+    backgroundColor: "#FF6F61", // Color of the button
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    margin: 10,
+    marginTop: 20, // Margin top for spacing
+  },
+  buttonText: {
+    color: "#fff", // Text color
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  firstTitleInfo:{
+    paddingTop:8,
+    fontSize: 18,
+    fontWeight: "bold",
+    paddingBottom:4
+
+  }
+});
