@@ -52,7 +52,8 @@ const EventCard = ({ item }) => {
                 startDate: item.start_date,
                 endDate: item.end_date,
                 price: item.price,
-                categoryType: item.categoryType 
+                categoryType: item.categoryType,
+                isSeatCategorized: item.is_seat_categorized, 
 
               })
             }

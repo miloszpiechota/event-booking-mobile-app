@@ -82,10 +82,7 @@ console.log("isSeatCategorized:", isSeatCategorized);
           source={{ uri: photo }} // Using the passed photo
         />
 
-<Text style={styles.descriptionLabel}>Opis:</Text>
-        <Text style={styles.locationText}>
-          {locationName}, {cityName} dsfsdf
-        </Text>
+
 
         {/* Displaying the event date in DD-MM-YYYY format */}
         <Text style={styles.infoText}>
@@ -122,11 +119,11 @@ console.log("isSeatCategorized:", isSeatCategorized);
         <Text style={styles.additionalInfoLabel}>Dodatkowe informacje: </Text>
         <Text style={styles.additionalInfoText}>
           Czy na wydarzeniu obowiązuje podział na kategorie miejsc:{" "}
-          {isSeatCategorized ? "Nie" : "Tak"}
+          {isSeatCategorized ? "Tak" : "Nie"}
         </Text>
 
         {/* Conditional rendering based on isSeatCategorized */}
-        {!isSeatCategorized ? (
+        {isSeatCategorized ? (
           <>
             <Text style={styles.priceText}>
               Cena za pierwszą kategorię: {price * 3.0}

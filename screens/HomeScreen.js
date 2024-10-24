@@ -133,7 +133,7 @@ const HomeScreen = () => {
       ),
     });
   }, [navigation, opacityAnim, selectedCity]);
-
+  
   return (
     <View style={{ flex: 1 }}>
       <FlatList
@@ -153,7 +153,9 @@ const HomeScreen = () => {
               price: item.ticket_price,
               isSeatCategorized: item.is_seat_categorized,
               categoryType: item.categoryType,
+              
             }}
+            
             key={index}
           />
         )}
