@@ -150,7 +150,7 @@ const HomeScreen = () => {
 
               photo: item.photo,
               description: item.description,
-              price: item.price,
+              price: item.ticket_price,
               isSeatCategorized: item.is_seat_categorized,
               categoryType: item.categoryType,
             }}

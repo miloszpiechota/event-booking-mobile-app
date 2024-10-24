@@ -69,6 +69,11 @@ const EventScreen = () => {
     console.log("Booking for:", title); // For demonstration, log the event title
   };
 
+  
+console.log("EventScreen params:", route.params);
+console.log("isSeatCategorized:", isSeatCategorized);
+
+
   return (
     <SafeAreaView>
       <View style={{ marginBottom: 55 }}>
