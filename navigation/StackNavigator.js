@@ -9,6 +9,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import EventScreen from "../screens/EventScreen";
 import SeatCategoryScreen from "../screens/SeatCategoryScreen";
+import ConfirmationScreen from "../screens/ConfirmationScreen";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ function HomeStackScreens() {
       <HomeStack.Screen name="Places" component={PlacesScreen} />
       <HomeStack.Screen name="Event" component={EventScreen} />
       <HomeStack.Screen name="SeatCategory" component={SeatCategoryScreen} />
+      <HomeStack.Screen name="Confirmation" component={ConfirmationScreen} />
 
     </HomeStack.Navigator>
   );

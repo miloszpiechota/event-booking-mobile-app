@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
-  Pressable // Importujemy TouchableOpacity
+  Pressable, // Importujemy TouchableOpacity
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -70,10 +70,8 @@ const EventScreen = () => {
     console.log("Booking for:", title); // For demonstration, log the event title
   };
 
-  
-console.log("EventScreen params:", route.params);
-console.log("isSeatCategorized:", isSeatCategorized);
-
+  console.log("EventScreen params:", route.params);
+  console.log("isSeatCategorized:", isSeatCategorized);
 
   return (
     <SafeAreaView>
@@ -82,8 +80,6 @@ console.log("isSeatCategorized:", isSeatCategorized);
           style={styles.image} // Using the style defined below
           source={{ uri: photo }} // Using the passed photo
         />
-
-
 
         {/* Displaying the event date in DD-MM-YYYY format */}
         <Text style={styles.infoText}>
@@ -141,14 +137,26 @@ console.log("isSeatCategorized:", isSeatCategorized);
         )}
 
         {/* Button to book the event */}
-        <Pressable style={styles.button} onPress={() =>
-              navigation.navigate("SeatCategory", {
-                
+        <Pressable
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate(
+              isSeatCategorized ? "SeatCategory" : "Confirmation",
+              {
+                title,
+                photo,
+                description,
+                locationName,
+                cityName,
+                startDate,
+                endDate,
+                isSeatCategorized,
                 price,
-                
-                isSeatCategorized 
-
-              })}>
+                categoryType,
+              }
+            )
+          }
+        >
           <Text style={styles.buttonText}>BOOK</Text>
         </Pressable>
       </View>
@@ -223,11 +231,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  firstTitleInfo:{
-    paddingTop:8,
+  firstTitleInfo: {
+    paddingTop: 8,
     fontSize: 18,
     fontWeight: "bold",
-    paddingBottom:4
-
-  }
+    paddingBottom: 4,
+  },
 });

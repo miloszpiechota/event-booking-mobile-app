@@ -5,7 +5,17 @@ import { StyleSheet, Text, View, TouchableOpacity, Pressable } from "react-nativ
 const SeatCategoryScreen = () => {
   const route = useRoute();
   const navigation = useNavigation(); // Dodano użycie navigation
-  
+  const {
+    title,
+    photo,
+    description,
+    locationName,
+    cityName,
+    startDate,
+    endDate,
+    
+    categoryType,
+  } = route.params; // Receiving the passed data
   // Odbieranie przekazanych danych z route.params
   const { isSeatCategorized, price } = route.params;
 
@@ -99,7 +109,23 @@ const SeatCategoryScreen = () => {
       {selectedCategory && (
         <Pressable 
           style={styles.button} 
-          onPress={() => navigation.navigate("NextScreen", { price, isSeatCategorized })} // Zaktualizowano na odpowiedni ekran
+          onPress={() =>
+            navigation.navigate(
+               "Confirmation",
+              {
+                title,
+                photo,
+                description,
+                locationName,
+                cityName,
+                startDate,
+                endDate,
+                isSeatCategorized,
+                price,
+                categoryType,
+              }
+            )
+          }// Zaktualizowano na odpowiedni ekran
         >
           <Text style={styles.buttonText}>NEXT</Text>
         </Pressable>
