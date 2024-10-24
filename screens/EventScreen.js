@@ -5,7 +5,8 @@ import {
   View,
   SafeAreaView,
   Image,
-  TouchableOpacity, // Importujemy TouchableOpacity
+  TouchableOpacity,
+  Pressable // Importujemy TouchableOpacity
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -140,9 +141,16 @@ console.log("isSeatCategorized:", isSeatCategorized);
         )}
 
         {/* Button to book the event */}
-        <TouchableOpacity style={styles.button} onPress={handleBooking}>
+        <Pressable style={styles.button} onPress={() =>
+              navigation.navigate("SeatCategory", {
+                
+                price,
+                
+                isSeatCategorized 
+
+              })}>
           <Text style={styles.buttonText}>BOOK</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
