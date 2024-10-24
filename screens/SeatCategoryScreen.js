@@ -4,7 +4,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Pressable } from "react-nativ
 
 const SeatCategoryScreen = () => {
   const route = useRoute();
-  const navigation = useNavigation(); // Dodano użycie navigation
+  const navigation = useNavigation();
+  
   const {
     title,
     photo,
@@ -13,26 +14,32 @@ const SeatCategoryScreen = () => {
     cityName,
     startDate,
     endDate,
-    
+    isSeatCategorized,
+    price,
     categoryType,
-  } = route.params; // Receiving the passed data
-  // Odbieranie przekazanych danych z route.params
-  const { isSeatCategorized, price } = route.params;
+  } = route.params;
 
-  // Stan do przechowywania aktualnie wybranej kategorii
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedPrice, setSelectedPrice] = useState(0);
 
-  // Logowanie do konsoli, aby upewnić się, że dane są poprawnie odebrane
-  console.log("isSeatCategorized:", isSeatCategorized);
-  console.log("Price:", price);
-
-  // Funkcja do obsługi kliknięcia w kategorię
   const handleCategoryPress = (category) => {
     setSelectedCategory(category); // Ustawia wybraną kategorię
+    switch (category) {
+      case "firstCategory":
+        setSelectedPrice((price * 3.0).toFixed(2)); // Ustawia cenę dla pierwszej kategorii
+        break;
+      case "secondCategory":
+        setSelectedPrice((price * 2.0).toFixed(2)); // Ustawia cenę dla drugiej kategorii
+        break;
+      case "thirdCategory":
+        setSelectedPrice((price * 1.0).toFixed(2)); // Ustawia cenę dla trzeciej kategorii
+        break;
+      default:
+        setSelectedPrice(0);
+    }
     console.log("Wybrana kategoria:", category);
   };
 
-  // Funkcja do uzyskania tekstu w zależności od wybranej kategorii
   const getSelectedCategoryText = () => {
     switch (selectedCategory) {
       case "firstCategory":
@@ -49,17 +56,13 @@ const SeatCategoryScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.priceText}>Wybierz kategorie miejsc:</Text>
-      {/* Wyświetlanie wybranej kategorii */}
       <Text style={styles.priceText}>Wybrano: {getSelectedCategoryText()}</Text>
       
-      {/* Duży prostokąt reprezentujący scenę */}
       <View style={styles.stageContainer}>
-        {/* Mniejszy prostokąt reprezentujący scenę */}
         <View style={styles.stageBox}>
           <Text style={styles.stageText}>SCENA</Text>
         </View>
 
-        {/* Prostokąty reprezentujące kategorie miejsc */}
         <View style={styles.categoryContainer}>
           <TouchableOpacity 
             style={[
@@ -105,27 +108,25 @@ const SeatCategoryScreen = () => {
         </View>
       </View>
 
-      {/* Przycisk NEXT - widoczny tylko po wybraniu kategorii */}
       {selectedCategory && (
         <Pressable 
           style={styles.button} 
           onPress={() =>
-            navigation.navigate(
-               "Confirmation",
-              {
-                title,
-                photo,
-                description,
-                locationName,
-                cityName,
-                startDate,
-                endDate,
-                isSeatCategorized,
-                price,
-                categoryType,
-              }
-            )
-          }// Zaktualizowano na odpowiedni ekran
+            navigation.navigate("Confirmation", {
+              title,
+              photo,
+              description,
+              locationName,
+              cityName,
+              startDate,
+              endDate,
+              isSeatCategorized,
+              price,
+              categoryType,
+              selectedCategory,  // Przekazanie wybranej kategorii
+              selectedPrice,      // Przekazanie wybranej ceny
+            })
+          }
         >
           <Text style={styles.buttonText}>NEXT</Text>
         </Pressable>
@@ -199,16 +200,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   button: {
-    backgroundColor: "#FF6F61", // Kolor przycisku
+    backgroundColor: "#FF6F61",
     padding: 15,
     borderRadius: 5,
     alignItems: "center",
     margin: 10,
-    marginTop: 20, // Margines górny dla odstępu
-    width: '80%', // Szerokość przycisku
+    marginTop: 20,
+    width: '80%',
   },
   buttonText: {
-    color: "#fff", // Kolor tekstu
+    color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
   },
