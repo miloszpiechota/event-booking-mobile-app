@@ -26,9 +26,4 @@ const styles = StyleSheet.create({
   },
 });
 
-{/* <Text>Lokalizacja</Text>
-      <Text>Czas trwania wydarzenia: 'start_date'-'end_date'</Text>
-      <Text>Ile trwa dane wydarzenie?</Text>
-      <Text>Kategoria wydarzenia 'fk_idevent_category'</Text>
-      <Text>Czy podział na miejsca? 'is_seat_categorized'</Text>
-      <Text>Cena za bilet/Cena za bilet według kategorii miejsc</Text> */}
+

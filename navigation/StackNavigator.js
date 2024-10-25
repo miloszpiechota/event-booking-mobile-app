@@ -10,12 +10,19 @@ import { Ionicons } from "@expo/vector-icons";
 import EventScreen from "../screens/EventScreen";
 import SeatCategoryScreen from "../screens/SeatCategoryScreen";
 import ConfirmationScreen from "../screens/ConfirmationScreen";
+import WelcomeScreen from "../screens/WelcomeScreen";
 
 const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreens() {
   return (
+    
     <HomeStack.Navigator>
+      <HomeStack.Screen 
+        name="Welcome" 
+        component={WelcomeScreen} 
+        options={{ headerShown: false }} // Ukryj nagłówek dla ekranu powitalnego
+      />
       <HomeStack.Screen
         name="HomeScreen"
         component={HomeScreen}
@@ -25,6 +32,7 @@ function HomeStackScreens() {
       <HomeStack.Screen name="Event" component={EventScreen} />
       <HomeStack.Screen name="SeatCategory" component={SeatCategoryScreen} />
       <HomeStack.Screen name="Confirmation" component={ConfirmationScreen} />
+      
 
     </HomeStack.Navigator>
   );
