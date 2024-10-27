@@ -56,9 +56,22 @@ const HomeScreen = () => {
   useEffect(() => {
     const loadData = async () => {
       const fetchedEvents = await fetchEvents();
-      setEvents(fetchedEvents);
-
+      
+      console.log('fetching categories');
       const fetchedCategories = await fetchCategories();
+     
+      //mapowanie kluczy obcych 
+      const eventsWithCategoryNames = fetchedEvents.map((event) => {
+        const category = fetchedCategories.find(
+          (cat) => cat.idevent_category === event.idevent_category
+        );
+        return {
+          ...event,
+          categoryType: category ? category.category_type : "Unknown",
+        };
+      });
+
+      setEvents(eventsWithCategoryNames);
       setCategories(fetchedCategories);
     };
 
@@ -243,7 +256,7 @@ const HomeScreen = () => {
             {categories.length > 0 ? (
               categories.map((category) => (
                 <Pressable
-                  key={category.id}
+                  key={category.idevent_category}
                   style={{
                     margin: 10,
                     borderColor:
