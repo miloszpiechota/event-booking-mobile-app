@@ -18,21 +18,20 @@ const WelcomeScreen = () => {
   return (
     <View style={styles.container}>
       
-      <Image source={require("../assets/backgroundImage.jpg")} style={styles.bannerImage} />
-      <Text style={styles.title}>Lorem ipsum dolor.</Text>
+      <Image source={require("../assets/pl.jpg")} style={styles.bannerImage} />
+      <Text style={styles.title}>Event Booking App</Text>
       <Text style={styles.subTitle}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore 
+      Event Booking App to idealne narzędzie dla wszystkich, którzy chcą być na bieżąco z lokalnymi wydarzeniami. 
       </Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={[styles.loginButtonWrapper, { backgroundColor: '#3498db' }]}
+          style={[styles.loginButtonWrapper, { backgroundColor: '#1f2122' }]}
           onPress={handleLogin}
         >
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.loginButtonWrapper, { backgroundColor: '#2ecc71' }]}
+          style={[styles.loginButtonWrapper, { backgroundColor: '#fafdfb' }]}
           onPress={handleSignup}
         >
           <Text style={styles.signupButtonText}>Sign-up</Text>
@@ -59,15 +58,15 @@ const styles = StyleSheet.create({
   bannerImage: {
     marginTop: 40, // Dodany odstęp od góry
     marginVertical: 20,
-    height: 250,
-    width: 231,
+    height: 140,
+    width: 400,
   },
   title: {
     fontSize: 40,
     fontFamily: 'HelveticaNeue-SemiBold', // przykładowa czcionka
     paddingHorizontal: 20,
     textAlign: "center",
-    color: '#3498db', // kolor niebieski
+    color: 'black', // kolor niebieski
     marginTop: 40,
   },
   subTitle: {
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
     borderWidth: 2,
-    borderColor: '#3498db', // kolor niebieski
+    borderColor: 'black', // kolor niebieski
     width: "80%",
     height: 60,
     borderRadius: 100,
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     fontFamily: 'HelveticaNeue-SemiBold', 
   },
   signupButtonText: {
-    color: '#ffffff', 
+    color: '#070606', 
     fontSize: 18,
     fontFamily: 'HelveticaNeue-SemiBold', 
   },
