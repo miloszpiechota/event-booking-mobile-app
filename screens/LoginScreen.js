@@ -14,11 +14,12 @@ import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
-  const [secureEntery, setSecureEntery] = useState(true);
+  const [secureEntry, setSecureEntry] = useState(true);
 
   const handleGoBack = () => {
     navigation.goBack();
   };
+  
   const handleLogin = () => {
     navigation.navigate("HomeScreen");
   };
@@ -59,11 +60,11 @@ const LoginScreen = () => {
             style={styles.textInput}
             placeholder="Enter your password"
             placeholderTextColor={colors.secondary}
-            secureTextEntry={secureEntery}
+            secureTextEntry={secureEntry}
           />
           <TouchableOpacity
             onPress={() => {
-              setSecureEntery((prev) => !prev);
+              setSecureEntry((prev) => !prev);
             }}
           >
             <SimpleLineIcons name={"eye"} size={20} color={colors.secondary} />
@@ -72,7 +73,7 @@ const LoginScreen = () => {
         <TouchableOpacity>
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButtonWrapper}>
+        <TouchableOpacity style={styles.loginButtonWrapper} onPress={handleLogin}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
         <Text style={styles.continueText}>or continue with</Text>
@@ -95,6 +96,7 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
+
 const colors = {
   primary: "#1f2122", // Główny kolor
   secondary: "#7f8c8d", // Kolor dodatkowy
@@ -104,101 +106,101 @@ const colors = {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.white,
-      padding: 20,
-    },
-    backButtonWrapper: {
-      height: 40,
-      width: 40,
-      backgroundColor: colors.gray,
-      borderRadius: 20,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    textContainer: {
-      marginVertical: 20,
-    },
-    headingText: {
-      fontSize: 32,
-      color: colors.primary,
-      fontFamily: fonts.SemiBold,
-    },
-    formContainer: {
-      marginTop: 20,
-    },
-    inputContainer: {
-      borderWidth: 1,
-      borderColor: colors.secondary,
-      borderRadius: 100,
-      paddingHorizontal: 20,
-      flexDirection: "row",
-      alignItems: "center",
-      padding: 2,
-      marginVertical: 10,
-    },
-    textInput: {
-      flex: 1,
-      paddingHorizontal: 10,
-      fontFamily: fonts.Light,
-    },
-    forgotPasswordText: {
-      textAlign: "right",
-      color: colors.primary,
-      fontFamily: fonts.SemiBold,
-      marginVertical: 10,
-    },
-    loginButtonWrapper: {
-      backgroundColor: colors.primary,
-      borderRadius: 100,
-      marginTop: 20,
-    },
-    loginText: {
-      color: colors.white,
-      fontSize: 20,
-      fontFamily: fonts.SemiBold,
-      textAlign: "center",
-      padding: 10,
-    },
-    continueText: {
-      textAlign: "center",
-      marginVertical: 20,
-      fontSize: 14,
-      fontFamily: fonts.Regular,
-      color: colors.primary,
-    },
-    googleButtonContainer: {
-      flexDirection: "row",
-      borderWidth: 2,
-      borderColor: colors.primary,
-      borderRadius: 100,
-      justifyContent: "center",
-      alignItems: "center",
-      padding: 10,
-      gap: 10,
-    },
-    googleImage: {
-      height: 20,
-      width: 20,
-    },
-    googleText: {
-      fontSize: 20,
-      fontFamily: fonts.SemiBold,
-    },
-    footerContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-      marginVertical: 20,
-      gap: 5,
-    },
-    accountText: {
-      color: colors.primary,
-      fontFamily: fonts.Regular,
-    },
-    signupText: {
-      color: colors.primary,
-      fontFamily: fonts.Bold,
-    },
-  });
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+    padding: 20,
+  },
+  backButtonWrapper: {
+    height: 40,
+    width: 40,
+    backgroundColor: colors.gray,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textContainer: {
+    marginVertical: 20,
+  },
+  headingText: {
+    fontSize: 32,
+    color: colors.primary,
+    // Usunięto fontFamily
+  },
+  formContainer: {
+    marginTop: 20,
+  },
+  inputContainer: {
+    borderWidth: 1,
+    borderColor: colors.secondary,
+    borderRadius: 100,
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 2,
+    marginVertical: 10,
+  },
+  textInput: {
+    flex: 1,
+    paddingHorizontal: 10,
+    // Usunięto fontFamily
+  },
+  forgotPasswordText: {
+    textAlign: "right",
+    color: colors.primary,
+    marginVertical: 10,
+    // Usunięto fontFamily
+  },
+  loginButtonWrapper: {
+    backgroundColor: colors.primary,
+    borderRadius: 100,
+    marginTop: 20,
+  },
+  loginText: {
+    color: colors.white,
+    fontSize: 20,
+    textAlign: "center",
+    padding: 10,
+    // Usunięto fontFamily
+  },
+  continueText: {
+    textAlign: "center",
+    marginVertical: 20,
+    fontSize: 14,
+    color: colors.primary,
+    // Usunięto fontFamily
+  },
+  googleButtonContainer: {
+    flexDirection: "row",
+    borderWidth: 2,
+    borderColor: colors.primary,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    gap: 10,
+  },
+  googleImage: {
+    height: 20,
+    width: 20,
+  },
+  googleText: {
+    fontSize: 20,
+    // Usunięto fontFamily
+  },
+  footerContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 20,
+    gap: 5,
+  },
+  accountText: {
+    color: colors.primary,
+    // Usunięto fontFamily
+  },
+  signupText: {
+    color: colors.primary,
+    // Usunięto fontFamily
+  },
+});
