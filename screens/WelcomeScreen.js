@@ -7,7 +7,7 @@ const WelcomeScreen = () => {
 
   const handleLogin = () => {
     // Możesz dodać logikę logowania tutaj, a następnie nawigować do HomeScreen
-    navigation.navigate("HomeScreen");
+    navigation.navigate("LoginScreen");
   };
 
   const handleSignup = () => {
