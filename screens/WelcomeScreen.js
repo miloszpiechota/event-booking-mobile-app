@@ -12,7 +12,7 @@ const WelcomeScreen = () => {
 
   const handleSignup = () => {
     // Możesz dodać logikę rejestracji tutaj, a następnie nawigować do HomeScreen
-    navigation.navigate("HomeScreen");
+    navigation.navigate("SignUpScreen");
   };
 
   return (
@@ -25,7 +25,7 @@ const WelcomeScreen = () => {
       </Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={[styles.loginButtonWrapper, { backgroundColor: '#1f2122' }]}
+          style={[styles.loginButtonWrapper, { backgroundColor: '#23a898' }]}
           onPress={handleLogin}
         >
           <Text style={styles.loginButtonText}>Login</Text>
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     fontFamily: 'HelveticaNeue-SemiBold', 
   },
   signupButtonText: {
-    color: '#070606', 
+    color: '#060707', 
     fontSize: 18,
     fontFamily: 'HelveticaNeue-SemiBold', 
   },

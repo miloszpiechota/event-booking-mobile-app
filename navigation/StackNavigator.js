@@ -12,7 +12,7 @@ import SeatCategoryScreen from "../screens/SeatCategoryScreen";
 import ConfirmationScreen from "../screens/ConfirmationScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import LoginScreen from "../screens/LoginScreen"
-
+import SignUpScreen from "../screens/SignUpScreen";
 const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreens() {
@@ -28,6 +28,11 @@ function HomeStackScreens() {
         name="LoginScreen"
         component={LoginScreen}
         options={{ title: "" }}
+      />
+      <HomeStack.Screen 
+        name="SignUpScreen" 
+        component={SignUpScreen} 
+        options={{ headerShown: false }} // Ukryj nagłówek dla ekranu powitalnego
       />
       <HomeStack.Screen
         name="HomeScreen"

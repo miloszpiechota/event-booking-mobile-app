@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
-
+import AntDesign from '@expo/vector-icons/AntDesign';
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
@@ -31,18 +31,10 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButtonWrapper} onPress={handleGoBack}>
-        <Ionicons
-          name={"arrow-back-outline"}
-          color={colors.primary}
-          size={25}
-        />
-      </TouchableOpacity>
-      <View style={styles.textContainer}>
-        <Text style={styles.headingText}>Hey,</Text>
-        <Text style={styles.headingText}>Welcome</Text>
-        <Text style={styles.headingText}>Back</Text>
-      </View>
+      
+      
+        <Text style={styles.headingText}>User Login</Text>
+        
       {/* form  */}
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
@@ -76,14 +68,7 @@ const LoginScreen = () => {
         <TouchableOpacity style={styles.loginButtonWrapper} onPress={handleLogin}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
-        <Text style={styles.continueText}>or continue with</Text>
-        <TouchableOpacity style={styles.googleButtonContainer}>
-          <Image
-            source={require("../assets/pl.jpg")}
-            style={styles.googleImage}
-          />
-          <Text style={styles.googleText}>Google</Text>
-        </TouchableOpacity>
+       
         <View style={styles.footerContainer}>
           <Text style={styles.accountText}>Don’t have an account?</Text>
           <TouchableOpacity onPress={handleSignup}>
@@ -102,7 +87,7 @@ const colors = {
   secondary: "#7f8c8d", // Kolor dodatkowy
   white: "#ffffff", // Biały
   gray: "#fafdfb", // Szary
-  black: "#070606", // Czarny
+  black: "#C4DFE6", // Czarny
 };
 
 const styles = StyleSheet.create({
@@ -111,14 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     padding: 20,
   },
-  backButtonWrapper: {
-    height: 40,
-    width: 40,
-    backgroundColor: colors.gray,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  
   textContainer: {
     marginVertical: 20,
   },
@@ -186,7 +164,7 @@ const styles = StyleSheet.create({
   },
   googleText: {
     fontSize: 20,
-    // Usunięto fontFamily
+    
   },
   footerContainer: {
     flexDirection: "row",
@@ -197,10 +175,10 @@ const styles = StyleSheet.create({
   },
   accountText: {
     color: colors.primary,
-    // Usunięto fontFamily
+    
   },
   signupText: {
     color: colors.primary,
-    // Usunięto fontFamily
+    
   },
 });
