@@ -4,43 +4,63 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect } from "react"; 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
-import { Alert } from "react-native";
-import { handleSignup } from '../database/SignUp'; // Upewnij się, że ścieżka jest poprawna
+import { handleSignup } from '../database/SignUp'; 
+import { Picker } from '@react-native-picker/picker'; 
+import { useForm, Controller } from 'react-hook-form';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+// Definiujemy schemat walidacji
+const schema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  secondName: Yup.string().required('Second name is required'),
+  surname: Yup.string().required('Surname is required'),
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  password: Yup.string().min(6, 'Password too short').required('Password is required'),
+  phonenumber: Yup.string().required('Phone number is required').matches(/^\d{9}$/, 'Phone number must be 10 digits'),
+  street: Yup.string().required('Street is required'),
+  zipcode: Yup.string().required('Zipcode is required'),
+  selectedCity: Yup.string().required('City is required'),
+});
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
-  const [name, setName] = useState("");
-  const [secondName, setSecondName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [secureEntry, setSecureEntry] = useState(true);
-  const [phonenumber, setPhoneNumber] = useState("");
-  const [street, setStreet] = useState("");
-  const [zipcode, setZipCode] = useState("");
-  const [idcity, setIdCity] = useState("");
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+  });
+  
+  const [cities, setCities] = React.useState([]); // stan do przechowywania miast
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await fetch("http://192.168.56.1:3000/api/cities/read"); 
+        const data = await response.json();
+        setCities(data); // ustaw dane miast w stanie
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      }
+    };
+
+    fetchCities();
+  }, []);
 
   const handleGoBack = () => {
     navigation.goBack();
   };
 
-  const onSignup = async () => {
+  const onSignup = async (data) => {
     const userData = {
-      name,
-      second_name: secondName,
-      surname,
+      ...data,
       iduser_type: 1, // Ustalona wartość lub pobrana z innego źródła
-      email,
-      phonenumber: parseInt(phonenumber),
-      zipcode,
-      street,
-      idcity: parseInt(idcity),
-      password,
+      phonenumber: parseInt(data.phonenumber),
+      idcity: parseInt(data.selectedCity), // użyj wybranego miasta
     };
 
     const result = await handleSignup(userData);
@@ -56,114 +76,190 @@ const SignUpScreen = () => {
     <View style={styles.container}>
       <Text style={styles.headingText}>User Registration</Text>
 
-      {/* form */}
       <View style={styles.formContainer}>
-        <View style={styles.inputContainer}>
-          <Ionicons name={"person"} size={30} color={colors.secondary} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your name"
-            placeholderTextColor={colors.secondary}
-            value={name}
-            onChangeText={setName}
-          />
-        </View>
+        {/* Formularz */}
+        <Controller
+          control={control}
+          name="name"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View style={styles.inputContainer}>
+              <Ionicons name={"person"} size={30} color={colors.secondary} />
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your name"
+                placeholderTextColor={colors.secondary}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
+            </View>
+          )}
+        />
+        
+        <Controller
+          control={control}
+          name="secondName"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View style={styles.inputContainer}>
+              <Ionicons name={"person"} size={30} color={colors.secondary} />
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your second name"
+                placeholderTextColor={colors.secondary}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {errors.secondName && <Text style={styles.errorText}>{errors.secondName.message}</Text>}
+            </View>
+          )}
+        />
 
-        <View style={styles.inputContainer}>
-          <Ionicons name={"person"} size={30} color={colors.secondary} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your second name"
-            placeholderTextColor={colors.secondary}
-            value={secondName}
-            onChangeText={setSecondName}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="surname"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View style={styles.inputContainer}>
+              <Ionicons name={"person"} size={30} color={colors.secondary} />
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your surname"
+                placeholderTextColor={colors.secondary}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {errors.surname && <Text style={styles.errorText}>{errors.surname.message}</Text>}
+            </View>
+          )}
+        />
 
-        <View style={styles.inputContainer}>
-          <Ionicons name={"person"} size={30} color={colors.secondary} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your surname"
-            placeholderTextColor={colors.secondary}
-            value={surname}
-            onChangeText={setSurname}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View style={styles.inputContainer}>
+              <Ionicons name={"mail-outline"} size={30} color={colors.secondary} />
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your email"
+                placeholderTextColor={colors.secondary}
+                keyboardType="email-address"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
+            </View>
+          )}
+        />
 
-        <View style={styles.inputContainer}>
-          <Ionicons name={"mail-outline"} size={30} color={colors.secondary} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your email"
-            placeholderTextColor={colors.secondary}
-            keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View style={styles.inputContainer}>
+              <SimpleLineIcons name={"lock"} size={30} color={colors.secondary} />
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your password"
+                placeholderTextColor={colors.secondary}
+                secureTextEntry={true}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+            </View>
+          )}
+        />
 
-        <View style={styles.inputContainer}>
-          <SimpleLineIcons name={"lock"} size={30} color={colors.secondary} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your password"
-            placeholderTextColor={colors.secondary}
-            secureTextEntry={secureEntry}
-            value={password}
-            onChangeText={setPassword}
-          />
-          <TouchableOpacity onPress={() => setSecureEntry((prev) => !prev)}>
-            <SimpleLineIcons name={secureEntry ? "eye" : "eye-off"} size={20} color={colors.secondary} />
-          </TouchableOpacity>
-        </View>
+        <Controller
+          control={control}
+          name="phonenumber"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View style={styles.inputContainer}>
+              <Ionicons name={"call"} size={30} color={colors.secondary} />
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your phone number"
+                placeholderTextColor={colors.secondary}
+                keyboardType="phone-pad"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {errors.phonenumber && <Text style={styles.errorText}>{errors.phonenumber.message}</Text>}
+            </View>
+          )}
+        />
 
-        <View style={styles.inputContainer}>
-          <Ionicons name={"call"} size={30} color={colors.secondary} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your phone number"
-            placeholderTextColor={colors.secondary}
-            keyboardType="phone-pad"
-            value={phonenumber}
-            onChangeText={setPhoneNumber}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="street"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View style={styles.inputContainer}>
+              <Ionicons name={"home"} size={30} color={colors.secondary} />
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your street"
+                placeholderTextColor={colors.secondary}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {errors.street && <Text style={styles.errorText}>{errors.street.message}</Text>}
+            </View>
+          )}
+        />
 
-        <View style={styles.inputContainer}>
-          <Ionicons name={"home"} size={30} color={colors.secondary} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your street"
-            placeholderTextColor={colors.secondary}
-            value={street}
-            onChangeText={setStreet}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="zipcode"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View style={styles.inputContainer}>
+              <Ionicons name={"home"} size={30} color={colors.secondary} />
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your zipcode"
+                placeholderTextColor={colors.secondary}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {errors.zipcode && <Text style={styles.errorText}>{errors.zipcode.message}</Text>}
+            </View>
+          )}
+        />
 
-        <View style={styles.inputContainer}>
-          <Ionicons name={"home"} size={30} color={colors.secondary} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your zipcode"
-            placeholderTextColor={colors.secondary}
-            value={zipcode}
-            onChangeText={setZipCode}
-          />
-        </View>
+        {/* Dodaj rozwijaną listę miast */}
+        <Controller
+          control={control}
+          name="selectedCity"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View style={styles.inputContainer}>
+              <Ionicons name={"map"} size={30} color={colors.secondary} />
+              <Picker
+                selectedValue={value}
+                style={styles.picker}
+                onValueChange={(itemValue) => onChange(itemValue)}
+                onBlur={onBlur}
+              >
+                <Picker.Item label="Select a city" value="" />
+                {cities.map((city) => (
+                  <Picker.Item key={city.idcity} label={city.city} value={city.idcity.toString()} />
+                ))}
+              </Picker>
+              {errors.selectedCity && <Text style={styles.errorText}>{errors.selectedCity.message}</Text>}
+            </View>
+          )}
+        />
 
-        <View style={styles.inputContainer}>
-          <Ionicons name={"map"} size={30} color={colors.secondary} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter city ID"
-            placeholderTextColor={colors.secondary}
-            value={idcity}
-            onChangeText={setIdCity}
-          />
-        </View>
-
-        <TouchableOpacity style={styles.signupButtonWrapper} onPress={onSignup}>
+        <TouchableOpacity 
+          style={styles.signupButtonWrapper} 
+          onPress={handleSubmit(onSignup)} // Zmieniamy, aby użyć handleSubmit
+        >
           <Text style={styles.signupText}>Sign Up</Text>
         </TouchableOpacity>
 
@@ -215,6 +311,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
   },
+  picker: {
+    flex: 1,
+  },
   signupButtonWrapper: {
     backgroundColor: colors.primary,
     borderRadius: 100,
@@ -238,6 +337,10 @@ const styles = StyleSheet.create({
   },
   loginText: {
     color: colors.primary,
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 5,
   },
 });
 
