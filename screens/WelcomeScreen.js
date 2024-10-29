@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 40,
-    fontFamily: 'HelveticaNeue-SemiBold', // przykładowa czcionka
+    // Usunięto konkretną czcionkę
     paddingHorizontal: 20,
     textAlign: "center",
-    color: 'black', // kolor niebieski
+    color: 'black', // kolor czarny
     marginTop: 40,
   },
   subTitle: {
@@ -74,14 +74,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     textAlign: "center",
     color: '#7f8c8d', // kolor szary
-    fontFamily: 'HelveticaNeue-Medium', // przykładowa czcionka
+    // Usunięto konkretną czcionkę
     marginVertical: 20,
   },
   buttonContainer: {
     marginTop: 20,
     flexDirection: "row",
     borderWidth: 2,
-    borderColor: '#ccd0d1', // kolor niebieski
+    borderColor: '#ccd0d1', // kolor szary
     width: "80%",
     height: 58,
     borderRadius: 100,
@@ -95,11 +95,11 @@ const styles = StyleSheet.create({
   loginButtonText: {
     color: '#ffffff', 
     fontSize: 18,
-    fontFamily: 'HelveticaNeue-SemiBold', 
+    // Usunięto konkretną czcionkę
   },
   signupButtonText: {
     color: '#060707', 
     fontSize: 18,
-    fontFamily: 'HelveticaNeue-SemiBold', 
+    // Usunięto konkretną czcionkę
   },
 });

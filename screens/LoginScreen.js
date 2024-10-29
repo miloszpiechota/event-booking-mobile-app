@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
-import AntDesign from '@expo/vector-icons/AntDesign';
+
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
