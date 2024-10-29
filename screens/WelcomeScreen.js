@@ -81,16 +81,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
     borderWidth: 2,
-    borderColor: 'black', // kolor niebieski
+    borderColor: '#ccd0d1', // kolor niebieski
     width: "80%",
-    height: 60,
+    height: 58,
     borderRadius: 100,
   },
   loginButtonWrapper: {
     justifyContent: "center",
     alignItems: "center",
     width: "50%",
-    borderRadius: 98,
+    borderRadius: 100,
   },
   loginButtonText: {
     color: '#ffffff', 
