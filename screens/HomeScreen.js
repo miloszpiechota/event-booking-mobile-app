@@ -61,32 +61,25 @@ const HomeScreen = () => {
     loadData();
   }, []); // Fetch data on component mount
 
-  // Filtering function based on selected category
-  const applyFilter = (filter) => {
-    if (filter === "All") {
-      return events; // Return all events if filter is "All"
-    }
-    switch (filter) {
-      case "Koncert":
-        return events.filter((event) => event.fk_idevent_category === 1);
-      case "Festiwal":
-        return events.filter((event) => event.fk_idevent_category === 2);
-      case "Wystawa":
-        return events.filter((event) => event.fk_idevent_category === 3);
-      case "Maraton":
-        return events.filter((event) => event.fk_idevent_category === 4);
-      case "Konferencja":
-        return events.filter((event) => event.fk_idevent_category === 5);
-      case "Warsztaty":
-        return events.filter((event) => event.fk_idevent_category === 6);
-      case "Zawody":
-        return events.filter((event) => event.fk_idevent_category === 7);
-      case "Festyn":
-        return events.filter((event) => event.fk_idevent_category === 10);
-      default:
-        return events; // If no filter is selected, return all events
-    }
-  };
+
+// Filtering function based on selected category
+const applyFilter = (filter) => {
+  if (!filter || filter === "All") {
+    return events; // Return all events if filter is "All" or not set
+  }
+
+  // Create a mapping of category_type to idevent_category
+  const categoryMapping = categories.reduce((acc, category) => {
+    acc[category.category_type] = category.idevent_category; // Map category_type to idevent_category
+    return acc;
+  }, {});
+
+  const categoryId = categoryMapping[filter]; // Get the category ID based on the selected filter
+
+  // Filter events based on the category ID
+  return events.filter(event => event.idevent_category === categoryId); // Use idevent_category for filtering
+};
+
 
   useFocusEffect(
     React.useCallback(() => {
