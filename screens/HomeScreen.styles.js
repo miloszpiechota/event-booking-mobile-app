@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   filterButton: {
     position: 'absolute',
     bottom: 10,
-    backgroundColor: 'rgba(63, 172, 171, 0.8)', // Lekko przezroczysty kolor
+    backgroundColor: 'rgba(217, 136, 89, 0.736)', // Lekko przezroczysty kolor
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -56,6 +56,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap",
   },
+  searchInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10, // Odstęp od FlatList
+  },
+  
 });
 
 export default styles;

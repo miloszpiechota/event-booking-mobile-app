@@ -27,6 +27,8 @@ import { SlideAnimation } from "react-native-modals";
 import { fetchEvents } from "../database/FetchEvents"; // Import the fetchEvents function
 import { fetchCategories } from "../database/FetchCategories"; // Import the fetchCategories function
 import styles from './HomeScreen.styles'; // Import styles
+import SearchBar from "./SearchBar";
+
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -36,11 +38,11 @@ const HomeScreen = () => {
   const [events, setEvents] = useState([]); // State to store events
   const [categories, setCategories] = useState([]); // State to store categories
   const [selectedCategory, setSelectedCategory] = useState(); // State for filter
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
   useEffect(() => {
     const loadData = async () => {
       const fetchedEvents = await fetchEvents();
-      console.log('fetching categories');
       const fetchedCategories = await fetchCategories();
 
       // Mapping foreign keys 
@@ -61,25 +63,39 @@ const HomeScreen = () => {
     loadData();
   }, []); // Fetch data on component mount
 
+  // Filtering function based on selected category
+  const applyFilter = (filter) => {
+    if (!filter || filter === "All") {
+      return events; // Return all events if filter is "All" or not set
+    }
 
-// Filtering function based on selected category
-const applyFilter = (filter) => {
-  if (!filter || filter === "All") {
-    return events; // Return all events if filter is "All" or not set
-  }
+    // Create a mapping of category_type to idevent_category
+    const categoryMapping = categories.reduce((acc, category) => {
+      acc[category.category_type] = category.idevent_category; // Map category_type to idevent_category
+      return acc;
+    }, {});
 
-  // Create a mapping of category_type to idevent_category
-  const categoryMapping = categories.reduce((acc, category) => {
-    acc[category.category_type] = category.idevent_category; // Map category_type to idevent_category
-    return acc;
-  }, {});
+    const categoryId = categoryMapping[filter]; // Get the category ID based on the selected filter
 
-  const categoryId = categoryMapping[filter]; // Get the category ID based on the selected filter
+    // Filter events based on the category ID
+    return events.filter(event => event.idevent_category === categoryId); // Use idevent_category for filtering
+  };
 
-  // Filter events based on the category ID
-  return events.filter(event => event.idevent_category === categoryId); // Use idevent_category for filtering
-};
+  // Function to filter events based on search query
+  const filterEvents = (events) => {
+    if (!searchQuery) return events; // If no search query, return all events
+    return events.filter(event => {
+      const title = event.title || ""; // Default to empty string if title is undefined
+      const description = event.description || ""; // Default to empty string if description is undefined
+      return (
+        title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
+  };
 
+  // Combined filter logic
+  const filteredEvents = filterEvents(applyFilter(selectedCategory)); // Combine filters
 
   useFocusEffect(
     React.useCallback(() => {
@@ -118,86 +134,90 @@ const applyFilter = (filter) => {
   }, [navigation, opacityAnim, selectedCity]);
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        ListHeaderComponent={Header}
-        data={applyFilter(selectedCategory)}
-        renderItem={({ item, index }) => (
-          <EventCard
-            item={{
-              ...item,
-              location_name: item.event_location
-                ? item.event_location.name
-                : "Unknown Location",
-              city_name: item.event_location?.city?.city || "Unknown City",
-              photo: item.photo,
-              description: item.description,
-              price: item.ticket_price,
-              isSeatCategorized: item.is_seat_categorized,
-              categoryType: item.categoryType,
-            }}
-            key={index}
-          />
-        )}
-        contentContainerStyle={{ paddingBottom: 100 }}
-      />
-      <Pressable
-        onPress={() => setModalVisible(!modalVisible)}
-        style={styles.filterButton}
-      >
-        <FontAwesome name="filter" size={24} color="black" />
-      </Pressable>
+    
+    <>
+      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <View style={styles.container}>
+        <FlatList
+          ListHeaderComponent={Header}
+          data={filteredEvents} // Use the combined filtered events
+          renderItem={({ item, index }) => (
+            <EventCard
+              item={{
+                ...item,
+                location_name: item.event_location
+                  ? item.event_location.name
+                  : "Unknown Location",
+                city_name: item.event_location?.city?.city || "Unknown City",
+                photo: item.photo,
+                description: item.description,
+                price: item.ticket_price,
+                isSeatCategorized: item.is_seat_categorized,
+                categoryType: item.categoryType,
+              }}
+              key={index}
+            />
+          )}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        />
+        <Pressable
+          onPress={() => setModalVisible(!modalVisible)}
+          style={styles.filterButton}
+        >
+          <FontAwesome name="filter" size={24} color="black" />
+        </Pressable>
 
-      {/* Modal filtering interface */}
-      <BottomModal
-        onBackDropPress={() => setModalVisible(!modalVisible)}
-        swipeDirection={["up", "down"]}
-        swipeThreshold={200}
-        modalAnimation={new SlideAnimation({ slideFrom: "bottom" })}
-        visible={modalVisible}
-        onHardwareBackPress={() => setModalVisible(!modalVisible)}
-        onTouchOutside={() => setModalVisible(!modalVisible)}
-        style={styles.modalStyle} // Use imported styles
-      >
-        <ModalContent style={styles.modalContent}>
-          <Text style={styles.categoryText}>Event Category</Text>
-          <Pressable style={styles.filterContainer}>
-            <Pressable
-              style={styles.categoryButton(selectedCategory === "All")}
-              onPress={() =>
-                setSelectedCategory(selectedCategory === "All" ? null : "All")
-              }
-            >
-              <Text style={styles.categoryButtonText(selectedCategory === "All")}>
-                All
-              </Text>
+        {/* Modal filtering interface */}
+        <BottomModal
+          onBackDropPress={() => setModalVisible(!modalVisible)}
+          swipeDirection={["up", "down"]}
+          swipeThreshold={200}
+          modalAnimation={new SlideAnimation({ slideFrom: "bottom" })}
+          visible={modalVisible}
+          onHardwareBackPress={() => setModalVisible(!modalVisible)}
+          onTouchOutside={() => setModalVisible(!modalVisible)}
+          style={styles.modalStyle} // Use imported styles
+        >
+          <ModalContent style={styles.modalContent}>
+            <Text style={styles.categoryText}>Event Category</Text>
+            <Pressable style={styles.filterContainer}>
+              <Pressable
+                style={styles.categoryButton(selectedCategory === "All")}
+                onPress={() =>
+                  setSelectedCategory(selectedCategory === "All" ? null : "All")
+                }
+              >
+                <Text style={styles.categoryButtonText(selectedCategory === "All")}>
+                  All
+                </Text>
+              </Pressable>
+
+              {categories.length > 0 ? (
+                categories.map((category) => (
+                  <Pressable
+                    key={category.idevent_category}
+                    style={styles.categoryButton(selectedCategory === category.category_type)}
+                    onPress={() =>
+                      setSelectedCategory(
+                        selectedCategory === category.category_type
+                          ? null
+                          : category.category_type
+                      )
+                    }
+                  >
+                    <Text style={styles.categoryButtonText(selectedCategory === category.category_type)}>
+                      {category.category_type}
+                    </Text>
+                  </Pressable>
+                ))
+              ) : (
+                <Text>No categories available</Text> // Ensure this is wrapped in <Text>
+              )}
             </Pressable>
-
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <Pressable
-                  key={category.idevent_category}
-                  style={styles.categoryButton(selectedCategory === category.category_type)}
-                  onPress={() =>
-                    setSelectedCategory(
-                      selectedCategory === category.category_type
-                        ? null
-                        : category.category_type
-                    )
-                  }
-                >
-                  <Text style={styles.categoryButtonText(selectedCategory === category.category_type)}>
-                    {category.category_type}
-                  </Text>
-                </Pressable>
-              ))
-            ) : (
-              <Text>No categories available</Text> // Ensure this is wrapped in <Text>
-            )}
-          </Pressable>
-        </ModalContent>
-      </BottomModal>
-    </View>
+          </ModalContent>
+        </BottomModal>
+      </View>
+    </>
   );
 };
 

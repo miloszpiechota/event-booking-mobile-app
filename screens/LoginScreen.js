@@ -83,7 +83,7 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const colors = {
-  primary: "#1f2122", // Główny kolor
+  primary: "#011C40", // Główny kolor
   secondary: "#7f8c8d", // Kolor dodatkowy
   white: "#ffffff", // Biały
   gray: "#fafdfb", // Szary

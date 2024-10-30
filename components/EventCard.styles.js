@@ -3,6 +3,7 @@ export const ec_s = StyleSheet.create({
   card: {
     backgroundColor: "white",
     height: 140, // Zwiększona wysokość, aby zmieścić dodatkowe informacje
+    width:405,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -16,13 +17,14 @@ export const ec_s = StyleSheet.create({
     paddingHorizontal: 10,
     alignItems: "center",
     marginBottom: 10,
-    marginTop: 15,
+    marginTop: 10,
   },
   img_left: {
     width: "50%", // Obraz zajmuje połowę szerokości karty
     height: "100%", // Cała wysokość karty
     borderTopLeftRadius: 13,
     borderBottomLeftRadius: 13,
+    
   },
   info_right: {
     width: "50%", // Sekcja tekstu zajmuje drugą połowę karty
@@ -45,10 +47,10 @@ export const ec_s = StyleSheet.create({
     marginTop: 5,
   },
   bookButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#4A79D9",
     paddingVertical: 5,
     paddingHorizontal: 12,
-    borderRadius: 5,
+    borderRadius: 8,
     marginTop: 6,
     alignSelf: "flex-end",
   },

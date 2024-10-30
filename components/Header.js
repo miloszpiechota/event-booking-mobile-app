@@ -3,7 +3,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <View style={{ marginBottom: 55 }}>
+    <View style={{ marginBottom: 10 }}>
       <ImageBackground
         style={styles.backgroundImage}
         source={require("../assets/backgroundImage.jpg")}
@@ -24,7 +24,7 @@ export default Header;
 
 const styles = StyleSheet.create({
   backgroundImage: {
-    height: 200,
+    height: 250,
     resizeMode: "cover", // Keep "cover" for a better effect
     justifyContent: "center", // Vertical alignment of text
     alignItems: "center", // Horizontal alignment of text

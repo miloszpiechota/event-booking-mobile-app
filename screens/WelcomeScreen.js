@@ -25,7 +25,7 @@ const WelcomeScreen = () => {
       </Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={[styles.loginButtonWrapper, { backgroundColor: '#23a898' }]}
+          style={[styles.loginButtonWrapper, { backgroundColor: '#011C40' }]}
           onPress={handleLogin}
         >
           <Text style={styles.loginButtonText}>Login</Text>

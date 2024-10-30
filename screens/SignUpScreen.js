@@ -275,7 +275,7 @@ const SignUpScreen = () => {
 };
 
 const colors = {
-  primary: "#1f2122",
+  primary: "#011C40",
   secondary: "#7f8c8d",
   white: "#ffffff",
   gray: "#fafdfb",
