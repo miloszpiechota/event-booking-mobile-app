@@ -5,6 +5,7 @@ export const fetchEvents = async () => {
         throw new Error("Failed to fetch events");
       }
       const data = await response.json();
+      console.log(data);
   
       // Add categoryType from the related data for convenience
       const eventsWithCategory = data.event.map(event => ({
