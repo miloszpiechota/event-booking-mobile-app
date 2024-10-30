@@ -28,7 +28,7 @@ import { fetchEvents } from "../database/FetchEvents"; // Import the fetchEvents
 import { fetchCategories } from "../database/FetchCategories"; // Import the fetchCategories function
 import styles from './HomeScreen.styles'; // Import styles
 import SearchBar from "./SearchBar";
-
+import { fetchLocations } from '../database/FetchLocations'; 
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -39,29 +39,48 @@ const HomeScreen = () => {
   const [categories, setCategories] = useState([]); // State to store categories
   const [selectedCategory, setSelectedCategory] = useState(); // State for filter
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
-
+  const [locations, setLocations] = useState([]);
   useEffect(() => {
     const loadData = async () => {
-      const fetchedEvents = await fetchEvents();
-      const fetchedCategories = await fetchCategories();
-
-      // Mapping foreign keys 
-      const eventsWithCategoryNames = fetchedEvents.map((event) => {
-        const category = fetchedCategories.find(
-          (cat) => cat.idevent_category === event.idevent_category
-        );
-        return {
-          ...event,
-          categoryType: category ? category.category_type : "Unknown",
-        };
-      });
-
-      setEvents(eventsWithCategoryNames);
-      setCategories(fetchedCategories);
+      try {
+        // Fetching data from APIs
+        const fetchedEvents = await fetchEvents();
+        const fetchedCategories = await fetchCategories();
+        const fetchedLocations = await fetchLocations(); 
+  
+        // Mapping foreign keys to include category names and location details
+        const eventsWithCategoryAndLocationNames = fetchedEvents.map((event) => {
+          const category = fetchedCategories.find(
+            (cat) => cat.idevent_category === event.idevent_category
+          );
+  
+          // Find location based on event's location ID
+          const location = fetchedLocations.find(
+            (loc) => loc.id === event.idevent_location // Ensure event has event_location_id
+          );
+  
+          return {
+            ...event,
+            categoryType: category ? category.category_type : "Unknown",
+            location_name: location ? location.name : "Unknown Location",
+            city_name: location ? location.city : "Unknown City",
+            country_name: location ? location.country : "Unknown Country"
+          };
+        });
+  
+        // Updating state with the mapped data
+        setEvents(eventsWithCategoryAndLocationNames);
+        setCategories(fetchedCategories);
+        setLocations(fetchedLocations); // Optional: if you want to store locations too
+  
+      } catch (error) {
+        console.error("Error loading data:", error); // Handle any errors
+      }
     };
-
+  
     loadData();
   }, []); // Fetch data on component mount
+   // Fetch data on component mount
 
   // Filtering function based on selected category
   const applyFilter = (filter) => {
@@ -145,10 +164,9 @@ const HomeScreen = () => {
             <EventCard
               item={{
                 ...item,
-                location_name: item.event_location
-                  ? item.event_location.name
-                  : "Unknown Location",
-                city_name: item.event_location?.city?.city || "Unknown City",
+                location_name: item.location_name, // Użyj nowego pola
+                city_name: item.city_name, // Użyj nowego pola
+                country_name: item.country_name, // Użyj nowego pola
                 photo: item.photo,
                 description: item.description,
                 price: item.ticket_price,
