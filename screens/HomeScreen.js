@@ -1,10 +1,9 @@
 import {
   Pressable,
-  StyleSheet,
-  Text,
   View,
   Animated,
   FlatList,
+  Text,
 } from "react-native";
 import React, {
   useLayoutEffect,
@@ -21,14 +20,13 @@ import EventCard from "../components/EventCard";
 import Header from "../components/Header";
 import {
   BottomModal,
-  ModalFooter,
-  ModalTitle,
   ModalContent,
 } from "react-native-modals";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { SlideAnimation } from "react-native-modals";
 import { fetchEvents } from "../database/FetchEvents"; // Import the fetchEvents function
 import { fetchCategories } from "../database/FetchCategories"; // Import the fetchCategories function
+import styles from './HomeScreen.styles'; // Import styles
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -39,28 +37,13 @@ const HomeScreen = () => {
   const [categories, setCategories] = useState([]); // State to store categories
   const [selectedCategory, setSelectedCategory] = useState(); // State for filter
 
-  //   // Call the fetchCategories function
-  // const displayFirstCategory = async () => {
-  //   const categories = await fetchCategories();
-  //   if (categories.length > 0) {
-  //       // Log the first category in JSON format
-  //       console.log(JSON.stringify(categories[0], null, 2));
-  //   } else {
-  //       console.log("No categories found");
-  //   }
-  // };
-
-  // // Execute the function
-  // displayFirstCategory();
-
   useEffect(() => {
     const loadData = async () => {
       const fetchedEvents = await fetchEvents();
-      
       console.log('fetching categories');
       const fetchedCategories = await fetchCategories();
-     
-      //mapowanie kluczy obcych 
+
+      // Mapping foreign keys 
       const eventsWithCategoryNames = fetchedEvents.map((event) => {
         const category = fetchedCategories.find(
           (cat) => cat.idevent_category === event.idevent_category
@@ -119,13 +102,7 @@ const HomeScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <Text>Hello Miłosz</Text>,
-      headerStyle: {
-        backgroundColor: "#f5f5f5",
-        shadowColor: "transparent",
-        shadowOpacity: 0.3,
-        shadowOffset: { width: -1, height: 1 },
-        shadowRadius: 3,
-      },
+      headerStyle: styles.headerStyle, // Use imported styles
       headerRight: () => (
         <Pressable
           style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
@@ -146,9 +123,9 @@ const HomeScreen = () => {
       ),
     });
   }, [navigation, opacityAnim, selectedCity]);
-  
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <FlatList
         ListHeaderComponent={Header}
         data={applyFilter(selectedCategory)}
@@ -160,15 +137,12 @@ const HomeScreen = () => {
                 ? item.event_location.name
                 : "Unknown Location",
               city_name: item.event_location?.city?.city || "Unknown City",
-
               photo: item.photo,
               description: item.description,
               price: item.ticket_price,
               isSeatCategorized: item.is_seat_categorized,
               categoryType: item.categoryType,
-              
             }}
-            
             key={index}
           />
         )}
@@ -176,19 +150,7 @@ const HomeScreen = () => {
       />
       <Pressable
         onPress={() => setModalVisible(!modalVisible)}
-        style={{
-          position: "absolute",
-          bottom: 10,
-          backgroundColor: "rgba(63, 172, 171, 0.8)", // Lekko przezroczysty kolor
-
-          // backgroundColor: "#3facab",
-          width: 60,
-          height: 60,
-          borderRadius: 30,
-          right: 20,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        style={styles.filterButton}
       >
         <FontAwesome name="filter" size={24} color="black" />
       </Pressable>
@@ -202,53 +164,18 @@ const HomeScreen = () => {
         visible={modalVisible}
         onHardwareBackPress={() => setModalVisible(!modalVisible)}
         onTouchOutside={() => setModalVisible(!modalVisible)}
-        style={{
-          justifyContent: "flex-end",
-          margin: 0,
-          backgroundColor: "rgba(0, 0, 0, 0.4)", // Slight transparency
-        }}
+        style={styles.modalStyle} // Use imported styles
       >
-        <ModalContent
-          style={{ width: "100%", height: 280, backgroundColor: "white" }}
-        >
-          <Text
-            style={{
-              paddingVertical: 5,
-              fontSize: 15,
-              fontWeight: "500",
-              marginTop: 10,
-            }}
-          >
-            Event Category
-          </Text>
-          <Pressable
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
-          >
+        <ModalContent style={styles.modalContent}>
+          <Text style={styles.categoryText}>Event Category</Text>
+          <Pressable style={styles.filterContainer}>
             <Pressable
-              style={{
-                margin: 10,
-                borderColor: selectedCategory === "All" ? "orange" : "#CBCBCB",
-                borderWidth: 1,
-                paddingVertical: 5,
-                borderRadius: 25,
-                paddingHorizontal: 11,
-                backgroundColor:
-                  selectedCategory === "All" ? "orange" : "white",
-              }}
+              style={styles.categoryButton(selectedCategory === "All")}
               onPress={() =>
                 setSelectedCategory(selectedCategory === "All" ? null : "All")
               }
             >
-              <Text
-                style={{
-                  color: selectedCategory === "All" ? "white" : "black",
-                  fontWeight: selectedCategory === "All" ? "500" : "normal",
-                }}
-              >
+              <Text style={styles.categoryButtonText(selectedCategory === "All")}>
                 All
               </Text>
             </Pressable>
@@ -257,21 +184,7 @@ const HomeScreen = () => {
               categories.map((category) => (
                 <Pressable
                   key={category.idevent_category}
-                  style={{
-                    margin: 10,
-                    borderColor:
-                      selectedCategory === category.category_type
-                        ? "orange"
-                        : "#CBCBCB",
-                    borderWidth: 1,
-                    paddingVertical: 5,
-                    borderRadius: 25,
-                    paddingHorizontal: 11,
-                    backgroundColor:
-                      selectedCategory === category.category_type
-                        ? "orange"
-                        : "white",
-                  }}
+                  style={styles.categoryButton(selectedCategory === category.category_type)}
                   onPress={() =>
                     setSelectedCategory(
                       selectedCategory === category.category_type
@@ -280,24 +193,13 @@ const HomeScreen = () => {
                     )
                   }
                 >
-                  <Text
-                    style={{
-                      color:
-                        selectedCategory === category.category_type
-                          ? "white"
-                          : "black",
-                      fontWeight:
-                        selectedCategory === category.category_type
-                          ? "500"
-                          : "normal",
-                    }}
-                  >
+                  <Text style={styles.categoryButtonText(selectedCategory === category.category_type)}>
                     {category.category_type}
                   </Text>
                 </Pressable>
               ))
             ) : (
-              <Text>No categories available</Text>
+              <Text>No categories available</Text> // Ensure this is wrapped in <Text>
             )}
           </Pressable>
         </ModalContent>
@@ -307,5 +209,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({});

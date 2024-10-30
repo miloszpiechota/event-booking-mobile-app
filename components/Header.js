@@ -1,42 +1,20 @@
-import {
-  ImageBackground,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { events } from "../assets/data/events";
+
 const Header = () => {
   return (
-    <View style={{marginBottom:55}}>
+    <View style={{ marginBottom: 55 }}>
       <ImageBackground
-        style={{ height: 200, resizeMode: "container" }}
+        style={styles.backgroundImage}
         source={require("../assets/backgroundImage.jpg")}
       >
-        <Pressable
-          style={{
-            height: 110,
-            backgroundColor: "white",
-            padding: 10,
-            borderRadius: 5,
-            width: "90%",
-            top: 140,
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          <View style={{flexDirection: "row",alignItems:"center",justifyContent:"space-between"}}>
-            <View>
-            <Text style={{ fontSize: 20, color: "#007bff", fontWeight: "600" }}>Releasing in 1 Day</Text>
-            <Text style={{marginVertical:5,fontSize:16,fontWeight:"700"}}>Title 1</Text>
-            <Text style={{fontSize:15,color:"gray",fontWeight:500}}>Title 2</Text>
-            </View>
-            <Pressable style={{backgroundColor:"#ffc40c",padding:10,borderRadius:6,marginRight: 10}}>
-                <Text>BOOK</Text>
-            </Pressable>
-          </View>
-        </Pressable>
+        {/* Dark overlay for dimmed effect */}
+        <View style={styles.overlay} />
+
+        {/* Text on dimmed background */}
+        <View style={styles.textContainer}>
+          <Text style={styles.headerText}>Explore Events Near You!</Text>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -44,4 +22,29 @@ const Header = () => {
 
 export default Header;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  backgroundImage: {
+    height: 200,
+    resizeMode: "cover", // Keep "cover" for a better effect
+    justifyContent: "center", // Vertical alignment of text
+    alignItems: "center", // Horizontal alignment of text
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject, // Covers the entire ImageBackground
+    backgroundColor: 'rgba(0, 0.4, 0.4, 0.45)', // Semi-transparent black for dim effect
+  },
+  textContainer: {
+    padding: 10,
+  },
+  headerText: {
+    fontSize: 33,           // Larger font size for emphasis
+    color: "white",         // White color for contrast
+    fontWeight: "400",      // Lighter font weight for thinner appearance
+    textAlign: "center",    // Centered text
+    letterSpacing: 1,       // Slight letter spacing for elegance
+    
+    
+    
+  },
+  
+});
