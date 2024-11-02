@@ -50,7 +50,7 @@ export const ec_s = StyleSheet.create({
     backgroundColor: "#4A79D9",
     paddingVertical: 5,
     paddingHorizontal: 12,
-    borderRadius: 8,
+    borderRadius: 6,
     marginTop: 6,
     alignSelf: "flex-end",
   },

@@ -7,47 +7,55 @@ import {
   FlatList,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import React, { useLayoutEffect, useState, useContext } from "react";
+import React, { useLayoutEffect, useState, useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MapView, { Marker } from "react-native-maps";
 
-import { cities } from "../assets/data/cities";
-
-
-import { Place } from "../PlacesContext"; //Added
+import { fetchLocations } from "../database/FetchLocations"; // Import fetchLocations
+import { Place } from "../PlacesContext"; // Import PlaceContext
 
 const PlacesScreen = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredCities, setFilteredCities] = useState(cities);
+  const [locations, setLocations] = useState([]); // New state for fetched locations
+  const [filteredLocations, setFilteredLocations] = useState([]); // State for filtered locations
 
-  //use PlacesContext to update selectCity
+  // Use PlacesContext to update selectCity
   const { selectedCity, setSelectedCity } = useContext(Place);
-//Added
- 
+
+  // Fetch locations data on component mount
+  useEffect(() => {
+    const loadLocations = async () => {
+      const data = await fetchLocations();
+      setLocations(data); // Set fetched locations
+      setFilteredLocations(data); // Initialize filteredLocations with all data
+    };
+
+    loadLocations();
+  }, []);
+
+  // Update header title
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
-        <Pressable
-          style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-        >
-          <Text style={{ fontSize: 15, letterSpacing: 1 }}>
-            CHANGE LOCATION
-          </Text>
+        <Pressable style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+          <Text style={{ fontSize: 15, letterSpacing: 1 }}>CHANGE LOCATION</Text>
         </Pressable>
       ),
     });
-  }, []);
+  }, [navigation]);
 
+  // Handle search and filter locations
   const handleSearch = (text) => {
     setSearchQuery(text);
-    const filtered = cities.filter((city) =>
-      city.name.toLowerCase().includes(text.toLowerCase())
+    const filtered = locations.filter((location) =>
+      location.name.toLowerCase().includes(text.toLowerCase())
     );
-    setFilteredCities(filtered);
+    setFilteredLocations(filtered);
   };
 
+  // Handle city selection
   const handleCitySelect = (city) => {
     setSelectedCity(city);
   };
@@ -75,10 +83,10 @@ const PlacesScreen = () => {
         <FontAwesome name="search" size={24} color="black" />
       </View>
 
-      {/* Cities List */}
+      {/* Locations List */}
       <FlatList
-        data={filteredCities}
-        keyExtractor={(item) => item.name}
+        data={filteredLocations}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <Pressable
             onPress={() => handleCitySelect(item)}
@@ -94,7 +102,7 @@ const PlacesScreen = () => {
         style={{ marginHorizontal: 20 }}
       />
 
-      {/* Selected City */}
+      {/* Selected Location */}
       {selectedCity && (
         <View style={{ marginHorizontal: 20, marginTop: 20 }}>
           <Text
@@ -115,17 +123,17 @@ const PlacesScreen = () => {
           <MapView
             style={{ width: "100%", height: 300, marginTop: 10 }}
             region={{
-              latitude: selectedCity.latitude,
-              longitude: selectedCity.longitude,
+              latitude: selectedCity.latitude || 0,
+              longitude: selectedCity.longitude || 0,
               latitudeDelta: 0.1,
               longitudeDelta: 0.1,
             }}
-            showsUserLocation={true} // Optional: show the user's location on the map
+            showsUserLocation={true}
           >
             <Marker
               coordinate={{
-                latitude: selectedCity.latitude,
-                longitude: selectedCity.longitude,
+                latitude: selectedCity.latitude || 0,
+                longitude: selectedCity.longitude || 0,
               }}
               title={selectedCity.name}
             />
@@ -137,5 +145,3 @@ const PlacesScreen = () => {
 };
 
 export default PlacesScreen;
-
-const styles = StyleSheet.create({});

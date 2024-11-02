@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   filterButton: {
     position: 'absolute',
     bottom: 10,
-    backgroundColor: 'rgba(217, 136, 89, 0.736)', // Lekko przezroczysty kolor
+    backgroundColor: 'rgba(210, 149, 27, 0.8)', // Lekko przezroczysty kolor
     width: 60,
     height: 60,
     borderRadius: 30,
