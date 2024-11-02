@@ -169,7 +169,7 @@ const HomeScreen = () => {
                 country_name: item.country_name, // Użyj nowego pola
                 photo: item.photo,
                 description: item.description,
-                price: item.ticket_price,
+                
                 isSeatCategorized: item.is_seat_categorized,
                 categoryType: item.categoryType,
               }}

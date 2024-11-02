@@ -23,7 +23,7 @@ const EventScreen = () => {
     startDate,
     endDate,
     isSeatCategorized,
-    price,
+    
     categoryType,
   } = route.params;
 
@@ -94,8 +94,9 @@ const EventScreen = () => {
             Podział miejsc: {isSeatCategorized ? "Tak" : "Nie"}
           </Text>
           
+          
 
-          {isSeatCategorized ? (
+          {/* {isSeatCategorized ? (
             <>
               <Text style={styles.priceText}>
                 Cena za pierwszą kategorię: {price * 3.0} zł
@@ -109,7 +110,7 @@ const EventScreen = () => {
             </>
           ) : (
             <Text style={styles.priceText}>Cena za bilet: {price} zł</Text>
-          )}
+          )} */}
         </View>
 
         {/* Booking Button */}
