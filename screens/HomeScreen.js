@@ -166,6 +166,7 @@ const HomeScreen = () => {
           data={filteredEvents} // Use the combined filtered events
           renderItem={({ item, index }) => (
             <EventCard
+
             item={{
               ...item,
               location_name: item.location_name,
@@ -176,6 +177,7 @@ const HomeScreen = () => {
               isSeatCategorized: item.is_seat_categorized,
               categoryType: item.categoryType,
               eventTickets: item.eventTickets // Pass event tickets data here
+
               }}
               key={index}
             />

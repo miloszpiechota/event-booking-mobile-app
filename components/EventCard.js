@@ -40,8 +40,6 @@ const EventCard = ({ item }) => {
             {locationName}, {cityName}
           </Text>
 
-          
-
           <Pressable
             style={ec_s.bookButton}
             onPress={() =>
@@ -66,6 +64,5 @@ const EventCard = ({ item }) => {
     </SafeAreaView>
   );
 };
-
 
 export default EventCard;

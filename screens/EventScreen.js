@@ -24,7 +24,6 @@ const EventScreen = () => {
     startDate,
     endDate,
     isSeatCategorized,
-    price,
     categoryType,
   } = route.params;
 
@@ -35,11 +34,13 @@ const EventScreen = () => {
       date.getMonth() + 1
     ).padStart(2, "0")}-${date.getFullYear()}`;
   };
+  
   const formatTime = (dateString) =>
     new Date(dateString).toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
     });
+  
   const calculateDuration = (start, end) =>
     Math.ceil((new Date(end) - new Date(start)) / (1000 * 3600 * 24));
 
@@ -53,10 +54,9 @@ const EventScreen = () => {
   const handleBooking = () => {
     navigation.navigate(
       isSeatCategorized ? "SeatCategory" : "Confirmation",
-      { eventTickets, ...restProps } // Przekazujemy eventTickets oraz pozostałe dane
+      { eventTickets, ...restProps } // Pass eventTickets and other props
     );
   };
-  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -99,40 +99,25 @@ const EventScreen = () => {
 
           {eventTickets.map((ticket, index) => (
             <View key={index} style={styles.ticketContainer}>
-             {isSeatCategorized ? (
-            <>
-              <Text style={styles.priceText}>
-                Cena za pierwszą kategorię: {ticket.price * 3.0} zł
-              </Text>
-              <Text style={styles.priceText}>
-                Cena za drugą kategorię: {ticket.price * 2.0} zł
-              </Text>
-              <Text style={styles.priceText}>
-                Cena za trzecią kategorię: {ticket.price} zł
-              </Text>
-            </>
-          ) : (
-            <Text style={styles.priceText}>Cena za bilet: {ticket.price} zł</Text>
-          )}
+              {isSeatCategorized ? (
+                <>
+                  <Text style={styles.priceText}>
+                    Cena za pierwszą kategorię: {ticket.price * 3.0} zł
+                  </Text>
+                  <Text style={styles.priceText}>
+                    Cena za drugą kategorię: {ticket.price * 2.0} zł
+                  </Text>
+                  <Text style={styles.priceText}>
+                    Cena za trzecią kategorię: {ticket.price} zł
+                  </Text>
+                </>
+              ) : (
+                <Text style={styles.priceText}>
+                  Cena za bilet: {ticket.price} zł
+                </Text>
+              )}
             </View>
           ))}
-          
-
-          {/* {isSeatCategorized ? (
-            <>
-              <Text style={styles.priceText}>
-                Cena za pierwszą kategorię: {ticket.price * 3.0} zł
-              </Text>
-              <Text style={styles.priceText}>
-                Cena za drugą kategorię: {ticket.price * 2.0} zł
-              </Text>
-              <Text style={styles.priceText}>
-                Cena za trzecią kategorię: {ticket.price} zł
-              </Text>
-            </>
-          ) : (
-            <Text style={styles.priceText}>Cena za bilet: {ticket.price} zł</Text>
-          )} */}
         </View>
 
         {/* Booking Button */}
