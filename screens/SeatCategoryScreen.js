@@ -6,7 +6,9 @@ const SeatCategoryScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   
-  const {
+  // Odbieramy wszystkie przekazane właściwości, w tym eventTickets i resztę danych
+  const { 
+    eventTickets,
     title,
     photo,
     description,
@@ -15,8 +17,8 @@ const SeatCategoryScreen = () => {
     startDate,
     endDate,
     isSeatCategorized,
-    price,
     categoryType,
+    ...restProps 
   } = route.params;
 
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -24,19 +26,21 @@ const SeatCategoryScreen = () => {
 
   const handleCategoryPress = (category) => {
     setSelectedCategory(category); // Ustawia wybraną kategorię
+    let ticketPrice = 0;
     switch (category) {
       case "firstCategory":
-        setSelectedPrice((price * 3.0).toFixed(2)); // Ustawia cenę dla pierwszej kategorii
+        ticketPrice = eventTickets[0]?.price * 3.0; // Ustawia cenę dla pierwszej kategorii
         break;
       case "secondCategory":
-        setSelectedPrice((price * 2.0).toFixed(2)); // Ustawia cenę dla drugiej kategorii
+        ticketPrice = eventTickets[0]?.price * 2.0; // Ustawia cenę dla drugiej kategorii
         break;
       case "thirdCategory":
-        setSelectedPrice((price * 1.0).toFixed(2)); // Ustawia cenę dla trzeciej kategorii
+        ticketPrice = eventTickets[0]?.price; // Ustawia cenę dla trzeciej kategorii
         break;
       default:
-        setSelectedPrice(0);
+        ticketPrice = 0;
     }
+    setSelectedPrice(ticketPrice.toFixed(2)); // Ustawia wybraną cenę
     console.log("Wybrana kategoria:", category);
   };
 
@@ -74,7 +78,7 @@ const SeatCategoryScreen = () => {
           >
             <Text style={styles.categoryText}>Pierwsza Kategoria</Text>
             <Text style={styles.priceText}>
-              Cena: { (price * 3.0).toFixed(2) } zł
+              Cena: { (eventTickets[0]?.price * 3.0).toFixed(2) } zł
             </Text>
           </TouchableOpacity>
           
@@ -88,7 +92,7 @@ const SeatCategoryScreen = () => {
           >
             <Text style={styles.categoryText}>Druga Kategoria</Text>
             <Text style={styles.priceText}>
-              Cena: { (price * 2.0).toFixed(2) } zł
+              Cena: { (eventTickets[0]?.price * 2.0).toFixed(2) } zł
             </Text>
           </TouchableOpacity>
           
@@ -102,7 +106,7 @@ const SeatCategoryScreen = () => {
           >
             <Text style={styles.categoryText}>Trzecia Kategoria</Text>
             <Text style={styles.priceText}>
-              Cena: { (price * 1.0).toFixed(2) } zł
+              Cena: { (eventTickets[0]?.price).toFixed(2) } zł
             </Text>
           </TouchableOpacity>
         </View>
@@ -121,10 +125,10 @@ const SeatCategoryScreen = () => {
               startDate,
               endDate,
               isSeatCategorized,
-              price,
               categoryType,
               selectedCategory,  // Przekazanie wybranej kategorii
               selectedPrice,      // Przekazanie wybranej ceny
+              ...restProps,
             })
           }
         >

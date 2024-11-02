@@ -10,10 +10,11 @@ export const fetchEvents = async () => {
 
       // Używamy prostszego mapowania
       const events = data.event.map(event => ({
-          ...event,
-          // Możesz dodać inne pola, które chcesz zachować z event
-          idevent_category: event.idevent_category // Upewnij się, że mamy dostęp do idevent_category
-      }));
+        ...event,
+        idevent: event.idevent, // Upewnij się, że `idevent` jest dostępne
+        idevent_category: event.idevent_category // Inne pola, jeśli są potrzebne
+    }));
+    
 
       console.log(events);
       return events;

@@ -15,9 +15,19 @@ import {
   
     // Przekazywane parametry
     const {
+      eventTickets,
       title,
       selectedCategory,
       selectedPrice,
+      photo,
+      description,
+      locationName,
+      cityName,
+      startDate,
+      endDate,
+      isSeatCategorized,
+      categoryType,
+      ...restProps 
     } = route.params;
   
     const fee = 87; // Przykładowa opłata serwisowa

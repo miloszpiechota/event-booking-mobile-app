@@ -13,6 +13,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 const EventScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const { eventTickets, ...restProps } = route.params;
 
   const {
     title,
@@ -52,9 +53,10 @@ const EventScreen = () => {
   const handleBooking = () => {
     navigation.navigate(
       isSeatCategorized ? "SeatCategory" : "Confirmation",
-      route.params
+      { eventTickets, ...restProps } // Przekazujemy eventTickets oraz pozostałe dane
     );
   };
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -90,26 +92,47 @@ const EventScreen = () => {
           <Text style={styles.additionalInfoText}>
             <Text style={styles.label}>Dodatkowe informacje:</Text>
           </Text>
+         
           <Text style={styles.priceText}>
             Podział miejsc: {isSeatCategorized ? "Tak" : "Nie"}
           </Text>
-          
 
-          {isSeatCategorized ? (
+          {eventTickets.map((ticket, index) => (
+            <View key={index} style={styles.ticketContainer}>
+             {isSeatCategorized ? (
             <>
               <Text style={styles.priceText}>
-                Cena za pierwszą kategorię: {price * 3.0} zł
+                Cena za pierwszą kategorię: {ticket.price * 3.0} zł
               </Text>
               <Text style={styles.priceText}>
-                Cena za drugą kategorię: {price * 2.0} zł
+                Cena za drugą kategorię: {ticket.price * 2.0} zł
               </Text>
               <Text style={styles.priceText}>
-                Cena za trzecią kategorię: {price} zł
+                Cena za trzecią kategorię: {ticket.price} zł
               </Text>
             </>
           ) : (
-            <Text style={styles.priceText}>Cena za bilet: {price} zł</Text>
+            <Text style={styles.priceText}>Cena za bilet: {ticket.price} zł</Text>
           )}
+            </View>
+          ))}
+          
+
+          {/* {isSeatCategorized ? (
+            <>
+              <Text style={styles.priceText}>
+                Cena za pierwszą kategorię: {ticket.price * 3.0} zł
+              </Text>
+              <Text style={styles.priceText}>
+                Cena za drugą kategorię: {ticket.price * 2.0} zł
+              </Text>
+              <Text style={styles.priceText}>
+                Cena za trzecią kategorię: {ticket.price} zł
+              </Text>
+            </>
+          ) : (
+            <Text style={styles.priceText}>Cena za bilet: {ticket.price} zł</Text>
+          )} */}
         </View>
 
         {/* Booking Button */}

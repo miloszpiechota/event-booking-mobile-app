@@ -29,6 +29,7 @@ import { fetchCategories } from "../database/FetchCategories"; // Import the fet
 import styles from './HomeScreen.styles'; // Import styles
 import SearchBar from "./SearchBar";
 import { fetchLocations } from '../database/FetchLocations'; 
+import { fetchEventTickets } from '../database/FetchEventTickets';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -43,24 +44,28 @@ const HomeScreen = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Fetching data from APIs
+        // Fetch all required data
         const fetchedEvents = await fetchEvents();
         const fetchedCategories = await fetchCategories();
-        const fetchedLocations = await fetchLocations(); 
+        const fetchedLocations = await fetchLocations();
+        const fetchedTickets = await fetchEventTickets();
   
-        // Mapping foreign keys to include category names and location details
-        const eventsWithCategoryAndLocationNames = fetchedEvents.map((event) => {
-          const category = fetchedCategories.find(
-            (cat) => cat.idevent_category === event.idevent_category
-          );
-  
-          // Find location based on event's location ID
-          const location = fetchedLocations.find(
-            (loc) => loc.id === event.idevent_location // Ensure event has event_location_id
-          );
+        // Map event tickets to each event based on idevent
+        const eventsWithTickets = fetchedEvents.map((event) => {
+          const tickets = fetchedTickets.filter(ticket => {
+            console.log(`Comparing ticket.idevent: ${ticket.idevent} with event.idevent: ${event.idevent}`);
+            return ticket.idevent === event.idevent;
+        });
+        
+          console.log("\x1b[31m%s\x1b[0m", "Event Tickets for event:", event.name, tickets.length ? tickets : "No tickets found");
+
+          // Retrieve category and location names
+          const category = fetchedCategories.find(cat => cat.idevent_category === event.idevent_category);
+          const location = fetchedLocations.find(loc => loc.id === event.idevent_location);
   
           return {
             ...event,
+            eventTickets: tickets,
             categoryType: category ? category.category_type : "Unknown",
             location_name: location ? location.name : "Unknown Location",
             city_name: location ? location.city : "Unknown City",
@@ -68,19 +73,18 @@ const HomeScreen = () => {
           };
         });
   
-        // Updating state with the mapped data
-        setEvents(eventsWithCategoryAndLocationNames);
+        // Set the data in state
+        setEvents(eventsWithTickets);
         setCategories(fetchedCategories);
-        setLocations(fetchedLocations); // Optional: if you want to store locations too
-  
+        setLocations(fetchedLocations);
       } catch (error) {
-        console.error("Error loading data:", error); // Handle any errors
+        console.error("Error loading data:", error);
       }
     };
   
     loadData();
-  }, []); // Fetch data on component mount
-   // Fetch data on component mount
+  }, []);
+  
 
   // Filtering function based on selected category
   const applyFilter = (filter) => {
@@ -162,16 +166,16 @@ const HomeScreen = () => {
           data={filteredEvents} // Use the combined filtered events
           renderItem={({ item, index }) => (
             <EventCard
-              item={{
-                ...item,
-                location_name: item.location_name, // Użyj nowego pola
-                city_name: item.city_name, // Użyj nowego pola
-                country_name: item.country_name, // Użyj nowego pola
-                photo: item.photo,
-                description: item.description,
-                price: item.ticket_price,
-                isSeatCategorized: item.is_seat_categorized,
-                categoryType: item.categoryType,
+            item={{
+              ...item,
+              location_name: item.location_name,
+              city_name: item.city_name,
+              country_name: item.country_name,
+              photo: item.photo,
+              description: item.description,
+              isSeatCategorized: item.is_seat_categorized,
+              categoryType: item.categoryType,
+              eventTickets: item.eventTickets // Pass event tickets data here
               }}
               key={index}
             />

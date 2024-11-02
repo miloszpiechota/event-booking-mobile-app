@@ -21,8 +21,8 @@ const formatDate = (dateString) => {
 const EventCard = ({ item }) => {
   const formattedStartDate = formatDate(item.start_date);
   const formattedEndDate = formatDate(item.end_date);
-  const locationName = item.location_name; // Użycie nazwy lokalizacji
-  const cityName = item.city_name; // Użycie nazwy miasta
+  const locationName = item.location_name;
+  const cityName = item.city_name;
   const navigation = useNavigation();
 
   return (
@@ -37,24 +37,25 @@ const EventCard = ({ item }) => {
               : `${formattedStartDate} - ${formattedEndDate}`}
           </Text>
           <Text style={ec_s.eventLocation}>
-            {locationName}, {cityName}{" "}
-            {/* Wyświetlenie nazwy lokalizacji i miasta */}
+            {locationName}, {cityName}
           </Text>
+
+          
+
           <Pressable
             style={ec_s.bookButton}
             onPress={() =>
               navigation.navigate("Event", {
                 title: item.name,
-                photo: item.photo, // Przekazujemy zdjęcie
-                description: item.description, // Przekazujemy opis
+                photo: item.photo,
+                description: item.description,
                 location: locationName,
                 city: cityName,
                 startDate: item.start_date,
                 endDate: item.end_date,
-                price: item.price,
                 categoryType: item.categoryType,
-                isSeatCategorized: item.is_seat_categorized, 
-
+                isSeatCategorized: item.is_seat_categorized,
+                eventTickets: item.eventTickets // Pass tickets to EventScreen
               })
             }
           >
@@ -65,5 +66,6 @@ const EventCard = ({ item }) => {
     </SafeAreaView>
   );
 };
+
 
 export default EventCard;
