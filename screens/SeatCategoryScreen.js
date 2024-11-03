@@ -126,6 +126,7 @@ const SeatCategoryScreen = () => {
               categoryType,
               selectedCategory,
               selectedPrice,
+              eventTickets,
               ...restProps,
             })
           }
