@@ -1,12 +1,11 @@
 import React, { useState } from "react"; 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native"; 
 import { StyleSheet, Text, View, TouchableOpacity, Pressable } from "react-native";
 
 const SeatCategoryScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   
-  // Odbieramy wszystkie przekazane właściwości, w tym eventTickets i resztę danych
   const { 
     eventTickets,
     title,
@@ -25,23 +24,22 @@ const SeatCategoryScreen = () => {
   const [selectedPrice, setSelectedPrice] = useState(0);
 
   const handleCategoryPress = (category) => {
-    setSelectedCategory(category); // Ustawia wybraną kategorię
+    setSelectedCategory(category);
     let ticketPrice = 0;
     switch (category) {
       case "firstCategory":
-        ticketPrice = eventTickets[0]?.price * 3.0; // Ustawia cenę dla pierwszej kategorii
+        ticketPrice = eventTickets[0]?.price * 3.0;
         break;
       case "secondCategory":
-        ticketPrice = eventTickets[0]?.price * 2.0; // Ustawia cenę dla drugiej kategorii
+        ticketPrice = eventTickets[0]?.price * 2.0;
         break;
       case "thirdCategory":
-        ticketPrice = eventTickets[0]?.price; // Ustawia cenę dla trzeciej kategorii
+        ticketPrice = eventTickets[0]?.price;
         break;
       default:
         ticketPrice = 0;
     }
-    setSelectedPrice(ticketPrice.toFixed(2)); // Ustawia wybraną cenę
-    console.log("Wybrana kategoria:", category);
+    setSelectedPrice(ticketPrice.toFixed(2));
   };
 
   const getSelectedCategoryText = () => {
@@ -59,8 +57,8 @@ const SeatCategoryScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.priceText}>Wybierz kategorie miejsc:</Text>
-      <Text style={styles.priceText}>Wybrano: {getSelectedCategoryText()}</Text>
+      <Text style={styles.headerText}>Wybierz kategorię miejsc:</Text>
+      <Text style={styles.selectedCategoryText}>Wybrano: {getSelectedCategoryText()}</Text>
       
       <View style={styles.stageContainer}>
         <View style={styles.stageBox}>
@@ -126,13 +124,13 @@ const SeatCategoryScreen = () => {
               endDate,
               isSeatCategorized,
               categoryType,
-              selectedCategory,  // Przekazanie wybranej kategorii
-              selectedPrice,      // Przekazanie wybranej ceny
+              selectedCategory,
+              selectedPrice,
               ...restProps,
             })
           }
         >
-          <Text style={styles.buttonText}>NEXT</Text>
+          <Text style={styles.buttonText}>DALEJ</Text>
         </Pressable>
       )}
     </View>
@@ -147,24 +145,40 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+    backgroundColor: "#f8f8f8",
+  },
+  headerText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 10,
+  },
+  selectedCategoryText: {
+    fontSize: 18,
+    color: "#555",
+    marginVertical: 10,
   },
   stageContainer: {
     width: '100%',
     alignItems: 'center',
-    marginTop: 20,
-    borderWidth: 2,
-    borderColor: '#6e6b6b',
-    borderRadius: 10,
-    padding: 10,
+    padding: 15,
+    borderRadius: 12,
+    backgroundColor: "#e6e6e6",
+    marginVertical: 20,
   },
   stageBox: {
     width: '80%',
     height: 60,
-    backgroundColor: '#7d7d7d',
+    backgroundColor: '#99a3b2',
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10,
+    borderRadius: 8,
     marginBottom: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 5,
   },
   stageText: {
     fontSize: 24,
@@ -179,38 +193,52 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 10,
-    borderRadius: 8,
+    marginVertical: 10,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 6,
+    elevation: 4,
+    paddingHorizontal: 15,
   },
   firstCategory: {
-    backgroundColor: '#e6afeb',
+    backgroundColor: '#bbdefb',
   },
   secondCategory: {
-    backgroundColor: '#f6c1a6',
+    backgroundColor: '#bbdefb',
   },
   thirdCategory: {
-    backgroundColor: 'hsl(190, 65%, 89%)',
+    backgroundColor: '#bbdefb',
   },
   selectedCategory: {
-    backgroundColor: 'green', 
+    borderColor: "#D98859",
+    borderWidth: 2,
+    backgroundColor: "#ffd9b3",
   },
   categoryText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '600',
+    color: "#333",
   },
   priceText: {
-    marginTop: 10,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '500',
+    color: "#666",
+    marginTop: 8,
   },
   button: {
-    backgroundColor: "#FF6F61",
+    backgroundColor: "#4a79d9",
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 8,
     alignItems: "center",
-    margin: 10,
     marginTop: 20,
     width: '80%',
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 5,
   },
   buttonText: {
     color: "#fff",
