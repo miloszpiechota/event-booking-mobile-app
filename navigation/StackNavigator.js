@@ -1,3 +1,4 @@
+import Feather from '@expo/vector-icons/Feather';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -11,18 +12,19 @@ import EventScreen from "../screens/EventScreen";
 import SeatCategoryScreen from "../screens/SeatCategoryScreen";
 import ConfirmationScreen from "../screens/ConfirmationScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import LoginScreen from "../screens/LoginScreen"
+import LoginScreen from "../screens/LoginScreen";
 import SignUpScreen from "../screens/SignUpScreen";
+import ShoppingScreen from "../screens/ShopCartScreen"; 
+
 const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreens() {
   return (
-    
     <HomeStack.Navigator>
       <HomeStack.Screen 
         name="Welcome" 
         component={WelcomeScreen} 
-        options={{ headerShown: false }} // Ukryj nagłówek dla ekranu powitalnego
+        options={{ headerShown: false }} 
       />
       <HomeStack.Screen
         name="LoginScreen"
@@ -32,7 +34,7 @@ function HomeStackScreens() {
       <HomeStack.Screen 
         name="SignUpScreen" 
         component={SignUpScreen} 
-        options={{ headerShown: false }} // Ukryj nagłówek dla ekranu powitalnego
+        options={{ headerShown: false }}
       />
       <HomeStack.Screen
         name="HomeScreen"
@@ -43,8 +45,6 @@ function HomeStackScreens() {
       <HomeStack.Screen name="Event" component={EventScreen} />
       <HomeStack.Screen name="SeatCategory" component={SeatCategoryScreen} />
       <HomeStack.Screen name="Confirmation" component={ConfirmationScreen} />
-      
-
     </HomeStack.Navigator>
   );
 }
@@ -55,9 +55,11 @@ function ProfileStackScreens() {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+      <ProfileStack.Screen name="Shopping" component={ShoppingScreen} />
     </ProfileStack.Navigator>
   );
 }
+
 
 const Tab = createBottomTabNavigator();
 
@@ -77,6 +79,21 @@ function Navigation() {
                 <Entypo name="home" size={24} color="black" />
               ) : (
                 <AntDesign name="home" size={24} color="black" />
+              ),
+          }}
+        />
+        <Tab.Screen
+          name="Shopping"
+          component={ShoppingScreen} // Add the ShoppingScreen here
+          options={{
+            tabBarLabel: "Shop",
+            tabBarLabelStyle: { color: "black" },
+            headerShown: false,
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <Feather name="shopping-cart" size={24} color="black" />
+              ) : (
+                <Feather name="shopping-cart" size={24} color="gray" />
               ),
           }}
         />
