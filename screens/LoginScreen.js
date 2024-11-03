@@ -5,9 +5,9 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
-
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
@@ -15,26 +15,48 @@ import { useNavigation } from "@react-navigation/native";
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleGoBack = () => {
     navigation.goBack();
   };
-  
-  const handleLogin = () => {
-    navigation.navigate("HomeScreen");
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch("http://192.168.56.1:3000/api/users/login", {  // Replace with your backend URL
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store the token in local storage or state management
+        const token = data.token;
+        console.log("Login Successful", token);
+        // Navigate to HomeScreen or any other screen
+        navigation.navigate("HomeScreen");
+      } else {
+        Alert.alert("Login Failed", data.msg || "An error occurred");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      Alert.alert("Login Failed", "An error occurred. Please try again.");
+    }
   };
 
   const handleSignup = () => {
-    // Możesz dodać logikę rejestracji tutaj, a następnie nawigować do HomeScreen
     navigation.navigate("HomeScreen");
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.headingText}>User Login</Text>
       
-      
-        <Text style={styles.headingText}>User Login</Text>
-        
       {/* form  */}
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
@@ -44,6 +66,8 @@ const LoginScreen = () => {
             placeholder="Enter your email"
             placeholderTextColor={colors.secondary}
             keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail} // Update state on change
           />
         </View>
         <View style={styles.inputContainer}>
@@ -53,6 +77,8 @@ const LoginScreen = () => {
             placeholder="Enter your password"
             placeholderTextColor={colors.secondary}
             secureTextEntry={secureEntry}
+            value={password}
+            onChangeText={setPassword} // Update state on change
           />
           <TouchableOpacity
             onPress={() => {
@@ -83,11 +109,11 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const colors = {
-  primary: "#011C40", // Główny kolor
-  secondary: "#7f8c8d", // Kolor dodatkowy
-  white: "#ffffff", // Biały
-  gray: "#fafdfb", // Szary
-  black: "#C4DFE6", // Czarny
+  primary: "#011C40", // Main color
+  secondary: "#7f8c8d", // Secondary color
+  white: "#ffffff", // White
+  gray: "#fafdfb", // Gray
+  black: "#C4DFE6", // Black
 };
 
 const styles = StyleSheet.create({
@@ -96,14 +122,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     padding: 20,
   },
-  
-  textContainer: {
-    marginVertical: 20,
-  },
   headingText: {
     fontSize: 32,
     color: colors.primary,
-    // Usunięto fontFamily
   },
   formContainer: {
     marginTop: 20,
@@ -121,13 +142,11 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     paddingHorizontal: 10,
-    // Usunięto fontFamily
   },
   forgotPasswordText: {
     textAlign: "right",
     color: colors.primary,
     marginVertical: 10,
-    // Usunięto fontFamily
   },
   loginButtonWrapper: {
     backgroundColor: colors.primary,
@@ -139,32 +158,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     padding: 10,
-    // Usunięto fontFamily
-  },
-  continueText: {
-    textAlign: "center",
-    marginVertical: 20,
-    fontSize: 14,
-    color: colors.primary,
-    // Usunięto fontFamily
-  },
-  googleButtonContainer: {
-    flexDirection: "row",
-    borderWidth: 2,
-    borderColor: colors.primary,
-    borderRadius: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    gap: 10,
-  },
-  googleImage: {
-    height: 20,
-    width: 20,
-  },
-  googleText: {
-    fontSize: 20,
-    
   },
   footerContainer: {
     flexDirection: "row",
@@ -175,10 +168,8 @@ const styles = StyleSheet.create({
   },
   accountText: {
     color: colors.primary,
-    
   },
   signupText: {
     color: colors.primary,
-    
   },
 });
