@@ -5,17 +5,17 @@ import {
   StyleSheet,
   Text,
   View,
+  TextInput,
 } from "react-native";
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const ConfirmationScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  // Parameters passed from the previous screen
   const {
-    eventTickets = [], // Default to an empty array
+    eventTickets = [],
     title,
     selectedCategory,
     selectedPrice,
@@ -31,13 +31,20 @@ const ConfirmationScreen = () => {
   } = route.params;
 
   const fee = 87; // Sample service fee
-  const grandTotal = parseFloat(selectedPrice) + fee; // Total amount
+
+  // New state for ticket quantity
+  const [quantity, setQuantity] = useState(1); // Default to 1 ticket
+  const [grandTotal, setGrandTotal] = useState(parseFloat(selectedPrice) + fee); // Initial total
 
   useEffect(() => {
     console.log("Received eventTickets:", eventTickets);
   }, [eventTickets]);
 
-  // Disable swipe back gesture
+  // Update grandTotal whenever quantity changes
+  useEffect(() => {
+    setGrandTotal(quantity * parseFloat(selectedPrice) + fee);
+  }, [quantity, selectedPrice]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       gestureEnabled: false,
@@ -45,7 +52,6 @@ const ConfirmationScreen = () => {
     });
   }, []);
 
-  // Handle back press for Android
   useEffect(() => {
     const backAction = () => {
       Alert.alert(
@@ -76,7 +82,6 @@ const ConfirmationScreen = () => {
     return () => backHandler.remove();
   }, []);
 
-  // Function to get the selected category text
   const getSelectedCategoryText = () => {
     switch (selectedCategory) {
       case "firstCategory":
@@ -90,7 +95,6 @@ const ConfirmationScreen = () => {
     }
   };
 
-  // Confirm payment function
   const confirmPayment = () => {
     Alert.alert(
       "Potwierdzenie",
@@ -108,6 +112,7 @@ const ConfirmationScreen = () => {
             navigation.navigate("Ticket", {
               selectedCategory,
               selectedPrice,
+              quantity, // Pass quantity to the next screen
             });
           },
         },
@@ -118,9 +123,23 @@ const ConfirmationScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.detailsContainer}>
+
+        
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.category}>Kategoria: {getSelectedCategoryText()}</Text>
-        <Text style={styles.price}>Cena: {selectedPrice} zł</Text>
+        <Text style={styles.price}>Cena za kategorię: {selectedPrice} zł</Text>
+
+<View style={styles.separator} />
+
+        <View style={styles.quantityContainer}>
+          <Text style={styles.quantityText}>Wybierz liczbę biletów:</Text>
+          <TextInput
+            style={styles.quantityInput}
+            keyboardType="numeric"
+            value={String(quantity)}
+            onChangeText={(value) => setQuantity(Number(value))}
+          />
+        </View>
 
         <View style={styles.separator} />
 
@@ -156,7 +175,11 @@ const ConfirmationScreen = () => {
 
         <View style={styles.separator} />
 
-        {/* Service fee and total amount */}
+        
+        
+
+        <View style={styles.separator} />
+
         <View style={styles.feeContainer}>
           <Text style={styles.feeText}>Opłata serwisowa:</Text>
           <Text style={styles.feeAmount}>{fee} zł</Text>
@@ -251,6 +274,24 @@ const styles = StyleSheet.create({
   ticketDetailText: {
     fontSize: 15,
     color: "#333",
+  },
+  quantityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  quantityText: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginRight: 10,
+  },
+  quantityInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 5,
+    width: 50,
+    textAlign: "center",
   },
   payButton: {
     marginTop: 20,
