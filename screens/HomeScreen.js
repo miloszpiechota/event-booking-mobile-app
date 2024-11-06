@@ -69,7 +69,8 @@ const HomeScreen = () => {
             categoryType: category ? category.category_type : "Unknown",
             location_name: location ? location.name : "Unknown Location",
             city_name: location ? location.city : "Unknown City",
-            country_name: location ? location.country : "Unknown Country"
+            country_name: location ? location.country : "Unknown Country",
+            
           };
         });
   
@@ -176,7 +177,8 @@ const HomeScreen = () => {
               description: item.description,
               isSeatCategorized: item.is_seat_categorized,
               categoryType: item.categoryType,
-              eventTickets: item.eventTickets // Pass event tickets data here
+              eventTickets: item.eventTickets,
+              numberOfTickets: item.number_of_ticket
 
               }}
               key={index}

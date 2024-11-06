@@ -25,6 +25,7 @@ const EventScreen = () => {
     endDate,
     isSeatCategorized,
     categoryType,
+    numberOfTickets
   } = route.params;
 
   // Format date and time

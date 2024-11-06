@@ -17,6 +17,7 @@ const SeatCategoryScreen = () => {
     endDate,
     isSeatCategorized,
     categoryType,
+    numberOfTickets,
     ...restProps 
   } = route.params;
 
@@ -127,6 +128,7 @@ const SeatCategoryScreen = () => {
               selectedCategory,
               selectedPrice,
               eventTickets,
+              numberOfTickets,
               ...restProps,
             })
           }

@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
-  BackHandler,
   Pressable,
   StyleSheet,
   Text,
@@ -9,9 +8,9 @@ import {
   TextInput,
 } from "react-native";
 import { Picker } from '@react-native-picker/picker';
-
 import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./ConfiramtionScreen.styles"; // Import styles
+import axios from 'axios'; // Import axios for making HTTP requests
 
 const fetchPaymentMethods = async () => {
   try {
@@ -41,12 +40,11 @@ const ConfirmationScreen = () => {
     endDate,
     isSeatCategorized,
     categoryType,
-    ...restProps
+    numberOfTickets,
+    userId,  // Assuming userId is passed as part of route.params
   } = route.params;
 
   const fee = 87; // Sample service fee
-
-  // Ensure selectedPrice is a valid number, default to 0 if undefined
   const initialPrice = selectedPrice && !isNaN(parseFloat(selectedPrice)) ? parseFloat(selectedPrice) : 0;
   
   const [quantity, setQuantity] = useState(1); // Default to 1 ticket
@@ -55,17 +53,18 @@ const ConfirmationScreen = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(""); // To store selected payment method
 
   useEffect(() => {
-    // Fetch payment methods from the backend
     const getPaymentMethods = async () => {
       const methods = await fetchPaymentMethods();
+      console.log("Fetched payment methods:", methods);  // Log the fetched methods for debugging
       setPaymentMethods(methods);
       if (methods.length > 0) {
-        setSelectedPaymentMethod(methods[0].id); // Set default payment method
+        setSelectedPaymentMethod(methods[0].idpayment_method); // Set the first method as default
       }
     };
-
+  
     getPaymentMethods();
-  }, []);
+  }, []); // Runs once on component mount
+  // Runs once on component mount
 
   useEffect(() => {
     setGrandTotal(quantity * initialPrice + fee);
@@ -91,36 +90,55 @@ const ConfirmationScreen = () => {
     }
   };
 
-  const confirmPayment = () => {
-    Alert.alert(
-      "Potwierdzenie",
-      `Całkowita kwota do zapłaty: ${(grandTotal || 0).toFixed(2)} zł\nMetoda płatności: ${selectedPaymentMethod}`,
-      [
-        {
-          text: "Anuluj",
-          onPress: () => console.log("Płatność anulowana"),
-          style: "cancel",
-        },
-        {
-          text: "Potwierdź",
-          onPress: () => {
-            console.log("Płatność potwierdzona");
-            navigation.navigate("Ticket", {
-              selectedCategory,
-              selectedPrice,
-              quantity, // Pass quantity to the next screen
-              selectedPaymentMethod, // Pass selected payment method
-            });
-          },
-        },
-      ]
-    );
+  const confirmPayment = async () => {
+    try {
+      // Prepare data to send to the backend
+      const orderData = {
+        data: new Date().toISOString(),  // Current date
+        total_amount: grandTotal,        // Total amount (price + fee)
+        total_tax_amount: fee,           // Tax amount
+        iduser: userId,                  // User ID passed as parameter
+        order_tickets: eventTickets.map(ticket => ({
+          ticket_id: ticket.id,          // Ticket ID
+          price: ticket.price,           // Ticket price
+          quantity: quantity,            // Quantity of tickets
+        })),
+        payments: [{
+          method_id: selectedPaymentMethod, // Selected payment method
+          amount: grandTotal,               // Amount to be paid
+        }],
+      };
+
+      // Log the order data to the console for debugging
+      console.log("Order Data being sent:", orderData);
+      console.log('selectedPaymentMethod:', selectedPaymentMethod);
+
+      // Send request to backend to create an order
+      const response = await axios.post('http://192.168.56.1:3000/api/orders/create', orderData);
+
+      if (response.data.success) {
+        Alert.alert('Płatność potwierdzona', 'Twoje zamówienie zostało złożone pomyślnie');
+        // Optionally, navigate to a new screen (e.g., ticket confirmation or order summary)
+        navigation.navigate("Ticket", {
+          selectedCategory,
+          selectedPrice,
+          quantity,
+          selectedPaymentMethod,
+        });
+      } else {
+        Alert.alert('Błąd', 'Wystąpił problem z przetworzeniem płatności');
+      }
+    } catch (error) {
+      console.error('Error confirming payment:', error);
+      Alert.alert('Błąd', 'Wystąpił problem z połączeniem z serwerem');
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{numberOfTickets}</Text>
         <Text style={styles.category}>Kategoria: {getSelectedCategoryText()}</Text>
         <Text style={styles.price}>Cena za kategorię: {selectedPrice ? selectedPrice : "Brak ceny"} zł</Text>
 
@@ -131,8 +149,23 @@ const ConfirmationScreen = () => {
           <TextInput
             style={styles.quantityInput}
             keyboardType="numeric"
-            value={String(quantity)}
-            onChangeText={(value) => setQuantity(Number(value))}
+            value={String(quantity)} // Converting to string for TextInput handling
+            onChangeText={(value) => {
+              const newQuantity = parseInt(value, 10);
+              if (!isNaN(newQuantity) && newQuantity > 0) {
+                if (newQuantity <= numberOfTickets) {
+                  setQuantity(newQuantity); // Update quantity
+                } else {
+                  setQuantity(numberOfTickets); // Max tickets allowed
+                  Alert.alert("Przekroczona liczba biletów", `Maksymalna liczba biletów to ${numberOfTickets}`);
+                }
+              } else if (value === "") {
+                setQuantity(1); // Default to 1 ticket if empty
+              } else {
+                setQuantity(1); // Default to 1 on invalid input
+                Alert.alert("Niepoprawna liczba biletów", "Liczba biletów musi być większa od 0.");
+              }
+            }}
           />
         </View>
 
@@ -140,27 +173,13 @@ const ConfirmationScreen = () => {
 
         <View style={styles.eventDetailsContainer}>
           <Text style={styles.sectionTitle}>Szczegóły biletu:</Text>
-          {eventTickets && eventTickets.length > 0 ? (
+          {Array.isArray(eventTickets) && eventTickets.length > 0 ? (
             eventTickets.map((ticket) => (
               <View key={ticket.idevent_ticket || ticket.name} style={styles.ticketDetails}>
-                <Text style={styles.ticketDetailText}>
-                  Nazwa: {ticket.name || "Brak nazwy"}
-                </Text>
-                <Text style={styles.ticketDetailText}>
-                  Cena regularna biletu: {ticket.price && !isNaN(ticket.price) ? ticket.price.toFixed(2) : "Brak ceny"} zł
-                </Text>
-                <Text style={styles.ticketDetailText}>
-                  Data rozpoczęcia:{" "}
-                  {ticket.start_date
-                    ? new Date(ticket.start_date).toLocaleDateString()
-                    : "Brak daty"}
-                </Text>
-                <Text style={styles.ticketDetailText}>
-                  Data zakończenia:{" "}
-                  {ticket.end_date
-                    ? new Date(ticket.end_date).toLocaleDateString()
-                    : "Brak daty"}
-                </Text>
+                <Text style={styles.ticketDetailText}>Nazwa: {ticket.name || "Brak nazwy"}</Text>
+                <Text style={styles.ticketDetailText}>Cena regularna: {ticket.price ? ticket.price.toFixed(2) : "Brak ceny"} zł</Text>
+                <Text style={styles.ticketDetailText}>Data rozpoczęcia: {ticket.start_date ? new Date(ticket.start_date).toLocaleDateString() : "Brak daty"}</Text>
+                <Text style={styles.ticketDetailText}>Data zakończenia: {ticket.end_date ? new Date(ticket.end_date).toLocaleDateString() : "Brak daty"}</Text>
               </View>
             ))
           ) : (
@@ -171,24 +190,30 @@ const ConfirmationScreen = () => {
         <View style={styles.separator} />
 
         <View style={styles.paymentMethodContainer}>
-          <Text style={styles.paymentMethodText}>Wybierz metodę płatności:</Text>
-          {paymentMethods.length > 0 && (
-            <Picker
-            selectedValue={selectedPaymentMethod}
-            onValueChange={(itemValue) => setSelectedPaymentMethod(itemValue)}
-          >
-            {paymentMethods.map((method) => (
-              <Picker.Item
-                key={method.id ? method.id.toString() : `fallback-key-${method.name}`} // Use fallback if id is undefined
-                label={method.name}
-                value={method.id}
-              />
-            ))}
-          </Picker>
-          
-          
-          )}
-        </View>
+    <Text style={styles.paymentMethodText}>Wybierz metodę płatności:</Text>
+    {paymentMethods.length > 0 ? (
+      <Picker
+      selectedValue={selectedPaymentMethod}
+      onValueChange={(itemValue) => setSelectedPaymentMethod(itemValue)}
+    >
+      {paymentMethods.length > 0 ? (
+        paymentMethods.map((method, index) => (
+          <Picker.Item
+            key={method.idpayment_method || index}  // Use idpayment_method for the key
+            label={method.name || 'Brak nazwy'}
+            value={method.idpayment_method}  // Use idpayment_method as the value
+          />
+        ))
+      ) : (
+        <Text>Ładowanie metod płatności...</Text>  // Show a loading state
+      )}
+    </Picker>
+    
+    
+    ) : (
+      <Text>Ładowanie metod płatności...</Text> // Show a loading state
+    )}
+  </View>
 
         <View style={styles.separator} />
 

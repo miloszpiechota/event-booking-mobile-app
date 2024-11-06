@@ -23,6 +23,7 @@ const EventCard = ({ item }) => {
   const formattedEndDate = formatDate(item.end_date);
   const locationName = item.location_name;
   const cityName = item.city_name;
+  
   const navigation = useNavigation();
 
   return (
@@ -53,7 +54,8 @@ const EventCard = ({ item }) => {
                 endDate: item.end_date,
                 categoryType: item.categoryType,
                 isSeatCategorized: item.is_seat_categorized,
-                eventTickets: item.eventTickets // Pass tickets to EventScreen
+                eventTickets: item.eventTickets, // Pass tickets to EventScreen
+                numberOfTickets: item.number_of_ticket
               })
             }
           >

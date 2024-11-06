@@ -12,7 +12,8 @@ export const fetchEvents = async () => {
       const events = data.event.map(event => ({
         ...event,
         idevent: event.idevent, // Upewnij się, że `idevent` jest dostępne
-        idevent_category: event.idevent_category // Inne pola, jeśli są potrzebne
+        idevent_category: event.idevent_category, // Inne pola, jeśli są potrzebne
+        numberOfTickets: event.number_of_ticket,
     }));
     
 
