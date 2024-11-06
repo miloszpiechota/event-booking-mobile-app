@@ -1,3 +1,4 @@
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   BackHandler,
@@ -7,8 +8,21 @@ import {
   View,
   TextInput,
 } from "react-native";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { Picker } from '@react-native-picker/picker';
+
 import { useNavigation, useRoute } from "@react-navigation/native";
+import styles from "./ConfiramtionScreen.styles"; // Import styles
+
+const fetchPaymentMethods = async () => {
+  try {
+    const response = await fetch("http://192.168.56.1:3000/api/payment/read");
+    const data = await response.json();
+    return data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch payment methods:", error);
+    return [];
+  }
+};
 
 const ConfirmationScreen = () => {
   const route = useRoute();
@@ -32,54 +46,36 @@ const ConfirmationScreen = () => {
 
   const fee = 87; // Sample service fee
 
-  // New state for ticket quantity
+  // Ensure selectedPrice is a valid number, default to 0 if undefined
+  const initialPrice = selectedPrice && !isNaN(parseFloat(selectedPrice)) ? parseFloat(selectedPrice) : 0;
+  
   const [quantity, setQuantity] = useState(1); // Default to 1 ticket
-  const [grandTotal, setGrandTotal] = useState(parseFloat(selectedPrice) + fee); // Initial total
+  const [grandTotal, setGrandTotal] = useState(initialPrice + fee); // Initial total
+  const [paymentMethods, setPaymentMethods] = useState([]); // To store payment methods
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(""); // To store selected payment method
 
   useEffect(() => {
-    console.log("Received eventTickets:", eventTickets);
-  }, [eventTickets]);
+    // Fetch payment methods from the backend
+    const getPaymentMethods = async () => {
+      const methods = await fetchPaymentMethods();
+      setPaymentMethods(methods);
+      if (methods.length > 0) {
+        setSelectedPaymentMethod(methods[0].id); // Set default payment method
+      }
+    };
 
-  // Update grandTotal whenever quantity changes
+    getPaymentMethods();
+  }, []);
+
   useEffect(() => {
-    setGrandTotal(quantity * parseFloat(selectedPrice) + fee);
-  }, [quantity, selectedPrice]);
+    setGrandTotal(quantity * initialPrice + fee);
+  }, [quantity, initialPrice]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       gestureEnabled: false,
       gestureDirection: "horizontal",
     });
-  }, []);
-
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert(
-        "Chcesz zakończyć sesję?",
-        "Powrócić do głównego ekranu?",
-        [
-          {
-            text: "Anuluj",
-            onPress: () => console.log("Anulowano"),
-            style: "cancel",
-          },
-          {
-            text: "OK",
-            onPress: () =>
-              navigation.reset({ index: 0, routes: [{ name: "HomeScreen" }] }),
-          },
-        ],
-        { cancelable: false }
-      );
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-
-    return () => backHandler.remove();
   }, []);
 
   const getSelectedCategoryText = () => {
@@ -98,7 +94,7 @@ const ConfirmationScreen = () => {
   const confirmPayment = () => {
     Alert.alert(
       "Potwierdzenie",
-      `Całkowita kwota do zapłaty: ${grandTotal.toFixed(2)} zł`,
+      `Całkowita kwota do zapłaty: ${(grandTotal || 0).toFixed(2)} zł\nMetoda płatności: ${selectedPaymentMethod}`,
       [
         {
           text: "Anuluj",
@@ -113,6 +109,7 @@ const ConfirmationScreen = () => {
               selectedCategory,
               selectedPrice,
               quantity, // Pass quantity to the next screen
+              selectedPaymentMethod, // Pass selected payment method
             });
           },
         },
@@ -123,13 +120,11 @@ const ConfirmationScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.detailsContainer}>
-
-        
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.category}>Kategoria: {getSelectedCategoryText()}</Text>
-        <Text style={styles.price}>Cena za kategorię: {selectedPrice} zł</Text>
+        <Text style={styles.price}>Cena za kategorię: {selectedPrice ? selectedPrice : "Brak ceny"} zł</Text>
 
-<View style={styles.separator} />
+        <View style={styles.separator} />
 
         <View style={styles.quantityContainer}>
           <Text style={styles.quantityText}>Wybierz liczbę biletów:</Text>
@@ -147,12 +142,12 @@ const ConfirmationScreen = () => {
           <Text style={styles.sectionTitle}>Szczegóły biletu:</Text>
           {eventTickets && eventTickets.length > 0 ? (
             eventTickets.map((ticket) => (
-              <View key={ticket.idevent_ticket} style={styles.ticketDetails}>
+              <View key={ticket.idevent_ticket || ticket.name} style={styles.ticketDetails}>
                 <Text style={styles.ticketDetailText}>
                   Nazwa: {ticket.name || "Brak nazwy"}
                 </Text>
                 <Text style={styles.ticketDetailText}>
-                  Cena regularna biletu: {ticket.price?.toFixed(2) || "Brak ceny"} zł
+                  Cena regularna biletu: {ticket.price && !isNaN(ticket.price) ? ticket.price.toFixed(2) : "Brak ceny"} zł
                 </Text>
                 <Text style={styles.ticketDetailText}>
                   Data rozpoczęcia:{" "}
@@ -175,8 +170,25 @@ const ConfirmationScreen = () => {
 
         <View style={styles.separator} />
 
-        
-        
+        <View style={styles.paymentMethodContainer}>
+          <Text style={styles.paymentMethodText}>Wybierz metodę płatności:</Text>
+          {paymentMethods.length > 0 && (
+            <Picker
+            selectedValue={selectedPaymentMethod}
+            onValueChange={(itemValue) => setSelectedPaymentMethod(itemValue)}
+          >
+            {paymentMethods.map((method) => (
+              <Picker.Item
+                key={method.id ? method.id.toString() : `fallback-key-${method.name}`} // Use fallback if id is undefined
+                label={method.name}
+                value={method.id}
+              />
+            ))}
+          </Picker>
+          
+          
+          )}
+        </View>
 
         <View style={styles.separator} />
 
@@ -186,12 +198,12 @@ const ConfirmationScreen = () => {
         </View>
 
         <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>Całkowita kwota do zapłaty:</Text>
-          <Text style={styles.totalPrice}>{grandTotal.toFixed(2)} zł</Text>
+          <Text style={styles.totalText}>Całkowita kwota:</Text>
+          <Text style={styles.totalPrice}>{(grandTotal || 0).toFixed(2)} zł</Text>
         </View>
 
-        <Pressable onPress={confirmPayment} style={styles.payButton}>
-          <Text style={styles.payButtonText}>POTWIERDŹ PŁATNOŚĆ</Text>
+        <Pressable style={styles.payButton} onPress={confirmPayment}>
+          <Text style={styles.payButtonText}>Potwierdź Płatność</Text>
         </Pressable>
       </View>
     </View>
@@ -199,111 +211,3 @@ const ConfirmationScreen = () => {
 };
 
 export default ConfirmationScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#f5f5f5",
-  },
-  detailsContainer: {
-    backgroundColor: "white",
-    padding: 16,
-    borderRadius: 6,
-    elevation: 2,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "500",
-    marginBottom: 10,
-  },
-  category: {
-    fontSize: 16,
-    color: "gray",
-  },
-  price: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginVertical: 10,
-  },
-  separator: {
-    height: 1,
-    backgroundColor: "#E0E0E0",
-    marginVertical: 10,
-  },
-  totalContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-  totalText: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  totalPrice: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  feeContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-  feeText: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  feeAmount: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  eventDetailsContainer: {
-    marginTop: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  ticketDetails: {
-    backgroundColor: "#f0f0f0",
-    padding: 8,
-    borderRadius: 4,
-    marginBottom: 10,
-  },
-  ticketDetailText: {
-    fontSize: 15,
-    color: "#333",
-  },
-  quantityContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  quantityText: {
-    fontSize: 16,
-    fontWeight: "500",
-    marginRight: 10,
-  },
-  quantityInput: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 5,
-    width: 50,
-    textAlign: "center",
-  },
-  payButton: {
-    marginTop: 20,
-    backgroundColor: "#4a79d9",
-    padding: 12,
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  payButtonText: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "#f9f9f9",
-  },
-});
