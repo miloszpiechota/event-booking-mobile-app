@@ -121,6 +121,7 @@ const ConfirmationScreen = () => {
       // Log the order data to the console for debugging
       console.log("Order Data being sent:", orderData);
       console.log('selectedPaymentMethod:', selectedPaymentMethod);
+
       
 
 
@@ -129,7 +130,7 @@ const ConfirmationScreen = () => {
 
       if (response.data.success) {
         Alert.alert('Płatność potwierdzona', 'Twoje zamówienie zostało złożone pomyślnie');
-        // Optionally, navigate to a new screen (e.g., ticket confirmation or order summary)
+        console.log("Navigating with userId:", userId);
         navigation.navigate("Shopping", {
           selectedCategory,
           selectedPrice,
@@ -154,6 +155,7 @@ const ConfirmationScreen = () => {
     <View style={styles.container}>
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>Id user:{userId}</Text>
         <Text style={styles.title}>{numberOfTickets}</Text>
         <Text style={styles.category}>Kategoria: {getSelectedCategoryText()}</Text>
         <Text style={styles.price}>Cena za kategorię: {selectedPrice ? selectedPrice : "Brak ceny"} zł</Text>

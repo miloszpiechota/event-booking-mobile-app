@@ -1,48 +1,64 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import { fetchOrderTickets } from "../database/FetchOrderTickets";
-import OrderTicketCard from "../components/OrderTicketCard";
+import { fetchOrderTickets } from "../database/FetchOrderTickets";  // Assuming this function fetches orders
+import OrderTicketCard from "../components/OrderTicketCard";  // Assuming this is a card component to display order details
+import { useRoute } from '@react-navigation/native';
 
 const ShopCartScreen = () => {
-  const [orders, setOrders] = useState([]); // Stan dla zamówień
-  const [loading, setLoading] = useState(true); // Stan ładowania danych
-  const [error, setError] = useState(null); // Stan błędu
+  const route = useRoute();  // Get the route params
+  const { userId } = route.params;  // Destructure the userId from route params
+
+  const [orders, setOrders] = useState([]);  // State to hold orders
+  const [loading, setLoading] = useState(true);  // State to track loading status
+  const [error, setError] = useState(null);  // State to hold any errors
 
   useEffect(() => {
     const loadOrders = async () => {
       try {
-        const fetchedOrders = await fetchOrderTickets(); // Pobieranie zamówień
-        setOrders(fetchedOrders || []); // Ustawienie zamówień w stanie
+        const fetchedOrders = await fetchOrderTickets();  // Fetch orders from API or database
+        console.log("Fetched Orders:", fetchedOrders);
+  
+        // Ensure userId is available before filtering
+        if (userId) {
+          const userOrders = fetchedOrders.filter(order => order.user_id === userId);
+          console.log("Filtered Orders (userOrders):", userOrders);  // Log filtered orders for debugging
+  
+          setOrders(userOrders);  // Set filtered orders to state
+        } else {
+          setError("User ID is not available.");
+        }
       } catch (err) {
-        setError("Failed to load orders"); // Obsługa błędów
+        setError("Failed to load orders");  // Handle error if fetching fails
         console.error("Error loading orders:", err);
       } finally {
-        setLoading(false); // Ustawienie loading na false po zakończeniu
+        setLoading(false);  // Turn off loading after the fetch is complete
       }
     };
-
-    loadOrders(); // Wywołanie funkcji ładującej zamówienia
-  }, []);
+  
+    loadOrders();  // Fetch orders when component mounts
+  }, [userId]);  // Re-fetch if userId changes
+    // Re-fetch orders if userId changes
 
   if (loading) {
-    return <Text>Loading...</Text>; // Komunikat ładowania
+    return <Text>Loading...</Text>;  // Display loading message while fetching
   }
 
   if (error) {
-    return <Text>{error}</Text>; // Komunikat błędu
+    return <Text>{error}</Text>;  // Display error message if there's any issue
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Your Tickets</Text>
+      <Text style={styles.header}>Hello, User {userId}</Text>
+
       <FlatList
-        data={orders} // Przekazywanie danych do FlatList
-        renderItem={({ item }) => (
-          <OrderTicketCard order={item} /> // Przekazywanie każdego elementu do OrderTicketCard
-        )}
-        keyExtractor={(item) => item.idorder_ticket.toString()} // Klucz dla każdego elementu
-        contentContainerStyle={{ paddingBottom: 100 }} // Dodanie paddingu na dole
-      />
+  data={orders}
+  renderItem={({ item }) => <OrderTicketCard order={item} />}  // Render each order using OrderTicketCard
+  keyExtractor={(item) => item.idorder_ticket.toString()}  // Use order's id for unique key
+  contentContainerStyle={{ paddingBottom: 100 }}  // Add padding at the bottom of the list
+/>
+
     </View>
   );
 };

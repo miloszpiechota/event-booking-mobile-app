@@ -28,6 +28,7 @@ export const fetchOrderTickets = async () => {
         order_id: order.order?.idorder ?? null,
         order_date: order.order?.data ?? null,
         order_total_amount: order.order?.total_amount ?? 0,
+        user_id: order.order?.iduser ?? null,
       }));
   
       console.log("Processed order tickets:", orderTickets);
