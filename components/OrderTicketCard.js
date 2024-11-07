@@ -1,23 +1,18 @@
 import React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 const OrderTicketCard = ({ order }) => {
-  const {
-    idorder,
-    data,
-    total_amount,
-    total_tax_amount,
-  } = order;
-
   return (
-    <Pressable style={styles.card}>
-      <View style={styles.cardContent}>
-        <Text style={styles.title}>Order ID: {idorder}</Text>
-        <Text style={styles.details}>Date: {new Date(data).toLocaleDateString()}</Text>
-        <Text style={styles.details}>Total Amount: ${total_amount}</Text>
-        <Text style={styles.details}>Total Tax: ${total_tax_amount}</Text>
-      </View>
-    </Pressable>
+    <View style={styles.card}>
+      <Text>Ticket Name: {order.ticket_name}</Text>
+      <Text>Start Date: {order.ticket_start_date}</Text>
+      <Text>End Date: {order.ticket_end_date}</Text>
+      <Text>Price: ${order.ticket_price}</Text>
+      <Text>Status: {order.ticket_status}</Text>
+      <Text>Order ID: {order.order_id}</Text>
+      <Text>Order Date: {order.order_date}</Text>
+      <Text>Total Amount: ${order.order_total_amount}</Text>
+    </View>
   );
 };
 
@@ -25,26 +20,14 @@ export default OrderTicketCard;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
     padding: 15,
-    marginVertical: 8,
-    borderRadius: 5,
+    marginBottom: 10,
+    backgroundColor: "#fff",
+    borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2, // For Android shadow
-  },
-  cardContent: {
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  details: {
-    fontSize: 16,
-    color: "#555",
-    marginTop: 5,
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 3,
   },
 });

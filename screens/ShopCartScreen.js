@@ -1,50 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import { fetchOrders } from "../database/FetchOrders"; // Importujemy funkcję fetchOrders
-import OrderTicketCard from "../components/OrderTicketCard"; // Importujemy komponent karty
+import { fetchOrderTickets } from "../database/FetchOrderTickets";
+import OrderTicketCard from "../components/OrderTicketCard";
 
 const ShopCartScreen = () => {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [orders, setOrders] = useState([]); // Stan dla zamówień
+  const [loading, setLoading] = useState(true); // Stan ładowania danych
+  const [error, setError] = useState(null); // Stan błędu
 
-  // Funkcja ładowania danych
   useEffect(() => {
     const loadOrders = async () => {
       try {
-        const fetchedOrders = await fetchOrders();
-        console.log("Fetched Orders in ShopCartScreen:", fetchedOrders); // Dodajemy logowanie
-        setOrders(fetchedOrders.data || []); // Upewniamy się, że przekazujemy tylko tablicę
+        const fetchedOrders = await fetchOrderTickets(); // Pobieranie zamówień
+        setOrders(fetchedOrders || []); // Ustawienie zamówień w stanie
       } catch (err) {
-        setError("Failed to load orders");
+        setError("Failed to load orders"); // Obsługa błędów
         console.error("Error loading orders:", err);
       } finally {
-        setLoading(false);
+        setLoading(false); // Ustawienie loading na false po zakończeniu
       }
     };
 
-    loadOrders();
+    loadOrders(); // Wywołanie funkcji ładującej zamówienia
   }, []);
 
   if (loading) {
-    return <Text>Loading...</Text>;
+    return <Text>Loading...</Text>; // Komunikat ładowania
   }
 
   if (error) {
-    return <Text>{error}</Text>;
+    return <Text>{error}</Text>; // Komunikat błędu
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Your Orders</Text>
-
+      <Text style={styles.header}>Your Tickets</Text>
       <FlatList
-        data={orders} // Teraz `orders` jest już tablicą
+        data={orders} // Przekazywanie danych do FlatList
         renderItem={({ item }) => (
-          <OrderTicketCard order={item} />
+          <OrderTicketCard order={item} /> // Przekazywanie każdego elementu do OrderTicketCard
         )}
-        keyExtractor={(item) => item.idorder.toString()} // Zwróć ID zamówienia jako unikalny klucz
-        contentContainerStyle={{ paddingBottom: 100 }}
+        keyExtractor={(item) => item.idorder_ticket.toString()} // Klucz dla każdego elementu
+        contentContainerStyle={{ paddingBottom: 100 }} // Dodanie paddingu na dole
       />
     </View>
   );
@@ -62,5 +59,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
+    marginTop: 50,
   },
 });
