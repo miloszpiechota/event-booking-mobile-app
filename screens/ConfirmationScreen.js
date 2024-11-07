@@ -135,6 +135,11 @@ const ConfirmationScreen = () => {
           selectedPrice,
           quantity,
           selectedPaymentMethod,
+          eventTickets,
+          title,
+          userId,
+          numberOfTickets
+
         });
       } else {
         Alert.alert('Błąd', 'Wystąpił problem z przetworzeniem płatności');
