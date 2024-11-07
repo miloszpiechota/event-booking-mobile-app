@@ -94,25 +94,35 @@ const ConfirmationScreen = () => {
     try {
       // Prepare data to send to the backend
       const orderData = {
-          
-        total_amount: grandTotal,        // Total amount (price + fee)
-        total_tax_amount: fee,           // Tax amount
-        iduser: userId,                  // User ID passed as parameter
-        order_tickets: eventTickets.map(ticket => ({
-          ticket_id: ticket.id,          // Ticket ID
-          price: ticket.price,           // Ticket price
-          quantity: quantity,            // Quantity of tickets
-        })),
+        total_amount: grandTotal,
+        total_tax_amount: fee,
+        iduser: userId,
+        order_tickets: eventTickets.map(ticket => {
+          // Log the ticket structure to verify its content
+          console.log("Ticket:", ticket);
+  
+          return {
+            ticket_status: "new",
+            event_ticket: {
+              connect: {
+                idevent_ticket: ticket.idevent_ticket // Use idevent_ticket instead of id
+              }
+            }
+          };
+        }),
         payments: [{
-          method_id: selectedPaymentMethod, // Selected payment method
-          amount: grandTotal,               // Amount to be paid
+          idpayment_method: selectedPaymentMethod,
+          payment_status: "completed",
         }],
         data: new Date().toISOString(),
       };
+      
 
       // Log the order data to the console for debugging
       console.log("Order Data being sent:", orderData);
       console.log('selectedPaymentMethod:', selectedPaymentMethod);
+      
+
 
       // Send request to backend to create an order
       const response = await axios.post('http://192.168.56.1:3000/api/orders/create', orderData);
@@ -120,7 +130,7 @@ const ConfirmationScreen = () => {
       if (response.data.success) {
         Alert.alert('Płatność potwierdzona', 'Twoje zamówienie zostało złożone pomyślnie');
         // Optionally, navigate to a new screen (e.g., ticket confirmation or order summary)
-        navigation.navigate("Ticket", {
+        navigation.navigate("Shopping", {
           selectedCategory,
           selectedPrice,
           quantity,

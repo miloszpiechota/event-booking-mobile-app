@@ -27,22 +27,26 @@ const SeatCategoryScreen = () => {
   const handleCategoryPress = (category) => {
     setSelectedCategory(category);
     let ticketPrice = 0;
+    const price = eventTickets[0]?.price ?? 0;  // Default to 0 if price is undefined
+    
     switch (category) {
       case "firstCategory":
-        ticketPrice = eventTickets[0]?.price * 3.0;
+        ticketPrice = price * 3.0;
         break;
       case "secondCategory":
-        ticketPrice = eventTickets[0]?.price * 2.0;
+        ticketPrice = price * 2.0;
         break;
       case "thirdCategory":
-        ticketPrice = eventTickets[0]?.price;
+        ticketPrice = price;
         break;
       default:
         ticketPrice = 0;
     }
-    setSelectedPrice(ticketPrice.toFixed(2));
+    
+    setSelectedPrice(ticketPrice.toFixed(2));  // Ensure ticketPrice is a valid number
   };
-
+  
+  
   const getSelectedCategoryText = () => {
     switch (selectedCategory) {
       case "firstCategory":
