@@ -94,7 +94,7 @@ const ConfirmationScreen = () => {
     try {
       // Prepare data to send to the backend
       const orderData = {
-        data: new Date().toISOString(),  // Current date
+          
         total_amount: grandTotal,        // Total amount (price + fee)
         total_tax_amount: fee,           // Tax amount
         iduser: userId,                  // User ID passed as parameter
@@ -107,6 +107,7 @@ const ConfirmationScreen = () => {
           method_id: selectedPaymentMethod, // Selected payment method
           amount: grandTotal,               // Amount to be paid
         }],
+        data: new Date().toISOString(),
       };
 
       // Log the order data to the console for debugging

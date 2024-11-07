@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
-
+import { fetchUserData } from '../database/FetchUserData';
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
@@ -24,22 +24,29 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://192.168.56.1:3000/api/users/login", {  // Replace with your backend URL
+      const response = await fetch("http://192.168.56.1:3000/api/users/login", { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        // Store the token in local storage or state management
         const token = data.token;
         console.log("Login Successful", token);
-        // Navigate to HomeScreen or any other screen
-        navigation.navigate("HomeScreen");
+        
+        // Fetch user data using the token
+        const userData = await fetchUserData(token);
+  
+        // Pass the user data to HomeScreen via navigation params
+        navigation.navigate("HomeScreen", {
+          userId: userData.iduser,
+          userName: userData.name,
+          userEmail: userData.email,
+        });
       } else {
         Alert.alert("Login Failed", data.msg || "An error occurred");
       }
@@ -48,6 +55,7 @@ const LoginScreen = () => {
       Alert.alert("Login Failed", "An error occurred. Please try again.");
     }
   };
+  
 
   const handleSignup = () => {
     navigation.navigate("HomeScreen");

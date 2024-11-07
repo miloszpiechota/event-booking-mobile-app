@@ -25,7 +25,8 @@ const EventScreen = () => {
     endDate,
     isSeatCategorized,
     categoryType,
-    numberOfTickets
+    numberOfTickets,
+    userId
   } = route.params;
 
   // Format date and time
@@ -55,7 +56,7 @@ const EventScreen = () => {
   const handleBooking = () => {
     navigation.navigate(
       isSeatCategorized ? "SeatCategory" : "Confirmation",
-      { eventTickets, ...restProps } // Pass eventTickets and other props
+      { userId,eventTickets, ...restProps } // Pass eventTickets and other props
     );
   };
 

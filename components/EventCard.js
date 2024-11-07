@@ -18,13 +18,14 @@ const formatDate = (dateString) => {
   return `${day}-${month}-${year}`;
 };
 
-const EventCard = ({ item }) => {
+const EventCard = ({ item,userData }) => {
   const formattedStartDate = formatDate(item.start_date);
   const formattedEndDate = formatDate(item.end_date);
   const locationName = item.location_name;
   const cityName = item.city_name;
-  
+  const numberOfTickets = item.number_of_ticket;
   const navigation = useNavigation();
+  const { userId, userName, userEmail } = userData;
 
   return (
     <SafeAreaView>
@@ -55,7 +56,8 @@ const EventCard = ({ item }) => {
                 categoryType: item.categoryType,
                 isSeatCategorized: item.is_seat_categorized,
                 eventTickets: item.eventTickets, // Pass tickets to EventScreen
-                numberOfTickets: item.number_of_ticket
+                numberOfTickets: item.number_of_ticket,
+                userId: userId
               })
             }
           >

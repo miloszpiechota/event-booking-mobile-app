@@ -30,8 +30,9 @@ import styles from './HomeScreen.styles'; // Import styles
 import SearchBar from "./SearchBar";
 import { fetchLocations } from '../database/FetchLocations'; 
 import { fetchEventTickets } from '../database/FetchEventTickets';
-
+import { useRoute } from '@react-navigation/native';
 const HomeScreen = () => {
+  const route = useRoute();
   const navigation = useNavigation();
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const { selectedCity } = useContext(Place);
@@ -41,6 +42,8 @@ const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(); // State for filter
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [locations, setLocations] = useState([]);
+  const { userId, userName, userEmail } = route.params; 
+  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -181,6 +184,7 @@ const HomeScreen = () => {
               numberOfTickets: item.number_of_ticket
 
               }}
+              userData={{ userId, userName, userEmail }} 
               key={index}
             />
           )}
