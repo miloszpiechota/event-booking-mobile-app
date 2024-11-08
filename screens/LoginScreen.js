@@ -7,16 +7,18 @@ import {
   View,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
 import { fetchUserData } from '../database/FetchUserData';
+import { UserContext } from '../UserContext';
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setUser } = useContext(UserContext); 
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -41,12 +43,20 @@ const LoginScreen = () => {
         // Fetch user data using the token
         const userData = await fetchUserData(token);
   
-        // Pass the user data to HomeScreen via navigation params
-        navigation.navigate("HomeScreen", {
+
+        // Set user data in UserContext
+        setUser({
           userId: userData.iduser,
           userName: userData.name,
           userEmail: userData.email,
         });
+        // Pass the user data to HomeScreen via navigation params
+        // navigation.navigate("HomeScreen", {
+        //   userId: userData.iduser,
+        //   userName: userData.name,
+        //   userEmail: userData.email,
+        // });
+        navigation.navigate("HomeScreen")
       } else {
         Alert.alert("Login Failed", data.msg || "An error occurred");
       }

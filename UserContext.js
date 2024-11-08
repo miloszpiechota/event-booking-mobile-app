@@ -1,28 +1,18 @@
-import React, { createContext, useContext, useState } from 'react';
+// UserContext.js
+import React, { createContext, useState } from 'react';
 
-// Tworzymy kontekst
-const UserContext = createContext();
+export const UserContext = createContext();
 
-// Tworzymy provider, który będzie dostarczał dane użytkownika
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Przechowujemy dane użytkownika
-
-  const loginUser = (userData) => {
-    setUser(userData); // Zapisujemy dane użytkownika
-  };
-
-  const logoutUser = () => {
-    setUser(null); // Usuwamy dane użytkownika
-  };
+  const [user, setUser] = useState({
+    userId: null,
+    userName: null,
+    userEmail: null,
+  });
 
   return (
-    <UserContext.Provider value={{ user, loginUser, logoutUser }}>
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );
-};
-
-// Custom hook do dostępu do kontekstu
-export const useUserContext = () => {
-  return useContext(UserContext);
 };

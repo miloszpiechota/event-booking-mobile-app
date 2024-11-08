@@ -42,7 +42,7 @@ const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(); // State for filter
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [locations, setLocations] = useState([]);
-  const { userId, userName, userEmail } = route.params; 
+  //const { userId, userName, userEmail } = route.params; 
   
   useEffect(() => {
     const loadData = async () => {
@@ -184,7 +184,7 @@ const HomeScreen = () => {
               numberOfTickets: item.number_of_ticket
 
               }}
-              userData={{ userId, userName, userEmail }} 
+              //userData={{ userId, userName, userEmail }} 
               key={index}
             />
           )}

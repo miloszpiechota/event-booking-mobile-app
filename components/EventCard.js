@@ -25,7 +25,7 @@ const EventCard = ({ item,userData }) => {
   const cityName = item.city_name;
   const numberOfTickets = item.number_of_ticket;
   const navigation = useNavigation();
-  const { userId, userName, userEmail } = userData;
+  //const { userId, userName, userEmail } = userData;
 
   return (
     <SafeAreaView>
@@ -57,7 +57,7 @@ const EventCard = ({ item,userData }) => {
                 isSeatCategorized: item.is_seat_categorized,
                 eventTickets: item.eventTickets, // Pass tickets to EventScreen
                 numberOfTickets: item.number_of_ticket,
-                userId: userId
+                //userId: userId
               })
             }
           >
