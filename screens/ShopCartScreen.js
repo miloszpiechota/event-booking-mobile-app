@@ -52,7 +52,7 @@ const ShopCartScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Your Tickets</Text>
-      <Text style={styles.header}>Hello, User {user.userId}</Text>
+      <Text style={styles.header}>Hello, {user.userName}</Text>
 
       <FlatList
         data={orders}
@@ -70,12 +70,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "#abc2ff"
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    
     marginTop: 50,
   },
 });

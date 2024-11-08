@@ -29,12 +29,12 @@ function HomeStackScreens() {
       <HomeStack.Screen
         name="LoginScreen"
         component={LoginScreen}
-        options={{ title: "" }}
+        options={{ title: "Login" }}
       />
       <HomeStack.Screen 
         name="SignUpScreen" 
         component={SignUpScreen} 
-        options={{ headerShown: false }}
+        options={{ title: "Registration Screen" }}
       />
       <HomeStack.Screen
         name="HomeScreen"

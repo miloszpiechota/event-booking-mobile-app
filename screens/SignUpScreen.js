@@ -292,10 +292,10 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: colors.primary,
     marginBottom: 15,
-    marginTop: 80,
+    
   },
   formContainer: {
-    marginTop: 20,
+    marginTop: 10,
   },
   inputContainer: {
     borderWidth: 1,
