@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Modal, TouchableWithoutFeedback } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Modal, TouchableWithoutFeedback, Alert } from "react-native";
 import QRCode from 'react-native-qrcode-svg';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import ViewShot from "react-native-view-shot"; // Import ViewShot
 
 const OrderTicketCard = ({ 
   order, 
@@ -17,7 +19,16 @@ const OrderTicketCard = ({
   const [showQr, setShowQr] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const qrAnim = useState(new Animated.Value(0))[0];
+  const viewShotRef = useRef(null);
 
+  const openModal = () => {
+    setModalVisible(true);
+  };
+  
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+  
   const toggleQr = () => {
     setShowQr(!showQr);
     Animated.timing(qrAnim, {
@@ -43,34 +54,58 @@ const OrderTicketCard = ({
   const calculateEventDuration = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
-    const timeDifference = end - start; // Difference in milliseconds
-    const durationInDays = timeDifference / (1000 * 3600 * 24); // Convert to days
-    return Math.ceil(durationInDays); // Round up to the next whole number
+    const timeDifference = end - start;
+    const durationInDays = timeDifference / (1000 * 3600 * 24);
+    return Math.ceil(durationInDays);
   };
 
   const daysLeft = calculateDaysLeft(endDate);
   const eventDuration = calculateEventDuration(startDate, endDate);
-  
-  const openModal = () => {
-    setModalVisible(true);
-  };
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+  const qrData = JSON.stringify({
+    ticketName: order.ticket_name || "N/A",
+    place: `${locationName || "N/A"} ${cityName || "N/A"}`,
+    orderedBy: userName || "N/A",
+    validUntil: endDate ? new Date(endDate).toLocaleString() : "N/A",
+    daysLeft: daysLeft,
+    tickets: numberOfTickets || "N/A",
+    grandTotal: grandTotal || "N/A",
+    fee: fee || "N/A",
+    categoryType: categoryType || "N/A",
+  });
 
-  // Generate a string to encode as the QR code (for example, using the order details)
-  const qrData = `
-    Ticket Name: ${order.ticket_name || "N/A"}
-    Place: ${locationName || "N/A"} ${cityName || "N/A"}
-    Ordered by: ${userName || "N/A"}
-    Valid Until: ${endDate ? new Date(endDate).toLocaleString() : "N/A"}
-    Days Left: ${daysLeft} days
-    Tickets: ${numberOfTickets || "N/A"}
-    Grand Total: ${grandTotal || "N/A"} zł
-    Fee: ${fee || "N/A"}
-    Category Type: ${categoryType || "N/A"}
-  `;
+  const generatePdf = async () => {
+    try {
+      const uri = await viewShotRef.current.capture(); // Capture the view
+      const htmlContent = `
+        <h1>Ticket Details</h1>
+        <p><b>Ticket Name:</b> ${order.ticket_name || "N/A"}</p>
+        <p><b>Duration:</b> ${eventDuration} days</p>
+        <p><b>Place:</b> ${locationName || "N/A"} ${cityName || "N/A"}</p>
+        <p><b>Ordered By:</b> ${userName || "N/A"}</p>
+        <p><b>Valid Until:</b> ${endDate ? new Date(endDate).toLocaleString() : "N/A"}</p>
+        <p><b>Days Left:</b> ${daysLeft} days</p>
+        <p><b>No. of Tickets:</b> ${numberOfTickets || "N/A"}</p>
+        <p><b>Grand Total:</b> ${grandTotal || "N/A"} zł</p>
+        <p><b>Fee:</b> ${fee || "N/A"} zł</p>
+        <p><b>Category Type:</b> ${categoryType || "N/A"}</p>
+        <div style="text-align: center; margin-top: 20px;">
+          <img src="${uri}" width="150" height="150" />
+        </div>
+      `;
+
+      const options = {
+        html: htmlContent,
+        fileName: 'ticket',
+        directory: 'Documents',
+      };
+
+      const file = await RNHTMLtoPDF.convert(options);
+      Alert.alert("PDF Generated", `File saved at: ${file.filePath}`);
+    } catch (error) {
+      Alert.alert("Error", "Failed to generate PDF.");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -99,7 +134,6 @@ const OrderTicketCard = ({
           <Text style={styles.label}>DAYS LEFT</Text>
           <Text style={styles.value}>{daysLeft} days</Text>
 
-          {/* Display additional data */}
           <Text style={styles.label}>No. of Tickets</Text>
           <Text style={styles.value}>{numberOfTickets || "N/A"}</Text>
 
@@ -113,7 +147,7 @@ const OrderTicketCard = ({
           <Text style={styles.value}>{categoryType || "N/A"}</Text>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={generatePdf}>
               <Text style={styles.buttonText}>Pobierz bilet</Text>
             </TouchableOpacity>
 
@@ -127,15 +161,13 @@ const OrderTicketCard = ({
 
         <Animated.View style={[styles.qrSection, { height: qrSectionHeight }]}>
           {showQr && (
-            <QRCode
-              value={qrData} // The QR code will encode the `qrData` string
-              size={150} // Adjust the size of the QR code
-              color="black" // Color of the QR code
-              backgroundColor="white" // Background color of the QR code
-            />
+            <ViewShot ref={viewShotRef} options={{ format: "jpg", quality: 0.9 }}>
+              <QRCode value={qrData} size={150} color="black" backgroundColor="white" />
+            </ViewShot>
           )}
         </Animated.View>
 
+        {/* Modal and additional code */}
         <Modal
           visible={modalVisible}
           animationType="slide"
