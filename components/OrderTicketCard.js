@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Image, Modal, TouchableWithoutFeedback } from "react-native";
-
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Modal, TouchableWithoutFeedback } from "react-native";
+import QRCode from 'react-native-qrcode-svg';
 
 const OrderTicketCard = ({ 
   order, 
@@ -32,7 +32,6 @@ const OrderTicketCard = ({
     outputRange: [0, 200],
   });
 
-  
   const calculateDaysLeft = (endDate) => {
     const currentDate = new Date();
     const end = new Date(endDate);
@@ -51,6 +50,7 @@ const OrderTicketCard = ({
 
   const daysLeft = calculateDaysLeft(endDate);
   const eventDuration = calculateEventDuration(startDate, endDate);
+  
   const openModal = () => {
     setModalVisible(true);
   };
@@ -58,6 +58,19 @@ const OrderTicketCard = ({
   const closeModal = () => {
     setModalVisible(false);
   };
+
+  // Generate a string to encode as the QR code (for example, using the order details)
+  const qrData = `
+    Ticket Name: ${order.ticket_name || "N/A"}
+    Place: ${locationName || "N/A"} ${cityName || "N/A"}
+    Ordered by: ${userName || "N/A"}
+    Valid Until: ${endDate ? new Date(endDate).toLocaleString() : "N/A"}
+    Days Left: ${daysLeft} days
+    Tickets: ${numberOfTickets || "N/A"}
+    Grand Total: ${grandTotal || "N/A"} zł
+    Fee: ${fee || "N/A"}
+    Category Type: ${categoryType || "N/A"}
+  `;
 
   return (
     <View style={styles.container}>
@@ -67,12 +80,10 @@ const OrderTicketCard = ({
           <Text style={styles.value}>{order.ticket_name || "N/A"}</Text>
 
           <Text style={styles.label}>DURATION</Text>
-          <Text style={styles.value}>{eventDuration} days
-           
-          </Text>
+          <Text style={styles.value}>{eventDuration} days</Text>
 
           <Text style={styles.label}>PLACE</Text>
-          <Text style={styles.value}>{locationName || "N/A"} {cityName || "N/A"} </Text>
+          <Text style={styles.value}>{locationName || "N/A"} {cityName || "N/A"}</Text>
 
           <Text style={styles.label}>ORDERED BY</Text>
           <Text style={styles.value}>
@@ -115,10 +126,14 @@ const OrderTicketCard = ({
         </TouchableOpacity>
 
         <Animated.View style={[styles.qrSection, { height: qrSectionHeight }]}>
-          <Image
-            source={{ uri: "https://example.com/qr-code-image.png" }}
-            style={styles.qrCode}
-          />
+          {showQr && (
+            <QRCode
+              value={qrData} // The QR code will encode the `qrData` string
+              size={150} // Adjust the size of the QR code
+              color="black" // Color of the QR code
+              backgroundColor="white" // Background color of the QR code
+            />
+          )}
         </Animated.View>
 
         <Modal
@@ -211,10 +226,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     overflow: "hidden",
-  },
-  qrCode: {
-    width: 150,
-    height: 150,
   },
   modalOverlay: {
     flex: 1,
