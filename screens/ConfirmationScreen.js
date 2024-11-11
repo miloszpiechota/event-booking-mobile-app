@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState, useContext } from "react";
 import {
   Alert,
   Pressable,
@@ -7,11 +7,11 @@ import {
   View,
   TextInput,
 } from "react-native";
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from "@react-native-picker/picker";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./ConfiramtionScreen.styles"; // Import styles
-import axios from 'axios'; // Import axios for making HTTP requests
-
+import axios from "axios"; // Import axios for making HTTP requests
+import { UserContext } from "../UserContext";
 const fetchPaymentMethods = async () => {
   try {
     const response = await fetch("http://192.168.56.1:3000/api/payment/read");
@@ -26,7 +26,7 @@ const fetchPaymentMethods = async () => {
 const ConfirmationScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
-
+  const { user } = useContext(UserContext);
   const {
     eventTickets = [],
     title,
@@ -41,12 +41,15 @@ const ConfirmationScreen = () => {
     isSeatCategorized,
     categoryType,
     numberOfTickets,
-    userId,  // Assuming userId is passed as part of route.params
+    //userId,  // Assuming userId is passed as part of route.params
   } = route.params;
 
   const fee = 87; // Sample service fee
-  const initialPrice = selectedPrice && !isNaN(parseFloat(selectedPrice)) ? parseFloat(selectedPrice) : 0;
-  
+  const initialPrice =
+    selectedPrice && !isNaN(parseFloat(selectedPrice))
+      ? parseFloat(selectedPrice)
+      : 0;
+
   const [quantity, setQuantity] = useState(1); // Default to 1 ticket
   const [grandTotal, setGrandTotal] = useState(initialPrice + fee); // Initial total
   const [paymentMethods, setPaymentMethods] = useState([]); // To store payment methods
@@ -55,13 +58,13 @@ const ConfirmationScreen = () => {
   useEffect(() => {
     const getPaymentMethods = async () => {
       const methods = await fetchPaymentMethods();
-      console.log("Fetched payment methods:", methods);  // Log the fetched methods for debugging
+      console.log("Fetched payment methods:", methods); // Log the fetched methods for debugging
       setPaymentMethods(methods);
       if (methods.length > 0) {
         setSelectedPaymentMethod(methods[0].idpayment_method); // Set the first method as default
       }
     };
-  
+
     getPaymentMethods();
   }, []); // Runs once on component mount
   // Runs once on component mount
@@ -96,41 +99,45 @@ const ConfirmationScreen = () => {
       const orderData = {
         total_amount: grandTotal,
         total_tax_amount: fee,
-        iduser: userId,
-        order_tickets: eventTickets.map(ticket => {
+        iduser: user.userId,
+        order_tickets: eventTickets.map((ticket) => {
           // Log the ticket structure to verify its content
           console.log("Ticket:", ticket);
-  
+
           return {
             ticket_status: "new",
             event_ticket: {
               connect: {
-                idevent_ticket: ticket.idevent_ticket // Use idevent_ticket instead of id
-              }
-            }
+                idevent_ticket: ticket.idevent_ticket, // Use idevent_ticket instead of id
+              },
+            },
           };
         }),
-        payments: [{
-          idpayment_method: selectedPaymentMethod,
-          payment_status: "completed",
-        }],
+        payments: [
+          {
+            idpayment_method: selectedPaymentMethod,
+            payment_status: "completed",
+          },
+        ],
         data: new Date().toISOString(),
       };
-      
 
       // Log the order data to the console for debugging
       console.log("Order Data being sent:", orderData);
-      console.log('selectedPaymentMethod:', selectedPaymentMethod);
-
-      
-
+      console.log("selectedPaymentMethod:", selectedPaymentMethod);
 
       // Send request to backend to create an order
-      const response = await axios.post('http://192.168.56.1:3000/api/orders/create', orderData);
+      const response = await axios.post(
+        "http://192.168.56.1:3000/api/orders/create",
+        orderData
+      );
 
       if (response.data.success) {
-        Alert.alert('Płatność potwierdzona', 'Twoje zamówienie zostało złożone pomyślnie');
-        console.log("Navigating with userId:", userId);
+        Alert.alert(
+          "Płatność potwierdzona",
+          "Twoje zamówienie zostało złożone pomyślnie"
+        );
+        console.log("Navigating with userId:", user.userId);
         navigation.navigate("Shopping", {
           selectedCategory,
           selectedPrice,
@@ -138,16 +145,23 @@ const ConfirmationScreen = () => {
           selectedPaymentMethod,
           eventTickets,
           title,
-          userId,
-          numberOfTickets
+          locationName,
+          cityName,
+          numberOfTickets,
+          startDate,
+          endDate,
+          grandTotal,
+          fee,
+          isSeatCategorized,
+          categoryType
 
         });
       } else {
-        Alert.alert('Błąd', 'Wystąpił problem z przetworzeniem płatności');
+        Alert.alert("Błąd", "Wystąpił problem z przetworzeniem płatności");
       }
     } catch (error) {
-      console.error('Error confirming payment:', error);
-      Alert.alert('Błąd', 'Wystąpił problem z połączeniem z serwerem');
+      console.error("Error confirming payment:", error);
+      Alert.alert("Błąd", "Wystąpił problem z połączeniem z serwerem");
     }
   };
 
@@ -155,10 +169,14 @@ const ConfirmationScreen = () => {
     <View style={styles.container}>
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.title}>Id user:{userId}</Text>
-        <Text style={styles.title}>{numberOfTickets}</Text>
-        <Text style={styles.category}>Kategoria: {getSelectedCategoryText()}</Text>
-        <Text style={styles.price}>Cena za kategorię: {selectedPrice ? selectedPrice : "Brak ceny"} zł</Text>
+        <Text style={styles.title}>Id user:{user.userId}</Text>
+
+        <Text style={styles.category}>
+          Kategoria: {getSelectedCategoryText()}
+        </Text>
+        <Text style={styles.price}>
+          Cena za kategorię: {selectedPrice ? selectedPrice : "Brak ceny"} zł
+        </Text>
 
         <View style={styles.separator} />
 
@@ -175,13 +193,19 @@ const ConfirmationScreen = () => {
                   setQuantity(newQuantity); // Update quantity
                 } else {
                   setQuantity(numberOfTickets); // Max tickets allowed
-                  Alert.alert("Przekroczona liczba biletów", `Maksymalna liczba biletów to ${numberOfTickets}`);
+                  Alert.alert(
+                    "Przekroczona liczba biletów",
+                    `Maksymalna liczba biletów to ${numberOfTickets}`
+                  );
                 }
               } else if (value === "") {
                 setQuantity(1); // Default to 1 ticket if empty
               } else {
                 setQuantity(1); // Default to 1 on invalid input
-                Alert.alert("Niepoprawna liczba biletów", "Liczba biletów musi być większa od 0.");
+                Alert.alert(
+                  "Niepoprawna liczba biletów",
+                  "Liczba biletów musi być większa od 0."
+                );
               }
             }}
           />
@@ -193,11 +217,29 @@ const ConfirmationScreen = () => {
           <Text style={styles.sectionTitle}>Szczegóły biletu:</Text>
           {Array.isArray(eventTickets) && eventTickets.length > 0 ? (
             eventTickets.map((ticket) => (
-              <View key={ticket.idevent_ticket || ticket.name} style={styles.ticketDetails}>
-                <Text style={styles.ticketDetailText}>Nazwa: {ticket.name || "Brak nazwy"}</Text>
-                <Text style={styles.ticketDetailText}>Cena regularna: {ticket.price ? ticket.price.toFixed(2) : "Brak ceny"} zł</Text>
-                <Text style={styles.ticketDetailText}>Data rozpoczęcia: {ticket.start_date ? new Date(ticket.start_date).toLocaleDateString() : "Brak daty"}</Text>
-                <Text style={styles.ticketDetailText}>Data zakończenia: {ticket.end_date ? new Date(ticket.end_date).toLocaleDateString() : "Brak daty"}</Text>
+              <View
+                key={ticket.idevent_ticket || ticket.name}
+                style={styles.ticketDetails}
+              >
+                <Text style={styles.ticketDetailText}>
+                  Nazwa: {ticket.name || "Brak nazwy"}
+                </Text>
+                <Text style={styles.ticketDetailText}>
+                  Cena regularna:{" "}
+                  {ticket.price ? ticket.price.toFixed(2) : "Brak ceny"} zł
+                </Text>
+                <Text style={styles.ticketDetailText}>
+                  Data rozpoczęcia:{" "}
+                  {ticket.start_date
+                    ? new Date(ticket.start_date).toLocaleDateString()
+                    : "Brak daty"}
+                </Text>
+                <Text style={styles.ticketDetailText}>
+                  Data zakończenia:{" "}
+                  {ticket.end_date
+                    ? new Date(ticket.end_date).toLocaleDateString()
+                    : "Brak daty"}
+                </Text>
               </View>
             ))
           ) : (
@@ -208,30 +250,30 @@ const ConfirmationScreen = () => {
         <View style={styles.separator} />
 
         <View style={styles.paymentMethodContainer}>
-    <Text style={styles.paymentMethodText}>Wybierz metodę płatności:</Text>
-    {paymentMethods.length > 0 ? (
-      <Picker
-      selectedValue={selectedPaymentMethod}
-      onValueChange={(itemValue) => setSelectedPaymentMethod(itemValue)}
-    >
-      {paymentMethods.length > 0 ? (
-        paymentMethods.map((method, index) => (
-          <Picker.Item
-            key={method.idpayment_method || index}  // Use idpayment_method for the key
-            label={method.name || 'Brak nazwy'}
-            value={method.idpayment_method}  // Use idpayment_method as the value
-          />
-        ))
-      ) : (
-        <Text>Ładowanie metod płatności...</Text>  // Show a loading state
-      )}
-    </Picker>
-    
-    
-    ) : (
-      <Text>Ładowanie metod płatności...</Text> // Show a loading state
-    )}
-  </View>
+          <Text style={styles.paymentMethodText}>
+            Wybierz metodę płatności:
+          </Text>
+          {paymentMethods.length > 0 ? (
+            <Picker
+              selectedValue={selectedPaymentMethod}
+              onValueChange={(itemValue) => setSelectedPaymentMethod(itemValue)}
+            >
+              {paymentMethods.length > 0 ? (
+                paymentMethods.map((method, index) => (
+                  <Picker.Item
+                    key={method.idpayment_method || index} // Use idpayment_method for the key
+                    label={method.name || "Brak nazwy"}
+                    value={method.idpayment_method} // Use idpayment_method as the value
+                  />
+                ))
+              ) : (
+                <Text>Ładowanie metod płatności...</Text> // Show a loading state
+              )}
+            </Picker>
+          ) : (
+            <Text>Ładowanie metod płatności...</Text> // Show a loading state
+          )}
+        </View>
 
         <View style={styles.separator} />
 
@@ -242,7 +284,9 @@ const ConfirmationScreen = () => {
 
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>Całkowita kwota:</Text>
-          <Text style={styles.totalPrice}>{(grandTotal || 0).toFixed(2)} zł</Text>
+          <Text style={styles.totalPrice}>
+            {(grandTotal || 0).toFixed(2)} zł
+          </Text>
         </View>
 
         <Pressable style={styles.payButton} onPress={confirmPayment}>

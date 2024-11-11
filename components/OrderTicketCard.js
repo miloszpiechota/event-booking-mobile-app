@@ -1,71 +1,155 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Image, Modal, TouchableWithoutFeedback } from "react-native";
 
-const OrderTicketCard = ({ order }) => {
-  // Stan do kontroli animacji i widoczności QR
+
+const OrderTicketCard = ({ 
+  order, 
+  userName, 
+  locationName, 
+  cityName, 
+  endDate, 
+  startDate, 
+  numberOfTickets, 
+  grandTotal, 
+  fee, 
+  categoryType 
+}) => {
   const [showQr, setShowQr] = useState(false);
-  const qrAnim = useState(new Animated.Value(0))[0]; // Animowana wartość do kontroli wysokości QR
+  const [modalVisible, setModalVisible] = useState(false);
+  const qrAnim = useState(new Animated.Value(0))[0];
 
-  // Funkcja do przełączania widoczności kodu QR
   const toggleQr = () => {
     setShowQr(!showQr);
     Animated.timing(qrAnim, {
-      toValue: showQr ? 0 : 1, // Jeśli QR jest pokazane, schowaj, w przeciwnym razie pokaż
-      duration: 300, // Czas trwania animacji
+      toValue: showQr ? 0 : 1,
+      duration: 300,
       useNativeDriver: false,
     }).start();
   };
 
-  // Obliczamy wysokość animowanej sekcji z kodem QR
   const qrSectionHeight = qrAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 200], // Wysokość sekcji z QR, gdy jest ukryta i pokazana
+    outputRange: [0, 200],
   });
+
+  
+  const calculateDaysLeft = (endDate) => {
+    const currentDate = new Date();
+    const end = new Date(endDate);
+    const timeDifference = end - currentDate;
+    const daysLeft = Math.ceil(timeDifference / (1000 * 3600 * 24));
+    return daysLeft;
+  };
+
+  const calculateEventDuration = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const timeDifference = end - start; // Difference in milliseconds
+    const durationInDays = timeDifference / (1000 * 3600 * 24); // Convert to days
+    return Math.ceil(durationInDays); // Round up to the next whole number
+  };
+
+  const daysLeft = calculateDaysLeft(endDate);
+  const eventDuration = calculateEventDuration(startDate, endDate);
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        {/* Dolna część biletu z informacjami */}
-        <View style={styles.ticketInfo}>
+        <TouchableOpacity style={styles.ticketInfo} onPress={openModal}>
           <Text style={styles.label}>NAZWA</Text>
           <Text style={styles.value}>{order.ticket_name || "N/A"}</Text>
 
+          <Text style={styles.label}>DURATION</Text>
+          <Text style={styles.value}>{eventDuration} days
+           
+          </Text>
+
           <Text style={styles.label}>PLACE</Text>
-          <Text style={styles.value}>{order.place || "N/A"}</Text>
+          <Text style={styles.value}>{locationName || "N/A"} {cityName || "N/A"} </Text>
 
           <Text style={styles.label}>ORDERED BY</Text>
           <Text style={styles.value}>
-            {order.ordered_by || "N/A"} on{" "}
+            {userName || "N/A"} on{" "}
             {order.order_date ? new Date(order.order_date).toLocaleString() : "N/A"}
           </Text>
 
           <Text style={styles.label}>VALID UNTIL</Text>
           <Text style={styles.value}>
-            {order.valid_until ? new Date(order.valid_until).toLocaleString() : "N/A"}
+            {endDate ? new Date(endDate).toLocaleString() : "N/A"}
           </Text>
 
-          {/* Przyciski obok siebie */}
+          <Text style={styles.label}>DAYS LEFT</Text>
+          <Text style={styles.value}>{daysLeft} days</Text>
+
+          {/* Display additional data */}
+          <Text style={styles.label}>No. of Tickets</Text>
+          <Text style={styles.value}>{numberOfTickets || "N/A"}</Text>
+
+          <Text style={styles.label}>Grand Total</Text>
+          <Text style={styles.value}>{grandTotal || "N/A"} zł</Text>
+
+          <Text style={styles.label}>Fee</Text>
+          <Text style={styles.value}>{fee || "N/A"}</Text>
+
+          <Text style={styles.label}>Category Type</Text>
+          <Text style={styles.value}>{categoryType || "N/A"}</Text>
+
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button}>
               <Text style={styles.buttonText}>Pobierz bilet</Text>
             </TouchableOpacity>
 
-            {/* Przycisk do pokazania kodu QR */}
             <TouchableOpacity style={styles.button} onPress={toggleQr}>
               <Text style={styles.buttonText}>
                 {showQr ? "Ukryj kod QR" : "Pokaż kod QR"}
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </TouchableOpacity>
 
-        {/* Sekcja z kodem QR z animacją */}
         <Animated.View style={[styles.qrSection, { height: qrSectionHeight }]}>
           <Image
             source={{ uri: "https://example.com/qr-code-image.png" }}
             style={styles.qrCode}
           />
         </Animated.View>
+
+        <Modal
+          visible={modalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={closeModal}
+        >
+          <TouchableWithoutFeedback onPress={closeModal}>
+            <View style={styles.modalOverlay}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>Szczegóły biletu</Text>
+                <Text style={styles.modalText}>NAZWA: {order.ticket_name || "N/A"}</Text>
+                <Text style={styles.modalText}>PLACE: {locationName || "N/A"} {cityName || "N/A"}</Text>
+                <Text style={styles.modalText}>ORDERED BY: {userName || "N/A"}</Text>
+                <Text style={styles.modalText}>VALID UNTIL: {endDate ? new Date(endDate).toLocaleString() : "N/A"}</Text>
+                <Text style={styles.modalText}>DAYS LEFT: {daysLeft} days</Text>
+
+                {/* Additional modal information */}
+                <Text style={styles.modalText}>No. of Tickets: {numberOfTickets || "N/A"}</Text>
+                <Text style={styles.modalText}>Grand Total: {grandTotal || "N/A"} zł</Text>
+                <Text style={styles.modalText}>Fee: {fee || "N/A"} zł</Text>
+                <Text style={styles.modalText}>Category Type: {categoryType || "N/A"}</Text>
+
+                <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+                  <Text style={styles.buttonText}>Zamknij</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
       </View>
     </View>
   );
@@ -106,8 +190,8 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   buttonContainer: {
-    flexDirection: "row", // Układ poziomy
-    justifyContent: "space-between", // Rozmieszcza przyciski na całej szerokości
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 15,
   },
   button: {
@@ -115,21 +199,50 @@ const styles = StyleSheet.create({
     backgroundColor: "#007BFF",
     borderRadius: 8,
     alignItems: "center",
-    flex: 1, // Umożliwia, żeby przyciski miały równą szerokość
-    marginHorizontal: 5, // Odstęp między przyciskami
+    flex: 1,
+    marginHorizontal: 5,
   },
   buttonText: {
     color: "#fff",
     fontSize: 14,
-    textAlign: "center", // Centrowanie tekstu w przycisku
+    textAlign: "center",
   },
   qrSection: {
     alignItems: "center",
     backgroundColor: "#fff",
-    overflow: "hidden", // Zapewnia, że QR kod nie wyjdzie poza sekcję
+    overflow: "hidden",
   },
   qrCode: {
     width: 150,
     height: 150,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: "80%",
+    padding: 20,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+  modalText: {
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 10,
+  },
+  closeButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: "#007BFF",
+    borderRadius: 8,
+    alignItems: "center",
   },
 });

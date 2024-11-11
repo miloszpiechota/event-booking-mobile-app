@@ -56,7 +56,7 @@ const EventScreen = () => {
   const handleBooking = () => {
     navigation.navigate(
       isSeatCategorized ? "SeatCategory" : "Confirmation",
-      { eventTickets, ...restProps } // Pass eventTickets and other props
+      { eventTickets, ...restProps, locationName, cityName } // Pass eventTickets and other props
     );
   };
 
@@ -83,6 +83,9 @@ const EventScreen = () => {
           <Text style={styles.infoText}>
             <Text style={styles.label}>Czas trwania:</Text>{" "}
             {calculateDuration(startDate, endDate)} dni
+          </Text>
+          <Text style={styles.infoText}>
+            <Text style={styles.label}>Lokalizacaja:</Text>{locationName} {cityName}
           </Text>
 
           <View style={styles.separator} />
@@ -174,6 +177,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "justify", 
     lineHeight: 22,
+    
   },
   additionalInfoText: {
     fontSize: 16,
