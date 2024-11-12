@@ -1,81 +1,48 @@
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  FlatList,
-} from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import React, { useLayoutEffect, useState, useEffect, useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, Text, FlatList, Pressable } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import MapView, { Marker } from "react-native-maps";
-
-import { fetchLocations } from "../database/FetchLocations"; // Import fetchLocations
-import { Place } from "../PlacesContext"; // Import PlaceContext
+import { fetchCoordinates } from '../database/FetchCoordinates'; // Import funkcji fetchCoordinates
+import { fetchLocations } from '../database/FetchLocations'; // Import funkcji fetchLocations
 
 const PlacesScreen = () => {
-  const navigation = useNavigation();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [locations, setLocations] = useState([]); // New state for fetched locations
-  const [filteredLocations, setFilteredLocations] = useState([]); // State for filtered locations
+  const [searchQuery, setSearchQuery] = useState('');
+  const [locations, setLocations] = useState([]); // Lista lokalizacji do wyświetlenia
+  const [selectedLocation, setSelectedLocation] = useState(null); // Wybrana lokalizacja
 
-  // Use PlacesContext to update selectCity
-  const { selectedCity, setSelectedCity } = useContext(Place);
+  // Funkcja do obsługi wyszukiwania
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+    // Tu można dodać filtrację lokalizacji na podstawie tekstu
+  };
 
-  // Fetch locations data on component mount
+  // Funkcja do wyboru lokalizacji
+  const handleSelectLocation = async (location) => {
+    // Przekazanie zarówno nazwy lokalizacji, jak i miasta
+    const coords = await fetchCoordinates(location.name, location.city);
+    if (coords) {
+      setSelectedLocation({
+        ...location,
+        coordinates: coords,
+      });
+    }
+  };
+
+  // Załadowanie lokalizacji z bazy danych
   useEffect(() => {
     const loadLocations = async () => {
-      const data = await fetchLocations();
-      setLocations(data); // Set fetched locations
-      setFilteredLocations(data); // Initialize filteredLocations with all data
+      const locationsData = await fetchLocations(); // Pobranie lokalizacji z bazy
+      setLocations(locationsData);
     };
-
     loadLocations();
   }, []);
 
-  // Update header title
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => (
-        <Pressable style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-          <Text style={{ fontSize: 15, letterSpacing: 1 }}>CHANGE LOCATION</Text>
-        </Pressable>
-      ),
-    });
-  }, [navigation]);
-
-  // Handle search and filter locations
-  const handleSearch = (text) => {
-    setSearchQuery(text);
-    const filtered = locations.filter((location) =>
-      location.name.toLowerCase().includes(text.toLowerCase())
-    );
-    setFilteredLocations(filtered);
-  };
-
-  // Handle city selection
-  const handleCitySelect = (city) => {
-    setSelectedCity(city);
-  };
-
   return (
     <View style={{ flex: 1 }}>
-      {/* Search Bar */}
-      <View
-        style={{
-          margin: 10,
-          padding: 10,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          borderColor: "#e0e0e0",
-          borderWidth: 2,
-          borderRadius: 30,
-        }}
-      >
+      {/* Pasek wyszukiwania */}
+      <View style={{ margin: 10, padding: 10, flexDirection: 'row', borderColor: '#e0e0e0', borderWidth: 1, borderRadius: 30 }}>
         <TextInput
-          placeholder="Search Your City"
+          placeholder="Search location"
           value={searchQuery}
           onChangeText={handleSearch}
           style={{ flex: 1, marginRight: 10 }}
@@ -83,59 +50,39 @@ const PlacesScreen = () => {
         <FontAwesome name="search" size={24} color="black" />
       </View>
 
-      {/* Locations List */}
+      {/* Lista wyników wyszukiwania */}
       <FlatList
-        data={filteredLocations}
+        data={locations.filter(location => location.name.toLowerCase().includes(searchQuery.toLowerCase()))}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <Pressable
-            onPress={() => handleCitySelect(item)}
-            style={{
-              padding: 10,
-              borderBottomWidth: 1,
-              borderBottomColor: "#e0e0e0",
-            }}
+            onPress={() => handleSelectLocation(item)}
+            style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#e0e0e0' }}
           >
-            <Text>{item.name}</Text>
+            <Text>{`${item.name}, ${item.city}`}</Text>
+            {/* Wyświetlanie miasta obok nazwy lokalizacji */}
           </Pressable>
         )}
         style={{ marginHorizontal: 20 }}
       />
 
-      {/* Selected Location */}
-      {selectedCity && (
-        <View style={{ marginHorizontal: 20, marginTop: 20 }}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: "bold",
-              color: "#333",
-              marginBottom: 5,
-            }}
-          >
-            Selected Location:
-          </Text>
-          <Text style={{ fontSize: 20, color: "#007bff", fontWeight: "600" }}>
-            {selectedCity.name}
-          </Text>
+      {/* Jeśli wybrano lokalizację, wyświetl mapę */}
+      {selectedLocation && selectedLocation.coordinates && (
+        <View style={{ marginTop: 20 }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Selected Location: {selectedLocation.name}</Text>
 
-          {/* Map */}
           <MapView
-            style={{ width: "100%", height: 300, marginTop: 10 }}
+            style={{ width: '100%', height: 300, marginTop: 10 }}
             region={{
-              latitude: selectedCity.latitude || 0,
-              longitude: selectedCity.longitude || 0,
+              latitude: selectedLocation.coordinates.latitude,
+              longitude: selectedLocation.coordinates.longitude,
               latitudeDelta: 0.1,
               longitudeDelta: 0.1,
             }}
-            showsUserLocation={true}
           >
             <Marker
-              coordinate={{
-                latitude: selectedCity.latitude || 0,
-                longitude: selectedCity.longitude || 0,
-              }}
-              title={selectedCity.name}
+              coordinate={selectedLocation.coordinates}
+              title={selectedLocation.name}
             />
           </MapView>
         </View>

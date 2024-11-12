@@ -153,8 +153,7 @@ const ConfirmationScreen = () => {
           grandTotal,
           fee,
           isSeatCategorized,
-          categoryType
-
+          categoryType,
         });
       } else {
         Alert.alert("Błąd", "Wystąpił problem z przetworzeniem płatności");
@@ -169,7 +168,7 @@ const ConfirmationScreen = () => {
     <View style={styles.container}>
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.title}>Id user:{user.userId}</Text>
+        <Text style={styles.title}>Id user:{user.userEmail}</Text>
 
         <Text style={styles.category}>
           Kategoria: {getSelectedCategoryText()}
@@ -185,27 +184,40 @@ const ConfirmationScreen = () => {
           <TextInput
             style={styles.quantityInput}
             keyboardType="numeric"
-            value={String(quantity)} // Converting to string for TextInput handling
+            value={quantity === 0 ? "" : quantity.toString()} // Show empty field if quantity is 0
             onChangeText={(value) => {
-              const newQuantity = parseInt(value, 10);
-              if (!isNaN(newQuantity) && newQuantity > 0) {
-                if (newQuantity <= numberOfTickets) {
-                  setQuantity(newQuantity); // Update quantity
+              if (value === "") {
+                // Allow clearing the input without resetting to 1
+                setQuantity(0);
+              } else {
+                // Parse the input to an integer
+                const newQuantity = parseInt(value, 10);
+
+                if (!isNaN(newQuantity) && newQuantity > 0) {
+                  if (newQuantity <= numberOfTickets) {
+                    // If valid and within ticket limit, update quantity
+                    setQuantity(newQuantity);
+                  } else {
+                    // If quantity exceeds limit, set to max and alert user
+                    setQuantity(numberOfTickets);
+                    Alert.alert(
+                      "Przekroczona liczba biletów",
+                      `Maksymalna liczba biletów to ${numberOfTickets}`
+                    );
+                  }
                 } else {
-                  setQuantity(numberOfTickets); // Max tickets allowed
+                  // If input is invalid (non-positive number), reset to 1 and alert
                   Alert.alert(
-                    "Przekroczona liczba biletów",
-                    `Maksymalna liczba biletów to ${numberOfTickets}`
+                    "Niepoprawna liczba biletów",
+                    "Liczba biletów musi być większa od 0."
                   );
                 }
-              } else if (value === "") {
-                setQuantity(1); // Default to 1 ticket if empty
-              } else {
-                setQuantity(1); // Default to 1 on invalid input
-                Alert.alert(
-                  "Niepoprawna liczba biletów",
-                  "Liczba biletów musi być większa od 0."
-                );
+              }
+            }}
+            onBlur={() => {
+              // If input is cleared or invalid after editing, reset to 1 on blur
+              if (quantity === 0) {
+                setQuantity(1);
               }
             }}
           />
