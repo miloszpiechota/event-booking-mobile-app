@@ -4,14 +4,17 @@ import Navigation from "./navigation/StackNavigator"
 import { PlaceContext } from './PlacesContext';
 import { ModalPortal } from 'react-native-modals';
 import { UserProvider } from './UserContext';
+import { SelectedEventProvider } from './SelectedEventContext';
 export default function App() {
   return (
     <>
     <UserProvider>
+    <SelectedEventProvider>
       <PlaceContext>
         <Navigation />
         <ModalPortal />
       </PlaceContext>
+      </SelectedEventProvider>
     </UserProvider>
     
     </>

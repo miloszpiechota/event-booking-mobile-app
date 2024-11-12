@@ -1,36 +1,16 @@
-// ShopCartScreen.js
 import React, { useContext, useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import { fetchOrderTickets } from "../database/FetchOrderTickets";
+import { SelectedEventContext } from "../SelectedEventContext";
+import { UserContext } from "../UserContext";
 import OrderTicketCard from "../components/OrderTicketCard";
-import { UserContext } from '../UserContext';  // Import UserContext
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { fetchOrderTickets } from "../database/FetchOrderTickets";
 
 const ShopCartScreen = () => {
-  const { user } = useContext(UserContext);  // Access user data from context
+  const { user } = useContext(UserContext);
+  const { selectedEventData } = useContext(SelectedEventContext);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const route = useRoute();  // Hook to access params passed via navigation
-  const navigation = useNavigation();
-
-  // Destructure params from route to get title, locationName, and cityName
-  const { selectedCategory,
-    selectedPrice,
-    quantity,
-    selectedPaymentMethod,
-    eventTickets,
-    title,
-    locationName,
-    cityName,
-    numberOfTickets,
-    startDate,
-    endDate,
-    grandTotal,
-    fee,
-    isSeatCategorized,
-    categoryType
-   } = route.params || {}; // Avoid error if route.params is undefined
 
   useEffect(() => {
     const loadOrders = async () => {
@@ -45,7 +25,6 @@ const ShopCartScreen = () => {
         setLoading(false);
       }
     };
-
     loadOrders();
   }, [user.userId]);
 
@@ -55,25 +34,24 @@ const ShopCartScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Your Tickets</Text>
-      
       <Text style={styles.greeting}>Hello, {user.userName}</Text>
       
       <FlatList
         data={orders}
         renderItem={({ item }) => (
           <OrderTicketCard
-          order={item}
-          userName={user.userName}
-          title={title}            // Pass title as prop
-          locationName={locationName}  // Pass locationName as prop
-          cityName={cityName} 
-          startDate={startDate}
-          endDate={endDate}       
-          numberOfTickets={numberOfTickets}  // Pass number of tickets
-          grandTotal={grandTotal}  // Pass grand total
-          fee={fee}  // Pass fee
-          categoryType={categoryType}  // Pass category type
-        />
+            order={item}
+            userName={user.userName}
+            title={selectedEventData?.title}
+            locationName={selectedEventData?.locationName}
+            cityName={selectedEventData?.cityName}
+            startDate={selectedEventData?.startDate}
+            endDate={selectedEventData?.endDate}
+            numberOfTickets={selectedEventData?.numberOfTickets}
+            grandTotal={selectedEventData?.grandTotal}
+            fee={selectedEventData?.fee}
+            categoryType={selectedEventData?.categoryType}
+          />
         )}
         keyExtractor={(item) => item.idorder_ticket.toString()}
         contentContainerStyle={{ paddingBottom: 100 }}
@@ -84,7 +62,6 @@ const ShopCartScreen = () => {
 
 export default ShopCartScreen;
 
-// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -12,6 +12,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./ConfiramtionScreen.styles"; // Import styles
 import axios from "axios"; // Import axios for making HTTP requests
 import { UserContext } from "../UserContext";
+import { SelectedEventContext } from "../SelectedEventContext";
 const fetchPaymentMethods = async () => {
   try {
     const response = await fetch("http://192.168.56.1:3000/api/payment/read");
@@ -54,6 +55,7 @@ const ConfirmationScreen = () => {
   const [grandTotal, setGrandTotal] = useState(initialPrice + fee); // Initial total
   const [paymentMethods, setPaymentMethods] = useState([]); // To store payment methods
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(""); // To store selected payment method
+  const { setSelectedEventData } = useContext(SelectedEventContext);
 
   useEffect(() => {
     const getPaymentMethods = async () => {
@@ -138,8 +140,7 @@ const ConfirmationScreen = () => {
           "Twoje zamówienie zostało złożone pomyślnie"
         );
         console.log("Navigating with userId:", user.userId);
-        navigation.navigate("Shopping", {
-          selectedCategory,
+        setSelectedEventData({selectedCategory,
           selectedPrice,
           quantity,
           selectedPaymentMethod,
@@ -153,8 +154,25 @@ const ConfirmationScreen = () => {
           grandTotal,
           fee,
           isSeatCategorized,
-          categoryType,
-        });
+          categoryType,});
+          navigation.navigate("Shopping")
+        // navigation.navigate("Shopping", {
+        //   selectedCategory,
+        //   selectedPrice,
+        //   quantity,
+        //   selectedPaymentMethod,
+        //   eventTickets,
+        //   title,
+        //   locationName,
+        //   cityName,
+        //   numberOfTickets,
+        //   startDate,
+        //   endDate,
+        //   grandTotal,
+        //   fee,
+        //   isSeatCategorized,
+        //   categoryType,
+        // });
       } else {
         Alert.alert("Błąd", "Wystąpił problem z przetworzeniem płatności");
       }

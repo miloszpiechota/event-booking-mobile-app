@@ -2,32 +2,27 @@ import React, { useState, useRef } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Modal, TouchableWithoutFeedback, Alert } from "react-native";
 import QRCode from 'react-native-qrcode-svg';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import ViewShot from "react-native-view-shot"; // Import ViewShot
+import ViewShot from "react-native-view-shot";
 
 const OrderTicketCard = ({ 
   order, 
   userName, 
-  locationName, 
-  cityName, 
-  endDate, 
-  startDate, 
-  numberOfTickets, 
-  grandTotal, 
-  fee, 
-  categoryType 
+  locationName = "N/A", 
+  cityName = "N/A", 
+  endDate = "N/A", 
+  startDate = "N/A", 
+  numberOfTickets = "N/A", 
+  grandTotal = "N/A", 
+  fee = "N/A", 
+  categoryType = "N/A" 
 }) => {
   const [showQr, setShowQr] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const qrAnim = useState(new Animated.Value(0))[0];
   const viewShotRef = useRef(null);
 
-  const openModal = () => {
-    setModalVisible(true);
-  };
-  
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+  const openModal = () => setModalVisible(true);
+  const closeModal = () => setModalVisible(false);
   
   const toggleQr = () => {
     setShowQr(!showQr);
@@ -46,49 +41,47 @@ const OrderTicketCard = ({
   const calculateDaysLeft = (endDate) => {
     const currentDate = new Date();
     const end = new Date(endDate);
-    const timeDifference = end - currentDate;
-    const daysLeft = Math.ceil(timeDifference / (1000 * 3600 * 24));
-    return daysLeft;
+    return Math.ceil((end - currentDate) / (1000 * 3600 * 24));
   };
 
   const calculateEventDuration = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
-    const timeDifference = end - start;
-    const durationInDays = timeDifference / (1000 * 3600 * 24);
-    return Math.ceil(durationInDays);
+    return Math.ceil((end - start) / (1000 * 3600 * 24));
   };
 
-  const daysLeft = calculateDaysLeft(endDate);
-  const eventDuration = calculateEventDuration(startDate, endDate);
+  const daysLeft = endDate !== "N/A" ? calculateDaysLeft(endDate) : "N/A";
+  const eventDuration = (startDate !== "N/A" && endDate !== "N/A") 
+    ? calculateEventDuration(startDate, endDate) 
+    : "N/A";
 
   const qrData = JSON.stringify({
     ticketName: order.ticket_name || "N/A",
-    place: `${locationName || "N/A"} ${cityName || "N/A"}`,
+    place: `${locationName} ${cityName}`,
     orderedBy: userName || "N/A",
-    validUntil: endDate ? new Date(endDate).toLocaleString() : "N/A",
-    daysLeft: daysLeft,
-    tickets: numberOfTickets || "N/A",
-    grandTotal: grandTotal || "N/A",
-    fee: fee || "N/A",
-    categoryType: categoryType || "N/A",
+    validUntil: endDate !== "N/A" ? new Date(endDate).toLocaleString() : "N/A",
+    daysLeft,
+    tickets: numberOfTickets,
+    grandTotal,
+    fee,
+    categoryType,
   });
 
   const generatePdf = async () => {
     try {
-      const uri = await viewShotRef.current.capture(); // Capture the view
+      const uri = await viewShotRef.current.capture();
       const htmlContent = `
         <h1>Ticket Details</h1>
         <p><b>Ticket Name:</b> ${order.ticket_name || "N/A"}</p>
         <p><b>Duration:</b> ${eventDuration} days</p>
-        <p><b>Place:</b> ${locationName || "N/A"} ${cityName || "N/A"}</p>
+        <p><b>Place:</b> ${locationName} ${cityName}</p>
         <p><b>Ordered By:</b> ${userName || "N/A"}</p>
-        <p><b>Valid Until:</b> ${endDate ? new Date(endDate).toLocaleString() : "N/A"}</p>
+        <p><b>Valid Until:</b> ${endDate !== "N/A" ? new Date(endDate).toLocaleString() : "N/A"}</p>
         <p><b>Days Left:</b> ${daysLeft} days</p>
-        <p><b>No. of Tickets:</b> ${numberOfTickets || "N/A"}</p>
-        <p><b>Grand Total:</b> ${grandTotal || "N/A"} zł</p>
-        <p><b>Fee:</b> ${fee || "N/A"} zł</p>
-        <p><b>Category Type:</b> ${categoryType || "N/A"}</p>
+        <p><b>No. of Tickets:</b> ${numberOfTickets}</p>
+        <p><b>Grand Total:</b> ${grandTotal} zł</p>
+        <p><b>Fee:</b> ${fee} zł</p>
+        <p><b>Category Type:</b> ${categoryType}</p>
         <div style="text-align: center; margin-top: 20px;">
           <img src="${uri}" width="150" height="150" />
         </div>
@@ -118,33 +111,28 @@ const OrderTicketCard = ({
           <Text style={styles.value}>{eventDuration} days</Text>
 
           <Text style={styles.label}>PLACE</Text>
-          <Text style={styles.value}>{locationName || "N/A"} {cityName || "N/A"}</Text>
+          <Text style={styles.value}>{locationName} {cityName}</Text>
 
           <Text style={styles.label}>ORDERED BY</Text>
-          <Text style={styles.value}>
-            {userName || "N/A"} on{" "}
-            {order.order_date ? new Date(order.order_date).toLocaleString() : "N/A"}
-          </Text>
+          <Text style={styles.value}>{userName} on {order.order_date ? new Date(order.order_date).toLocaleString() : "N/A"}</Text>
 
           <Text style={styles.label}>VALID UNTIL</Text>
-          <Text style={styles.value}>
-            {endDate ? new Date(endDate).toLocaleString() : "N/A"}
-          </Text>
+          <Text style={styles.value}>{endDate !== "N/A" ? new Date(endDate).toLocaleString() : "N/A"}</Text>
 
           <Text style={styles.label}>DAYS LEFT</Text>
           <Text style={styles.value}>{daysLeft} days</Text>
 
           <Text style={styles.label}>No. of Tickets</Text>
-          <Text style={styles.value}>{numberOfTickets || "N/A"}</Text>
+          <Text style={styles.value}>{numberOfTickets}</Text>
 
           <Text style={styles.label}>Grand Total</Text>
-          <Text style={styles.value}>{grandTotal || "N/A"} zł</Text>
+          <Text style={styles.value}>{grandTotal} zł</Text>
 
           <Text style={styles.label}>Fee</Text>
-          <Text style={styles.value}>{fee || "N/A"}</Text>
+          <Text style={styles.value}>{fee}</Text>
 
           <Text style={styles.label}>Category Type</Text>
-          <Text style={styles.value}>{categoryType || "N/A"}</Text>
+          <Text style={styles.value}>{categoryType}</Text>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={generatePdf}>
@@ -152,9 +140,7 @@ const OrderTicketCard = ({
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={toggleQr}>
-              <Text style={styles.buttonText}>
-                {showQr ? "Ukryj kod QR" : "Pokaż kod QR"}
-              </Text>
+              <Text style={styles.buttonText}>{showQr ? "Ukryj kod QR" : "Pokaż kod QR"}</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -167,29 +153,20 @@ const OrderTicketCard = ({
           )}
         </Animated.View>
 
-        {/* Modal and additional code */}
-        <Modal
-          visible={modalVisible}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={closeModal}
-        >
+        <Modal visible={modalVisible} animationType="slide" transparent onRequestClose={closeModal}>
           <TouchableWithoutFeedback onPress={closeModal}>
             <View style={styles.modalOverlay}>
               <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>Szczegóły biletu</Text>
                 <Text style={styles.modalText}>NAZWA: {order.ticket_name || "N/A"}</Text>
-                <Text style={styles.modalText}>PLACE: {locationName || "N/A"} {cityName || "N/A"}</Text>
+                <Text style={styles.modalText}>PLACE: {locationName} {cityName}</Text>
                 <Text style={styles.modalText}>ORDERED BY: {userName || "N/A"}</Text>
-                <Text style={styles.modalText}>VALID UNTIL: {endDate ? new Date(endDate).toLocaleString() : "N/A"}</Text>
+                <Text style={styles.modalText}>VALID UNTIL: {endDate !== "N/A" ? new Date(endDate).toLocaleString() : "N/A"}</Text>
                 <Text style={styles.modalText}>DAYS LEFT: {daysLeft} days</Text>
-
-                {/* Additional modal information */}
-                <Text style={styles.modalText}>No. of Tickets: {numberOfTickets || "N/A"}</Text>
-                <Text style={styles.modalText}>Grand Total: {grandTotal || "N/A"} zł</Text>
-                <Text style={styles.modalText}>Fee: {fee || "N/A"} zł</Text>
-                <Text style={styles.modalText}>Category Type: {categoryType || "N/A"}</Text>
-
+                <Text style={styles.modalText}>No. of Tickets: {numberOfTickets}</Text>
+                <Text style={styles.modalText}>Grand Total: {grandTotal} zł</Text>
+                <Text style={styles.modalText}>Fee: {fee}</Text>
+                <Text style={styles.modalText}>Category Type: {categoryType}</Text>
                 <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
                   <Text style={styles.buttonText}>Zamknij</Text>
                 </TouchableOpacity>
