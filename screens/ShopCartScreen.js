@@ -4,6 +4,7 @@ import { SelectedEventContext } from "../SelectedEventContext";
 import { UserContext } from "../UserContext";
 import OrderTicketCard from "../components/OrderTicketCard";
 import { fetchOrderTickets } from "../database/FetchOrderTickets";
+import { useFocusEffect } from "@react-navigation/native";
 
 const ShopCartScreen = () => {
   const { user } = useContext(UserContext);
@@ -12,21 +13,26 @@ const ShopCartScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const loadOrders = async () => {
-      try {
-        const fetchedOrders = await fetchOrderTickets();
-        const userOrders = fetchedOrders.filter(order => order.user_id === user.userId);
-        setOrders(userOrders);
-      } catch (err) {
-        setError("Failed to load orders");
-        console.error("Error loading orders:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadOrders();
-  }, [user.userId]);
+  const loadOrders = async () => {
+    try {
+      const fetchedOrders = await fetchOrderTickets();
+      const userOrders = fetchedOrders.filter(order => order.user_id === user.userId);
+      setOrders(userOrders);
+    } catch (err) {
+      setError("Failed to load orders");
+      console.error("Error loading orders:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Use useFocusEffect to reload orders every time this screen is focused
+  useFocusEffect(
+    React.useCallback(() => {
+      setLoading(true); // Show loading indicator while refreshing
+      loadOrders();
+    }, [user.userId])
+  );
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>{error}</Text>;
