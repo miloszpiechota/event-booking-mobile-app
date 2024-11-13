@@ -26,7 +26,6 @@ const EventScreen = () => {
     isSeatCategorized,
     categoryType,
     numberOfTickets,
-    //userId
   } = route.params;
 
   // Format date and time
@@ -36,13 +35,13 @@ const EventScreen = () => {
       date.getMonth() + 1
     ).padStart(2, "0")}-${date.getFullYear()}`;
   };
-  
+
   const formatTime = (dateString) =>
     new Date(dateString).toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
     });
-  
+
   const calculateDuration = (start, end) =>
     Math.ceil((new Date(end) - new Date(start)) / (1000 * 3600 * 24));
 
@@ -56,7 +55,7 @@ const EventScreen = () => {
   const handleBooking = () => {
     navigation.navigate(
       isSeatCategorized ? "SeatCategory" : "Confirmation",
-      { eventTickets, ...restProps, locationName, cityName } // Pass eventTickets and other props
+      { eventTickets, ...restProps, locationName, cityName }
     );
   };
 
@@ -65,6 +64,8 @@ const EventScreen = () => {
       <ScrollView>
         <View style={styles.detailsContainer}>
           <Image style={styles.image} source={{ uri: photo }} />
+
+          <Text style={styles.title}>{title}</Text>
 
           <View style={styles.separator} />
 
@@ -85,20 +86,19 @@ const EventScreen = () => {
             {calculateDuration(startDate, endDate)} dni
           </Text>
           <Text style={styles.infoText}>
-            <Text style={styles.label}>Lokalizacaja:</Text>{locationName} {cityName}
+            <Text style={styles.label}>Lokalizacja:</Text> {locationName},{" "}
+            {cityName}
           </Text>
 
           <View style={styles.separator} />
 
+          <Text style={styles.sectionTitle}>Opis wydarzenia:</Text>
           <Text style={styles.descriptionText}>{description}</Text>
 
           <View style={styles.separator} />
 
+          <Text style={styles.sectionTitle}>Dodatkowe informacje:</Text>
           <Text style={styles.additionalInfoText}>
-            <Text style={styles.label}>Dodatkowe informacje:</Text>
-          </Text>
-         
-          <Text style={styles.priceText}>
             Podział miejsc: {isSeatCategorized ? "Tak" : "Nie"}
           </Text>
 
@@ -125,9 +125,8 @@ const EventScreen = () => {
           ))}
         </View>
 
-        {/* Booking Button */}
         <Pressable style={styles.bookButton} onPress={handleBooking}>
-          <Text style={styles.bookButtonText}>NEXT</Text>
+          <Text style={styles.bookButtonText}>ZAREZERWUJ</Text>
         </Pressable>
       </ScrollView>
     </SafeAreaView>
@@ -144,57 +143,72 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     backgroundColor: "white",
-    padding: 15,
-    borderRadius: 6,
-    elevation: 2,
+    padding: 20,
+    borderRadius: 8,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     marginBottom: 20,
   },
   image: {
-    height: 200,
+    height: 220,
     width: "100%",
-    borderRadius: 6,
+    borderRadius: 8,
+    marginBottom: 15,
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
-    marginVertical: 10,
+    color: "#333",
+    marginBottom: 10,
   },
   separator: {
     height: 1,
     backgroundColor: "#E0E0E0",
-    marginVertical: 10,
+    marginVertical: 12,
   },
   infoText: {
     fontSize: 16,
-    marginVertical: 2,
+    color: "#555",
+    marginBottom: 4,
   },
   label: {
-    fontWeight: "bold",
+    fontWeight: "600",
+    color: "#222",
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
     color: "#333",
+    marginBottom: 6,
   },
   descriptionText: {
-    padding: 10,
     fontSize: 16,
-    textAlign: "justify", 
+    color: "#444",
     lineHeight: 22,
-    
+    textAlign: "justify",
+    marginBottom: 10,
   },
   additionalInfoText: {
     fontSize: 16,
-    color: "#333",
+    color: "#666",
+    marginBottom: 6,
   },
   priceText: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#555",
-    marginVertical: 5,
+    fontWeight: "600",
+    color: "#444",
+    marginVertical: 3,
   },
   bookButton: {
     backgroundColor: "#4A79D9",
-    paddingVertical: 15,
-    borderRadius: 6,
+    paddingVertical: 16,
+    borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
+    marginHorizontal: 20,
   },
   bookButtonText: {
     fontSize: 16,
