@@ -27,8 +27,8 @@ const SeatCategoryScreen = () => {
   const handleCategoryPress = (category) => {
     setSelectedCategory(category);
     let ticketPrice = 0;
-    const price = eventTickets[0]?.price ?? 0;  // Default to 0 if price is undefined
-    
+    const price = eventTickets[0]?.price ?? 0;
+
     switch (category) {
       case "firstCategory":
         ticketPrice = price * 3.0;
@@ -43,10 +43,9 @@ const SeatCategoryScreen = () => {
         ticketPrice = 0;
     }
     
-    setSelectedPrice(ticketPrice.toFixed(2));  // Ensure ticketPrice is a valid number
+    setSelectedPrice(ticketPrice.toFixed(2));
   };
-  
-  
+
   const getSelectedCategoryText = () => {
     switch (selectedCategory) {
       case "firstCategory":
@@ -155,10 +154,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8f8f8",
   },
   headerText: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 10,
+    marginBottom: 12,
   },
   selectedCategoryText: {
     fontSize: 18,
@@ -188,7 +187,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   stageText: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#fff',
   },
@@ -197,10 +196,10 @@ const styles = StyleSheet.create({
   },
   categoryBox: {
     width: '100%',
-    height: 100,
+    height: 90,
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 10,
+    marginVertical: 8,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOpacity: 0.2,
@@ -210,18 +209,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   firstCategory: {
-    backgroundColor: '#bbdefb',
+    backgroundColor: '#cce7ff',
   },
   secondCategory: {
-    backgroundColor: '#bbdefb',
+    backgroundColor: '#c0e4ff',
   },
   thirdCategory: {
-    backgroundColor: '#bbdefb',
+    backgroundColor: '#b2dffc',
   },
   selectedCategory: {
     borderColor: "#D98859",
     borderWidth: 2,
-    backgroundColor: "#ffd9b3",
+    backgroundColor: "#ffe0cc",
   },
   categoryText: {
     fontSize: 20,
@@ -236,11 +235,11 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#4a79d9",
-    padding: 15,
+    padding: 16,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 20,
-    width: '80%',
+    width: '85%',
     shadowColor: "#000",
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 4 },
