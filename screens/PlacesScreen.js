@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { View, TextInput, Text, FlatList, Pressable } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { fetchCoordinates } from '../database/FetchCoordinates'; // Import funkcji fetchCoordinates
 import { fetchLocations } from '../database/FetchLocations'; // Import funkcji fetchLocations
-
+import { Place } from '../PlacesContext';
 const PlacesScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [locations, setLocations] = useState([]); // Lista lokalizacji do wyświetlenia
   const [selectedLocation, setSelectedLocation] = useState(null); // Wybrana lokalizacja
-
+  const { setSelectedCity } = useContext(Place);
   // Funkcja do obsługi wyszukiwania
   const handleSearch = (text) => {
     setSearchQuery(text);
     // Tu można dodać filtrację lokalizacji na podstawie tekstu
   };
 
-  // Funkcja do wyboru lokalizacji
+  
   const handleSelectLocation = async (location) => {
-    // Przekazanie zarówno nazwy lokalizacji, jak i miasta
+    setSelectedCity({ name: location.city, id: location.id }); // Set city with name and id
     const coords = await fetchCoordinates(location.name, location.city);
     if (coords) {
       setSelectedLocation({

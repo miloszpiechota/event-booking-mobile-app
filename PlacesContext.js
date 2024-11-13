@@ -1,11 +1,9 @@
 import { createContext, useState } from "react";
 
 const Place = createContext();
-//This is context code in React that allows you to make data
-// available in the tree without having to manually
-// provide it through props at each level.
-const PlaceContext = ({ children }) => {
-  const [selectedCity, setSelectedCity] = useState("");
+
+const PlaceProvider = ({ children }) => {
+  const [selectedCity, setSelectedCity] = useState(""); // Store the selected city here
   return (
     <Place.Provider value={{ selectedCity, setSelectedCity }}>
       {children}
@@ -13,4 +11,4 @@ const PlaceContext = ({ children }) => {
   );
 };
 
-export { Place, PlaceContext };
+export { Place, PlaceProvider };
