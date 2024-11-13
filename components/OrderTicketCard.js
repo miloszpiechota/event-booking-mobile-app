@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Modal, TouchableWithoutFeedback, Alert } from "react-native";
+import { View, Text, TouchableOpacity, Animated, Modal, TouchableWithoutFeedback, Alert } from "react-native";
 import QRCode from 'react-native-qrcode-svg';
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import ViewShot from "react-native-view-shot";
+import styles from "./OrderTicketCard.styles";
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import { PermissionsAndroid, Platform } from 'react-native';
 
 const OrderTicketCard = ({ 
   order, 
@@ -21,9 +23,79 @@ const OrderTicketCard = ({
   const qrAnim = useState(new Animated.Value(0))[0];
   const viewShotRef = useRef(null);
 
+  
+
+const requestAndroidPermissions = async () => {
+  try {
+    const granted = await PermissionsAndroid.requestMultiple([
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+    ]);
+    return (
+      granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+      granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED
+    );
+  } catch (err) {
+    console.warn(err);
+    return false;
+  }
+};
+
+const generatePdf = async () => {
+  if (Platform.OS === 'android') {
+    const hasPermission = await requestAndroidPermissions();
+    if (!hasPermission) {
+      Alert.alert('Brak uprawnień', 'Aplikacja potrzebuje uprawnień do zapisu plików.');
+      return;
+    }
+  }
+
+  const htmlContent = `
+    <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; }
+          h1 { text-align: center; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          th { background-color: #f2f2f2; }
+        </style>
+      </head>
+      <body>
+        <h1>Informacje o Bilecie</h1>
+        <table>
+          <tr><th>Nazwa Biletu</th><td>${order.ticket_name || 'N/A'}</td></tr>
+          <tr><th>Miejsce</th><td>${locationName} ${cityName}</td></tr>
+          <tr><th>Zamówione przez</th><td>${userName}</td></tr>
+          <tr><th>Ważne do</th><td>${endDate !== 'N/A' ? new Date(endDate).toLocaleString() : 'N/A'}</td></tr>
+          <tr><th>Dni pozostałe</th><td>${daysLeft} dni</td></tr>
+          <tr><th>Liczba biletów</th><td>${numberOfTickets}</td></tr>
+          <tr><th>Łączna kwota</th><td>${grandTotal} zł</td></tr>
+          <tr><th>Opłata</th><td>${fee}</td></tr>
+          <tr><th>Kategoria</th><td>${categoryType}</td></tr>
+        </table>
+      </body>
+    </html>
+  `;
+
+  try {
+    const options = {
+      html: htmlContent,
+      fileName: `bilet_${order.idorder_ticket}`,
+      directory: 'Documents',
+    };
+
+    const file = await RNHTMLtoPDF.convert(options);
+    Alert.alert('PDF wygenerowany', `Plik zapisany w: ${file.filePath}`);
+  } catch (error) {
+    Alert.alert('Błąd', 'Nie udało się wygenerować PDF');
+    console.error(error);
+  }
+};
+
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
-  
+
   const toggleQr = () => {
     setShowQr(!showQr);
     Animated.timing(qrAnim, {
@@ -67,38 +139,7 @@ const OrderTicketCard = ({
     categoryType,
   });
 
-  const generatePdf = async () => {
-    try {
-      const uri = await viewShotRef.current.capture();
-      const htmlContent = `
-        <h1>Ticket Details</h1>
-        <p><b>Ticket Name:</b> ${order.ticket_name || "N/A"}</p>
-        <p><b>Duration:</b> ${eventDuration} days</p>
-        <p><b>Place:</b> ${locationName} ${cityName}</p>
-        <p><b>Ordered By:</b> ${userName || "N/A"}</p>
-        <p><b>Valid Until:</b> ${endDate !== "N/A" ? new Date(endDate).toLocaleString() : "N/A"}</p>
-        <p><b>Days Left:</b> ${daysLeft} days</p>
-        <p><b>No. of Tickets:</b> ${numberOfTickets}</p>
-        <p><b>Grand Total:</b> ${grandTotal} zł</p>
-        <p><b>Fee:</b> ${fee} zł</p>
-        <p><b>Category Type:</b> ${categoryType}</p>
-        <div style="text-align: center; margin-top: 20px;">
-          <img src="${uri}" width="150" height="150" />
-        </div>
-      `;
-
-      const options = {
-        html: htmlContent,
-        fileName: 'ticket',
-        directory: 'Documents',
-      };
-
-      const file = await RNHTMLtoPDF.convert(options);
-      Alert.alert("PDF Generated", `File saved at: ${file.filePath}`);
-    } catch (error) {
-      Alert.alert("Error", "Failed to generate PDF.");
-    }
-  };
+  
 
   return (
     <View style={styles.container}>
@@ -135,8 +176,8 @@ const OrderTicketCard = ({
           <Text style={styles.value}>{categoryType}</Text>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={generatePdf}>
-              <Text style={styles.buttonText}>Pobierz bilet</Text>
+          <TouchableOpacity style={styles.button} onPress={() => generatePdf(order, locationName, cityName, userName, endDate, numberOfTickets, grandTotal, fee, categoryType)}>
+              <Text style={styles.buttonText}>Pobierz bilet PDF</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={toggleQr}>
@@ -180,89 +221,3 @@ const OrderTicketCard = ({
 };
 
 export default OrderTicketCard;
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    padding: 15,
-    backgroundColor: "#abc2ff",
-  },
-  card: {
-    width: "100%",
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  ticketInfo: {
-    padding: 20,
-    backgroundColor: "#fff",
-  },
-  label: {
-    fontSize: 12,
-    color: "#888",
-    fontWeight: "bold",
-    marginTop: 10,
-  },
-  value: {
-    fontSize: 16,
-    color: "#333",
-    marginTop: 2,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 15,
-  },
-  button: {
-    padding: 10,
-    backgroundColor: "#007BFF",
-    borderRadius: 8,
-    alignItems: "center",
-    flex: 1,
-    marginHorizontal: 5,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 14,
-    textAlign: "center",
-  },
-  qrSection: {
-    alignItems: "center",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    width: "80%",
-    padding: 20,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 15,
-  },
-  modalText: {
-    fontSize: 16,
-    color: "#333",
-    marginBottom: 10,
-  },
-  closeButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: "#007BFF",
-    borderRadius: 8,
-    alignItems: "center",
-  },
-});

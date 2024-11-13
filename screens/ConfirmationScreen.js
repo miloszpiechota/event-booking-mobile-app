@@ -13,6 +13,8 @@ import styles from "./ConfiramtionScreen.styles"; // Import styles
 import axios from "axios"; // Import axios for making HTTP requests
 import { UserContext } from "../UserContext";
 import { SelectedEventContext } from "../SelectedEventContext";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const fetchPaymentMethods = async () => {
   try {
     const response = await fetch("http://192.168.56.1:3000/api/payment/read");
@@ -25,6 +27,14 @@ const fetchPaymentMethods = async () => {
 };
 
 const ConfirmationScreen = () => {
+  const saveSelectedEventData = async (data) => {
+    try {
+      await AsyncStorage.setItem('selectedEventData', JSON.stringify(data));
+    } catch (error) {
+      console.error("Error saving selected event data:", error);
+    }
+  };
+  
   const route = useRoute();
   const navigation = useNavigation();
   const { user } = useContext(UserContext);
@@ -140,7 +150,8 @@ const ConfirmationScreen = () => {
           "Twoje zamówienie zostało złożone pomyślnie"
         );
         console.log("Navigating with userId:", user.userId);
-        setSelectedEventData({selectedCategory,
+        setSelectedEventData({
+          selectedCategory,
           selectedPrice,
           quantity,
           selectedPaymentMethod,
@@ -154,25 +165,29 @@ const ConfirmationScreen = () => {
           grandTotal,
           fee,
           isSeatCategorized,
-          categoryType,});
+          categoryType,
+        });
+        
+        saveSelectedEventData({
+          selectedCategory,
+          selectedPrice,
+          quantity,
+          selectedPaymentMethod,
+          eventTickets,
+          title,
+          locationName,
+          cityName,
+          numberOfTickets,
+          startDate,
+          endDate,
+          grandTotal,
+          fee,
+          isSeatCategorized,
+          categoryType,
+        });
+        
           navigation.navigate("Shopping")
-        // navigation.navigate("Shopping", {
-        //   selectedCategory,
-        //   selectedPrice,
-        //   quantity,
-        //   selectedPaymentMethod,
-        //   eventTickets,
-        //   title,
-        //   locationName,
-        //   cityName,
-        //   numberOfTickets,
-        //   startDate,
-        //   endDate,
-        //   grandTotal,
-        //   fee,
-        //   isSeatCategorized,
-        //   categoryType,
-        // });
+        
       } else {
         Alert.alert("Błąd", "Wystąpił problem z przetworzeniem płatności");
       }

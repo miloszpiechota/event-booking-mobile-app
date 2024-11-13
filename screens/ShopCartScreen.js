@@ -5,10 +5,12 @@ import { UserContext } from "../UserContext";
 import OrderTicketCard from "../components/OrderTicketCard";
 import { fetchOrderTickets } from "../database/FetchOrderTickets";
 import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const ShopCartScreen = () => {
   const { user } = useContext(UserContext);
-  const { selectedEventData } = useContext(SelectedEventContext);
+  const { selectedEventData, setSelectedEventData } = useContext(SelectedEventContext);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,6 +27,21 @@ const ShopCartScreen = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    const loadSelectedEventData = async () => {
+      try {
+        const data = await AsyncStorage.getItem('selectedEventData');
+        if (data) {
+          setSelectedEventData(JSON.parse(data));
+        }
+      } catch (error) {
+        console.error("Error loading selected event data:", error);
+      }
+    };
+  
+    loadSelectedEventData();
+  }, []);
+  
 
   // Use useFocusEffect to reload orders every time this screen is focused
   useFocusEffect(
