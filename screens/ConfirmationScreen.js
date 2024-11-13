@@ -104,6 +104,7 @@ const ConfirmationScreen = () => {
 
   const confirmPayment = async () => {
     try {
+      // Prepare data to send to the backend for order creation
       const orderData = {
         total_amount: grandTotal,
         total_tax_amount: fee,
@@ -124,14 +125,39 @@ const ConfirmationScreen = () => {
         ],
         data: new Date().toISOString(),
       };
-
+  
+      // Send request to backend to create an order
       const response = await axios.post(
         "http://192.168.56.1:3000/api/orders/create",
         orderData
       );
-
+  
       if (response.data.success) {
         Alert.alert("Płatność potwierdzona", "Twoje zamówienie zostało złożone pomyślnie");
+  
+        // Send ticket information email
+        const emailResponse = await axios.post("http://192.168.56.1:3000/api/send-ticket-info", {
+          userEmail: user.userEmail,
+          eventDetails: {
+            title,
+            startDate,
+            endDate,
+            locationName,
+            cityName,
+            selectedCategory,
+            quantity,
+            totalAmount: grandTotal,
+          },
+        });
+  
+        if (emailResponse.data.success) {
+          Alert.alert("Informacja o bilecie wysłana", "Na Twój adres e-mail wysłano szczegóły biletu.");
+        } else {
+          console.warn("Ticket information email failed:", emailResponse.data.message);
+          Alert.alert("Uwaga", "Nie udało się wysłać e-maila z informacją o bilecie. Sprawdź swoje połączenie.");
+        }
+  
+        // Save the selected event data and navigate
         setSelectedEventData({
           selectedCategory,
           selectedPrice,
@@ -177,6 +203,7 @@ const ConfirmationScreen = () => {
       Alert.alert("Błąd", "Wystąpił problem z połączeniem z serwerem");
     }
   };
+  
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>

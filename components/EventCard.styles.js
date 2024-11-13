@@ -3,61 +3,63 @@ import { StyleSheet } from "react-native";
 export const ec_s = StyleSheet.create({
   card: {
     backgroundColor: "white",
-    height: 150,
+    height: 180, // Increase the height for a larger card
     width: "100%",
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     elevation: 5,
-    borderRadius: 12,
+    borderRadius: 13,
     flexDirection: "row",
-    paddingHorizontal: 10,
     alignItems: "center",
     marginBottom: 15,
-    marginTop: 5,
+    overflow: "hidden",
   },
   img_left: {
-    width: "48%", // Slightly less than half for balanced spacing
+    width: "50%", // Slightly reduce image width to give more space to text
     height: "100%",
-    borderTopLeftRadius: 12,
-    borderBottomLeftRadius: 12,
+    borderTopLeftRadius: 13,
+    borderBottomLeftRadius: 13,
   },
   info_right: {
-    width: "52%", // Ensures alignment and balance with img_left
-    paddingHorizontal: 12,
-    justifyContent: "center",
+    width: "55%", // Slightly increase the right side for text content
+    paddingHorizontal: 15,
+    justifyContent: "space-between", // Space out the content vertically
+    paddingVertical: 10,
   },
   eventName: {
-    fontSize: 17,
-    fontWeight: "700",
+    fontSize: 18, // Increase font size for better readability
+    fontWeight: "bold",
     color: "#333",
   },
   eventDates: {
     fontSize: 14,
-    color: "#666",
-    marginTop: 3,
+    color: "#555",
+    marginVertical: 4,
   },
   eventLocation: {
     fontSize: 14,
-    color: "#888",
-    marginTop: 3,
+    color: "#777",
+    marginBottom: 10,
   },
   bookButton: {
     backgroundColor: "#4A79D9",
-    paddingVertical: 8,
-    paddingHorizontal: 14,
+    paddingHorizontal: 10, // Reduced padding to avoid cutting off text
     borderRadius: 8,
-    marginTop: 10,
-    alignSelf: "flex-start",
+    width: "80%", // Button width relative to the container
+    height: 35, // Fixed height as required
+    alignSelf: "center",
+    justifyContent: "center", // Center the text vertically within the fixed height
+    alignItems: "center", // Center the text horizontally
+    marginTop: 10, // Optional: Adds spacing above the button
   },
+  
   bookButtonText: {
     color: "white",
-    fontWeight: "600",
-    textAlign: "center",
     fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
+

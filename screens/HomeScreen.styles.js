@@ -22,21 +22,17 @@ const styles = StyleSheet.create({
     color: "#555",
   },
   filterButton: {
-    position: "absolute",
-    bottom: 15,
-    right: 15,
-    backgroundColor: "#D2951B",
+    position: 'absolute',
+    bottom: 10,
+    backgroundColor: 'rgba(210, 149, 27, 0.8)', // Lekko przezroczysty kolor
     width: 60,
     height: 60,
     borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 4,
+    right: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  
   listContentContainer: {
     paddingBottom: 100,
   },
