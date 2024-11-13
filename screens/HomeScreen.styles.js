@@ -1,70 +1,83 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f8f8f8",
+    paddingHorizontal: 10,
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  headerIcons: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  cityName: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#555",
   },
   filterButton: {
-    position: 'absolute',
-    bottom: 10,
-    backgroundColor: 'rgba(210, 149, 27, 0.8)', // Lekko przezroczysty kolor
+    position: "absolute",
+    bottom: 15,
+    right: 15,
+    backgroundColor: "#D2951B",
     width: 60,
     height: 60,
     borderRadius: 30,
-    right: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 4,
+  },
+  listContentContainer: {
+    paddingBottom: 100,
   },
   modalContent: {
-    width: '100%',
+    width: "100%",
     height: 280,
-    backgroundColor: 'white',
+    backgroundColor: "white",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    paddingVertical: 20,
   },
-  categoryText: {
-    paddingVertical: 5,
-    fontSize: 15,
-    fontWeight: '500',
-    marginTop: 10,
-  },
-  categoryButton: (selected) => ({
-    margin: 10,
-    borderColor: selected ? 'orange' : '#CBCBCB',
-    borderWidth: 1,
-    paddingVertical: 5,
-    borderRadius: 25,
-    paddingHorizontal: 11,
-    backgroundColor: selected ? 'orange' : 'white',
-  }),
-  categoryButtonText: (selected) => ({
-    color: selected ? 'white' : 'black',
-    fontWeight: selected ? '500' : 'normal',
-  }),
-  headerStyle: {
-    backgroundColor: "#f5f5f5",
-    shadowColor: "transparent",
-    shadowOpacity: 0.3,
-    shadowOffset: { width: -1, height: 1 },
-    shadowRadius: 3,
+  modalTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
+    textAlign: "center",
+    marginBottom: 15,
   },
   modalStyle: {
     justifyContent: "flex-end",
     margin: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.4)", // Slight transparency
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   filterContainer: {
     flexDirection: "row",
-    alignItems: "center",
     flexWrap: "wrap",
+    justifyContent: "center",
   },
-  searchInput: {
-    height: 40,
-    borderColor: 'gray',
+  categoryButton: (selected) => ({
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 20,
     borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10, // Odstęp od FlatList
-  },
-  
+    borderColor: selected ? "#FFA726" : "#CBCBCB",
+    backgroundColor: selected ? "#FFA726" : "#fff",
+    margin: 5,
+  }),
+  categoryButtonText: (selected) => ({
+    color: selected ? "#fff" : "#333",
+    fontWeight: selected ? "600" : "normal",
+  }),
 });
 
 export default styles;

@@ -13,19 +13,17 @@ import { useNavigation } from "@react-navigation/native";
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Miesiące są indeksowane od 0
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
 };
 
-const EventCard = ({ item,userData }) => {
+const EventCard = ({ item, userData }) => {
   const formattedStartDate = formatDate(item.start_date);
   const formattedEndDate = formatDate(item.end_date);
   const locationName = item.location_name;
   const cityName = item.city_name;
-  const numberOfTickets = item.number_of_ticket;
   const navigation = useNavigation();
-  //const { userId, userName, userEmail } = userData;
 
   return (
     <SafeAreaView>
@@ -55,9 +53,8 @@ const EventCard = ({ item,userData }) => {
                 endDate: item.end_date,
                 categoryType: item.categoryType,
                 isSeatCategorized: item.is_seat_categorized,
-                eventTickets: item.eventTickets, // Pass tickets to EventScreen
+                eventTickets: item.eventTickets,
                 numberOfTickets: item.number_of_ticket,
-                //userId: userId
               })
             }
           >

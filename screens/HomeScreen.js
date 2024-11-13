@@ -18,10 +18,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Place } from "../PlacesContext";
 import EventCard from "../components/EventCard";
 import Header from "../components/Header";
-import {
-  BottomModal,
-  ModalContent,
-} from "react-native-modals";
+import { BottomModal, ModalContent } from "react-native-modals";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { SlideAnimation } from "react-native-modals";
 import { fetchEvents } from "../database/FetchEvents";
@@ -34,13 +31,13 @@ import SearchBar from "./SearchBar";
 const HomeScreen = () => {
   const navigation = useNavigation();
   const opacityAnim = useRef(new Animated.Value(0)).current;
-  const { selectedCity } = useContext(Place); // Access selected city from PlaceContext
+  const { selectedCity } = useContext(Place);
   const [modalVisible, setModalVisible] = useState(false);
   const [events, setEvents] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   // Load data on component mount
   useEffect(() => {
     const loadData = async () => {
@@ -50,11 +47,16 @@ const HomeScreen = () => {
         const fetchedLocations = await fetchLocations();
         const fetchedTickets = await fetchEventTickets();
 
-        // Map event tickets to each event based on idevent
         const eventsWithTickets = fetchedEvents.map((event) => {
-          const tickets = fetchedTickets.filter(ticket => ticket.idevent === event.idevent);
-          const category = fetchedCategories.find(cat => cat.idevent_category === event.idevent_category);
-          const location = fetchedLocations.find(loc => loc.id === event.idevent_location);
+          const tickets = fetchedTickets.filter(
+            (ticket) => ticket.idevent === event.idevent
+          );
+          const category = fetchedCategories.find(
+            (cat) => cat.idevent_category === event.idevent_category
+          );
+          const location = fetchedLocations.find(
+            (loc) => loc.id === event.idevent_location
+          );
 
           return {
             ...event,
@@ -76,7 +78,6 @@ const HomeScreen = () => {
     loadData();
   }, []);
 
-  // Function to apply category filter
   const applyCategoryFilter = (eventsList) => {
     if (!selectedCategory || selectedCategory === "All") {
       return eventsList;
@@ -88,21 +89,27 @@ const HomeScreen = () => {
     }, {});
 
     const categoryId = categoryMapping[selectedCategory];
-    return eventsList.filter(event => event.idevent_category === categoryId);
+    return eventsList.filter((event) => event.idevent_category === categoryId);
   };
 
-  // Filter events based on selected city, search query, and category
   const filterEvents = () => {
     let filteredEvents = events;
 
     if (selectedCity?.name) {
-      filteredEvents = filteredEvents.filter(event => event.city_name === selectedCity.name);
+      filteredEvents = filteredEvents.filter(
+        (event) => event.city_name === selectedCity.name
+      );
     }
 
     if (searchQuery) {
-      filteredEvents = filteredEvents.filter(event => 
-        (event.title || "").toLowerCase().includes(searchQuery.toLowerCase()) || 
-        (event.description || "").toLowerCase().includes(searchQuery.toLowerCase())
+      filteredEvents = filteredEvents.filter(
+        (event) =>
+          (event.title || "")
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          (event.description || "")
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
       );
     }
 
@@ -124,10 +131,10 @@ const HomeScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => <Text>Hello Miłosz</Text>,
+      headerLeft: () => <Text style={styles.headerText}>Hello Miłosz</Text>,
       headerStyle: styles.headerStyle,
       headerRight: () => (
-        <Pressable style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+        <Pressable style={styles.headerIcons}>
           <Ionicons name="notifications-outline" size={24} color="black" />
           <EvilIcons
             onPress={() => navigation.navigate("Places")}
@@ -136,7 +143,7 @@ const HomeScreen = () => {
             color="black"
           />
           <Pressable onPress={() => navigation.navigate("Places")}>
-            <Animated.Text style={{ opacity: opacityAnim }}>
+            <Animated.Text style={[styles.cityName, { opacity: opacityAnim }]}>
               <Text>{selectedCity ? selectedCity.name : "Lublin"}</Text>
             </Animated.Text>
           </Pressable>
@@ -151,7 +158,7 @@ const HomeScreen = () => {
       <View style={styles.container}>
         <FlatList
           ListHeaderComponent={Header}
-          data={filteredEvents} 
+          data={filteredEvents}
           renderItem={({ item, index }) => (
             <EventCard
               item={{
@@ -169,9 +176,12 @@ const HomeScreen = () => {
               key={index}
             />
           )}
-          contentContainerStyle={{ paddingBottom: 100 }}
+          contentContainerStyle={styles.listContentContainer}
         />
-        <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.filterButton}>
+        <Pressable
+          onPress={() => setModalVisible(!modalVisible)}
+          style={styles.filterButton}
+        >
           <FontAwesome name="filter" size={24} color="black" />
         </Pressable>
 
@@ -187,11 +197,13 @@ const HomeScreen = () => {
           style={styles.modalStyle}
         >
           <ModalContent style={styles.modalContent}>
-            <Text style={styles.categoryText}>Event Category</Text>
-            <Pressable style={styles.filterContainer}>
+            <Text style={styles.modalTitle}>Event Category</Text>
+            <View style={styles.filterContainer}>
               <Pressable
                 style={styles.categoryButton(selectedCategory === "All")}
-                onPress={() => setSelectedCategory(selectedCategory === "All" ? null : "All")}
+                onPress={() =>
+                  setSelectedCategory(selectedCategory === "All" ? null : "All")
+                }
               >
                 <Text style={styles.categoryButtonText(selectedCategory === "All")}>All</Text>
               </Pressable>
@@ -201,9 +213,13 @@ const HomeScreen = () => {
                   <Pressable
                     key={category.idevent_category}
                     style={styles.categoryButton(selectedCategory === category.category_type)}
-                    onPress={() => setSelectedCategory(
-                      selectedCategory === category.category_type ? null : category.category_type
-                    )}
+                    onPress={() =>
+                      setSelectedCategory(
+                        selectedCategory === category.category_type
+                          ? null
+                          : category.category_type
+                      )
+                    }
                   >
                     <Text style={styles.categoryButtonText(selectedCategory === category.category_type)}>
                       {category.category_type}
@@ -213,7 +229,7 @@ const HomeScreen = () => {
               ) : (
                 <Text>No categories available</Text>
               )}
-            </Pressable>
+            </View>
           </ModalContent>
         </BottomModal>
       </View>
