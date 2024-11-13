@@ -1,4 +1,3 @@
-// ConfirmationScreen.styles.js
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -9,37 +8,40 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     backgroundColor: "white",
-    padding: 16,
-    borderRadius: 6,
+    padding: 20,
+    borderRadius: 8,
     elevation: 2,
   },
   title: {
-    fontSize: 20,
-    fontWeight: "500",
+    fontSize: 24,
+    fontWeight: "bold",
     marginBottom: 10,
   },
-  category: {
+  categoryText: {
     fontSize: 16,
-    color: "gray",
+    color: "#555",
+    marginBottom: 8,
   },
-  price: {
+  priceText: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "#333",
     marginVertical: 10,
   },
   separator: {
     height: 1,
     backgroundColor: "#E0E0E0",
-    marginVertical: 10,
+    marginVertical: 12,
   },
   quantityContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 10,
   },
-  quantityText: {
+  quantityLabel: {
     fontSize: 16,
     fontWeight: "500",
+    color: "#333",
     marginRight: 10,
   },
   quantityInput: {
@@ -47,8 +49,25 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 5,
     padding: 5,
-    width: 50,
+    width: 60,
     textAlign: "center",
+  },
+  eventDetailsContainer: {
+    marginTop: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 10,
+  },
+  ticketDetails: {
+    marginBottom: 12,
+  },
+  ticketDetailText: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 4,
   },
   paymentMethodContainer: {
     marginTop: 20,
@@ -57,6 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     marginBottom: 10,
+    color: "#333",
   },
   feeContainer: {
     flexDirection: "row",
@@ -66,10 +86,12 @@ const styles = StyleSheet.create({
   feeText: {
     fontSize: 16,
     fontWeight: "500",
+    color: "#333",
   },
   feeAmount: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "#333",
   },
   totalContainer: {
     flexDirection: "row",
@@ -79,37 +101,24 @@ const styles = StyleSheet.create({
   totalText: {
     fontSize: 16,
     fontWeight: "500",
+    color: "#333",
   },
-  totalPrice: {
-    fontSize: 16,
+  totalAmount: {
+    fontSize: 18,
     fontWeight: "bold",
+    color: "#4a79d9",
   },
   payButton: {
     backgroundColor: "#4a79d9",
-    paddingVertical: 12,
-    borderRadius: 6,
-    marginTop: 20,
+    paddingVertical: 15,
+    borderRadius: 8,
+    marginTop: 25,
     alignItems: "center",
   },
   payButtonText: {
-    color: "white",
+    color: "#fff",
     fontSize: 18,
-    fontWeight: "600",
-  },
-  eventDetailsContainer: {
-    marginTop: 20,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-    marginBottom: 10,
-  },
-  ticketDetails: {
-    marginBottom: 10,
-  },
-  ticketDetailText: {
-    fontSize: 14,
-    color: "gray",
+    fontWeight: "bold",
   },
 });
 
