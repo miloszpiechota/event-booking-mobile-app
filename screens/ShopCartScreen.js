@@ -74,6 +74,13 @@ const ShopCartScreen = () => {
             grandTotal={selectedEventData?.grandTotal}
             fee={selectedEventData?.fee}
             categoryType={selectedEventData?.categoryType}
+            userId={user.userId}
+            selectedCategory={selectedEventData?.selectedCategory}
+            selectedPrice={selectedEventData?.selectedPrice}
+            quantity={selectedEventData?.quantity}
+            selectedPaymentMethod={selectedEventData?.selectedPaymentMethod}
+            isSeatCategorized={selectedEventData?.isSeatCategorized}
+            
           />
         )}
         keyExtractor={(item) => item.idorder_ticket.toString()}

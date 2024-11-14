@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { View, Text, TouchableOpacity, Animated, Modal, TouchableWithoutFeedback, Alert, Platform } from "react-native";
 import QRCode from 'react-native-qrcode-svg';
 import ViewShot from "react-native-view-shot";
@@ -7,25 +7,33 @@ import * as Print from "expo-print";
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import styles from "./OrderTicketCard.styles";
+import { UserContext } from "../UserContext";
 
 const OrderTicketCard = ({ 
   order, 
   userName, 
+  userId,
+  title,
   locationName = "N/A", 
   cityName = "N/A", 
-  endDate = "N/A", 
   startDate = "N/A", 
+  endDate = "N/A", 
   numberOfTickets = "N/A", 
   grandTotal = "N/A", 
   fee = "N/A", 
-  categoryType = "N/A" 
+  categoryType = "N/A",
+  selectedCategory = "Brak",
+  selectedPrice = "Brak",
+  quantity = "N/A",
+  selectedPaymentMethod = "N/A",
+  isSeatCategorized = "N/A"  
 }) => {
   const [showQr, setShowQr] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const qrAnim = useRef(new Animated.Value(0)).current;
   const viewShotRef = useRef(null);
-  const qrCodeRef = useRef(null); // Dodano referencję do ukrytego ViewShot
-
+  const qrCodeRef = useRef(null);
+  const { user } = useContext(UserContext);
   const formatDate = (date) => date !== "N/A" ? new Date(date).toLocaleDateString("en-GB") : "N/A";
   const calculateDaysLeft = (end) => end !== "N/A" ? Math.ceil((new Date(end) - new Date()) / (1000 * 3600 * 24)) : "N/A";
 
@@ -33,6 +41,27 @@ const OrderTicketCard = ({
     setShowQr(!showQr);
     Animated.timing(qrAnim, { toValue: showQr ? 0 : 1, duration: 300, useNativeDriver: false }).start();
   };
+
+  const qrData = JSON.stringify({
+    userId: userId,
+    userName: userName,
+    orderName: order.ticket_name,
+    categoryType: categoryType,
+    orderDate: order.order_date,
+    locationName: locationName,
+    cityName: cityName,
+    startDate: startDate,
+    endDate: endDate,
+    numberOfTickets: numberOfTickets,
+    grandTotal: grandTotal,
+    fee: fee,
+    selectedCategory: selectedCategory,
+    selectedPrice: selectedPrice,
+    quantity: quantity,
+    selectedPaymentMethod: selectedPaymentMethod,
+    isSeatCategorized: isSeatCategorized
+    
+  });
 
   const generatePdf = async () => {
     try {
@@ -96,6 +125,7 @@ const OrderTicketCard = ({
     <View style={styles.container}>
       <View style={styles.card}>
         <TouchableOpacity style={styles.ticketInfo} onPress={() => setModalVisible(true)}>
+        
           <Text style={styles.label}>NAZWA</Text>
           <Text style={styles.value}>{order.ticket_name || "N/A"}</Text>
 
@@ -127,7 +157,7 @@ const OrderTicketCard = ({
         <Animated.View style={[styles.qrSection, { height: qrAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 200] }) }]}>
           {showQr && (
             <ViewShot ref={viewShotRef} options={{ format: "jpg", quality: 0.9 }}>
-              <QRCode value={`${order.ticket_name || 'N/A'}`} size={150} color="black" backgroundColor="white" />
+              <QRCode value={qrData} size={150} color="black" backgroundColor="white" />
             </ViewShot>
           )}
         </Animated.View>
@@ -135,7 +165,7 @@ const OrderTicketCard = ({
         {/* Ukryty ViewShot do przechwytywania kodu QR dla PDF */}
         <View style={{ position: 'absolute', top: -9999, left: -9999 }}>
           <ViewShot ref={qrCodeRef} options={{ format: "png", quality: 1 }}>
-            <QRCode value={`${order.ticket_name || 'N/A'}`} size={150} color="black" backgroundColor="white" />
+            <QRCode value={qrData} size={150} color="black" backgroundColor="white" />
           </ViewShot>
         </View>
 
