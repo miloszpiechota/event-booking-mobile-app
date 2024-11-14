@@ -1,10 +1,12 @@
 import React, { useState, useRef } from "react";
-import { View, Text, TouchableOpacity, Animated, Modal, TouchableWithoutFeedback, Alert } from "react-native";
+import { View, Text, TouchableOpacity, Animated, Modal, TouchableWithoutFeedback, Alert, Platform } from "react-native";
 import QRCode from 'react-native-qrcode-svg';
 import ViewShot from "react-native-view-shot";
+import * as FileSystem from 'expo-file-system';
+import * as Print from "expo-print";
+import * as MediaLibrary from 'expo-media-library';
+import * as Sharing from 'expo-sharing';
 import styles from "./OrderTicketCard.styles";
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import { PermissionsAndroid, Platform } from 'react-native';
 
 const OrderTicketCard = ({ 
   order, 
@@ -20,195 +22,134 @@ const OrderTicketCard = ({
 }) => {
   const [showQr, setShowQr] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const qrAnim = useState(new Animated.Value(0))[0];
+  const qrAnim = useRef(new Animated.Value(0)).current;
   const viewShotRef = useRef(null);
+  const qrCodeRef = useRef(null); // Dodano referencję do ukrytego ViewShot
 
-  
-
-const requestAndroidPermissions = async () => {
-  try {
-    const granted = await PermissionsAndroid.requestMultiple([
-      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-    ]);
-    return (
-      granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
-      granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED
-    );
-  } catch (err) {
-    console.warn(err);
-    return false;
-  }
-};
-
-const generatePdf = async () => {
-  if (Platform.OS === 'android') {
-    const hasPermission = await requestAndroidPermissions();
-    if (!hasPermission) {
-      Alert.alert('Brak uprawnień', 'Aplikacja potrzebuje uprawnień do zapisu plików.');
-      return;
-    }
-  }
-
-  const htmlContent = `
-    <html>
-      <head>
-        <style>
-          body { font-family: Arial, sans-serif; padding: 20px; }
-          h1 { text-align: center; }
-          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-          th { background-color: #f2f2f2; }
-        </style>
-      </head>
-      <body>
-        <h1>Informacje o Bilecie</h1>
-        <table>
-          <tr><th>Nazwa Biletu</th><td>${order.ticket_name || 'N/A'}</td></tr>
-          <tr><th>Miejsce</th><td>${locationName} ${cityName}</td></tr>
-          <tr><th>Zamówione przez</th><td>${userName}</td></tr>
-          <tr><th>Ważne do</th><td>${endDate !== 'N/A' ? new Date(endDate).toLocaleString() : 'N/A'}</td></tr>
-          <tr><th>Dni pozostałe</th><td>${daysLeft} dni</td></tr>
-          <tr><th>Liczba biletów</th><td>${numberOfTickets}</td></tr>
-          <tr><th>Łączna kwota</th><td>${grandTotal} zł</td></tr>
-          <tr><th>Opłata</th><td>${fee}</td></tr>
-          <tr><th>Kategoria</th><td>${categoryType}</td></tr>
-        </table>
-      </body>
-    </html>
-  `;
-
-  try {
-    const options = {
-      html: htmlContent,
-      fileName: `bilet_${order.idorder_ticket}`,
-      directory: 'Documents',
-    };
-
-    const file = await RNHTMLtoPDF.convert(options);
-    Alert.alert('PDF wygenerowany', `Plik zapisany w: ${file.filePath}`);
-  } catch (error) {
-    Alert.alert('Błąd', 'Nie udało się wygenerować PDF');
-    console.error(error);
-  }
-};
-
-  const openModal = () => setModalVisible(true);
-  const closeModal = () => setModalVisible(false);
+  const formatDate = (date) => date !== "N/A" ? new Date(date).toLocaleDateString("en-GB") : "N/A";
+  const calculateDaysLeft = (end) => end !== "N/A" ? Math.ceil((new Date(end) - new Date()) / (1000 * 3600 * 24)) : "N/A";
 
   const toggleQr = () => {
     setShowQr(!showQr);
-    Animated.timing(qrAnim, {
-      toValue: showQr ? 0 : 1,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
+    Animated.timing(qrAnim, { toValue: showQr ? 0 : 1, duration: 300, useNativeDriver: false }).start();
   };
 
-  const qrSectionHeight = qrAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 200],
-  });
+  const generatePdf = async () => {
+    try {
+      // Uchwycenie obrazu kodu QR
+      const qrImageUri = await qrCodeRef.current.capture();
+      // Odczytanie obrazu jako base64
+      const qrImageBase64 = await FileSystem.readAsStringAsync(qrImageUri, { encoding: FileSystem.EncodingType.Base64 });
 
-  const calculateDaysLeft = (endDate) => {
-    const currentDate = new Date();
-    const end = new Date(endDate);
-    return Math.ceil((end - currentDate) / (1000 * 3600 * 24));
+      // Tworzenie treści HTML z obrazem kodu QR
+      const htmlContent = `
+        <html>
+          <body>
+            <h1>Order Details</h1>
+            <p><strong>NAZWA:</strong> ${order.ticket_name || "N/A"}</p>
+            <p><strong>DURATION:</strong> ${calculateDaysLeft(startDate)} days</p>
+            <p><strong>PLACE:</strong> ${locationName}, ${cityName}</p>
+            <p><strong>ORDERED BY:</strong> ${userName} on ${order.order_date ? formatDate(order.order_date) : "N/A"}</p>
+            <p><strong>VALID UNTIL:</strong> ${formatDate(endDate)}</p>
+            <p><strong>DAYS LEFT:</strong> ${calculateDaysLeft(endDate)} days</p>
+            <img src="data:image/png;base64,${qrImageBase64}" style="width:150px;height:150px;"/>
+          </body>
+        </html>
+      `;
+
+      const { uri } = await Print.printToFileAsync({ html: htmlContent });
+
+      if (Platform.OS === "android") {
+        const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+        if (permissions.granted) {
+          const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+          await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, "OrderDetails.pdf", "application/pdf")
+            .then(async (uri) => {
+              await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
+              Alert.alert("Sukces", "Plik PDF został zapisany pomyślnie.");
+            })
+            .catch(e => {
+              console.log(e);
+              Alert.alert("Błąd", "Wystąpił problem podczas zapisywania pliku PDF.");
+            });
+        } else {
+          await Sharing.shareAsync(uri);
+          Alert.alert("Sukces", "Plik PDF został wygenerowany i jest gotowy do udostępnienia.");
+        }
+      } else if (Platform.OS === "ios") {
+        await Sharing.shareAsync(uri)
+          .then(() => {
+            Alert.alert("Sukces", "Plik PDF został wygenerowany i udostępniony pomyślnie.");
+          })
+          .catch(e => {
+            console.log(e);
+            Alert.alert("Błąd", "Wystąpił problem podczas udostępniania pliku PDF.");
+          });
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Błąd", "Wystąpił problem podczas generowania pliku PDF.");
+    }
   };
-
-  const calculateEventDuration = (startDate, endDate) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    return Math.ceil((end - start) / (1000 * 3600 * 24));
-  };
-
-  const daysLeft = endDate !== "N/A" ? calculateDaysLeft(endDate) : "N/A";
-  const eventDuration = (startDate !== "N/A" && endDate !== "N/A") 
-    ? calculateEventDuration(startDate, endDate) 
-    : "N/A";
-
-  const qrData = JSON.stringify({
-    ticketName: order.ticket_name || "N/A",
-    place: `${locationName} ${cityName}`,
-    orderedBy: userName || "N/A",
-    validUntil: endDate !== "N/A" ? new Date(endDate).toLocaleString() : "N/A",
-    daysLeft,
-    tickets: numberOfTickets,
-    grandTotal,
-    fee,
-    categoryType,
-  });
-
-  
 
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <TouchableOpacity style={styles.ticketInfo} onPress={openModal}>
+        <TouchableOpacity style={styles.ticketInfo} onPress={() => setModalVisible(true)}>
           <Text style={styles.label}>NAZWA</Text>
           <Text style={styles.value}>{order.ticket_name || "N/A"}</Text>
 
           <Text style={styles.label}>DURATION</Text>
-          <Text style={styles.value}>{eventDuration} days</Text>
+          <Text style={styles.value}>{calculateDaysLeft(startDate)} days</Text>
 
           <Text style={styles.label}>PLACE</Text>
-          <Text style={styles.value}>{locationName} {cityName}</Text>
+          <Text style={styles.value}>{locationName}, {cityName}</Text>
 
           <Text style={styles.label}>ORDERED BY</Text>
-          <Text style={styles.value}>{userName} on {order.order_date ? new Date(order.order_date).toLocaleString() : "N/A"}</Text>
+          <Text style={styles.value}>{userName} on {order.order_date ? formatDate(order.order_date) : "N/A"}</Text>
 
           <Text style={styles.label}>VALID UNTIL</Text>
-          <Text style={styles.value}>{endDate !== "N/A" ? new Date(endDate).toLocaleString() : "N/A"}</Text>
+          <Text style={styles.value}>{formatDate(endDate)}</Text>
 
           <Text style={styles.label}>DAYS LEFT</Text>
-          <Text style={styles.value}>{daysLeft} days</Text>
-
-          <Text style={styles.label}>No. of Tickets</Text>
-          <Text style={styles.value}>{numberOfTickets}</Text>
-
-          <Text style={styles.label}>Grand Total</Text>
-          <Text style={styles.value}>{grandTotal} zł</Text>
-
-          <Text style={styles.label}>Fee</Text>
-          <Text style={styles.value}>{fee}</Text>
-
-          <Text style={styles.label}>Category Type</Text>
-          <Text style={styles.value}>{categoryType}</Text>
+          <Text style={styles.value}>{calculateDaysLeft(endDate)} days</Text>
 
           <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => generatePdf(order, locationName, cityName, userName, endDate, numberOfTickets, grandTotal, fee, categoryType)}>
-              <Text style={styles.buttonText}>Pobierz bilet PDF</Text>
+            <TouchableOpacity style={styles.button} onPress={generatePdf}>
+              <Text style={styles.buttonText}>Pobierz PDF</Text>
             </TouchableOpacity>
-
             <TouchableOpacity style={styles.button} onPress={toggleQr}>
               <Text style={styles.buttonText}>{showQr ? "Ukryj kod QR" : "Pokaż kod QR"}</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
 
-        <Animated.View style={[styles.qrSection, { height: qrSectionHeight }]}>
+        <Animated.View style={[styles.qrSection, { height: qrAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 200] }) }]}>
           {showQr && (
             <ViewShot ref={viewShotRef} options={{ format: "jpg", quality: 0.9 }}>
-              <QRCode value={qrData} size={150} color="black" backgroundColor="white" />
+              <QRCode value={`${order.ticket_name || 'N/A'}`} size={150} color="black" backgroundColor="white" />
             </ViewShot>
           )}
         </Animated.View>
 
-        <Modal visible={modalVisible} animationType="slide" transparent onRequestClose={closeModal}>
-          <TouchableWithoutFeedback onPress={closeModal}>
+        {/* Ukryty ViewShot do przechwytywania kodu QR dla PDF */}
+        <View style={{ position: 'absolute', top: -9999, left: -9999 }}>
+          <ViewShot ref={qrCodeRef} options={{ format: "png", quality: 1 }}>
+            <QRCode value={`${order.ticket_name || 'N/A'}`} size={150} color="black" backgroundColor="white" />
+          </ViewShot>
+        </View>
+
+        <Modal visible={modalVisible} animationType="slide" transparent onRequestClose={() => setModalVisible(false)}>
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
             <View style={styles.modalOverlay}>
               <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>Szczegóły biletu</Text>
                 <Text style={styles.modalText}>NAZWA: {order.ticket_name || "N/A"}</Text>
-                <Text style={styles.modalText}>PLACE: {locationName} {cityName}</Text>
-                <Text style={styles.modalText}>ORDERED BY: {userName || "N/A"}</Text>
-                <Text style={styles.modalText}>VALID UNTIL: {endDate !== "N/A" ? new Date(endDate).toLocaleString() : "N/A"}</Text>
-                <Text style={styles.modalText}>DAYS LEFT: {daysLeft} days</Text>
-                <Text style={styles.modalText}>No. of Tickets: {numberOfTickets}</Text>
-                <Text style={styles.modalText}>Grand Total: {grandTotal} zł</Text>
-                <Text style={styles.modalText}>Fee: {fee}</Text>
-                <Text style={styles.modalText}>Category Type: {categoryType}</Text>
-                <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+                <Text style={styles.modalText}>Miejsce: {locationName}, {cityName}</Text>
+                <Text style={styles.modalText}>Zamówione przez: {userName || "N/A"}</Text>
+                <Text style={styles.modalText}>Ważne do: {formatDate(endDate)}</Text>
+                <Text style={styles.modalText}>Dni pozostałe: {calculateDaysLeft(endDate)} days</Text>
+                <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
                   <Text style={styles.buttonText}>Zamknij</Text>
                 </TouchableOpacity>
               </View>

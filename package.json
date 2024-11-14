@@ -23,6 +23,8 @@
     "axios": "^1.7.7",
     "expo": "~51.0.28",
     "expo-file-system": "~17.0.1",
+    "expo-media-library": "~16.0.5",
+    "expo-print": "~13.0.1",
     "expo-status-bar": "~1.12.1",
     "moment": "^2.30.1",
     "papaparse": "^5.4.1",
@@ -41,11 +43,13 @@
     "react-native-screens": "^3.34.0",
     "react-native-share": "^11.0.4",
     "react-native-svg": "^15.8.0",
+    "react-native-vector-icons": "^10.2.0",
     "react-native-view-shot": "^4.0.0",
     "react-native-web": "^0.19.13",
     "react-router-dom": "^6.28.0",
     "typescript": "~5.3.3",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "expo-sharing": "~12.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
