@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'; // Import MaterialIcons
 import EventScreen from "../screens/EventScreen";
 import SeatCategoryScreen from "../screens/SeatCategoryScreen";
 import ConfirmationScreen from "../screens/ConfirmationScreen";
@@ -15,6 +16,7 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import ShoppingScreen from "../screens/ShopCartScreen"; 
+import QrScanner from "../screens/QrScanner"; // Import QrScanner
 
 const HomeStack = createNativeStackNavigator();
 
@@ -60,7 +62,6 @@ function ProfileStackScreens() {
   );
 }
 
-
 const Tab = createBottomTabNavigator();
 
 function Navigation() {
@@ -84,7 +85,7 @@ function Navigation() {
         />
         <Tab.Screen
           name="Shopping"
-          component={ShoppingScreen} // Add the ShoppingScreen here
+          component={ShoppingScreen}
           options={{
             tabBarLabel: "Shop",
             tabBarLabelStyle: { color: "black" },
@@ -94,6 +95,21 @@ function Navigation() {
                 <Feather name="shopping-cart" size={24} color="black" />
               ) : (
                 <Feather name="shopping-cart" size={24} color="gray" />
+              ),
+          }}
+        />
+        <Tab.Screen
+          name="QrScanner"
+          component={QrScanner}
+          options={{
+            tabBarLabel: "QR Scanner",
+            tabBarLabelStyle: { color: "black" },
+            headerShown: false,
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <MaterialIcons name="qr-code-scanner" size={24} color="black" />
+              ) : (
+                <MaterialIcons name="qr-code-scanner" size={24} color="gray" />
               ),
           }}
         />
