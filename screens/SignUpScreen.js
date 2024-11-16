@@ -15,6 +15,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useForm, Controller } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { API_BASE_URL } from '@env';
 
 // Definiujemy schemat walidacji
 const schema = Yup.object().shape({
@@ -40,7 +41,7 @@ const SignUpScreen = () => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await fetch("http://192.168.56.1:3000/api/cities/read"); 
+        const response = await fetch(`${API_BASE_URL}:3000/api/cities/read`); 
         const data = await response.json();
         setCities(data); // ustaw dane miast w stanie
       } catch (error) {

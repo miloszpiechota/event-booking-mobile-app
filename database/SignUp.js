@@ -1,8 +1,8 @@
 
-
+import { API_BASE_URL } from '@env';
 export const handleSignup = async (userData) => {
     try {
-      const response = await fetch("http://192.168.56.1:3000/api/create", {
+      const response = await fetch(`${API_BASE_URL}/api/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

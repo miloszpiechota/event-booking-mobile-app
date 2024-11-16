@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug iOS",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnative",
+            "request": "launch",
+            "platform": "ios",
+            "target": "device" // Dodaj, aby określić urządzenie, lub użyj "simulator"
+        },
+        {
+            "name": "Run iOS",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnative",
+            "request": "launch",
+            "platform": "ios",
+            "enableDebug": false,
+            "target": "device" // Dodaj, aby określić urządzenie, lub użyj "simulator"
+        }
+    ]
+}

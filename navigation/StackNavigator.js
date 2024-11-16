@@ -17,10 +17,15 @@ import LoginScreen from "../screens/LoginScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import ShoppingScreen from "../screens/ShopCartScreen"; 
 import QrScanner from "../screens/QrScanner"; // Import QrScanner
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+
+console.log("Icons imported successfully");
 
 const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreens() {
+  console.log("Rendering HomeStackScreens");
+
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen 
@@ -54,6 +59,8 @@ function HomeStackScreens() {
 const ProfileStack = createNativeStackNavigator();
 
 function ProfileStackScreens() {
+  console.log("Rendering ProfileStackScreens");
+
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
@@ -65,6 +72,8 @@ function ProfileStackScreens() {
 const Tab = createBottomTabNavigator();
 
 function Navigation() {
+  console.log("Rendering Navigation");
+
   return (
     <NavigationContainer>
       <Tab.Navigator>
@@ -75,12 +84,16 @@ function Navigation() {
             tabBarLabel: "Home",
             tabBarLabelStyle: { color: "black" },
             headerShown: false,
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <Entypo name="home" size={24} color="black" />
+            tabBarIcon: null,
+            
+            tabBarIcon: ({ focused }) => {
+              
+              return focused ? (
+                <FontAwesome5 name="home" size={24} color="black" />
               ) : (
-                <AntDesign name="home" size={24} color="black" />
-              ),
+                <FontAwesome5 name="home" size={24} color="black" />
+              );
+            }
           }}
         />
         <Tab.Screen
@@ -90,12 +103,16 @@ function Navigation() {
             tabBarLabel: "Shop",
             tabBarLabelStyle: { color: "black" },
             headerShown: false,
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <Feather name="shopping-cart" size={24} color="black" />
+            tabBarIcon: null,
+            
+            tabBarIcon: ({ focused }) => {
+              
+              return focused ? (
+                <Entypo name="box" size={24} color="black" />
               ) : (
-                <Feather name="shopping-cart" size={24} color="gray" />
-              ),
+                <Entypo name="box" size={24} color="black" />
+              );
+            }
           }}
         />
         <Tab.Screen
@@ -105,12 +122,16 @@ function Navigation() {
             tabBarLabel: "QR Scanner",
             tabBarLabelStyle: { color: "black" },
             headerShown: false,
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <MaterialIcons name="qr-code-scanner" size={24} color="black" />
+            tabBarIcon: null,
+            
+            tabBarIcon: ({ focused }) => {
+              
+              return focused ? (
+                <Ionicons name="qr-code" size={24} color="black" />
               ) : (
-                <MaterialIcons name="qr-code-scanner" size={24} color="gray" />
-              ),
+                <Ionicons name="qr-code" size={24} color="black" />
+              );
+            }
           }}
         />
         <Tab.Screen
@@ -120,12 +141,16 @@ function Navigation() {
             tabBarLabel: "Profile",
             tabBarLabelStyle: { color: "black" },
             headerShown: false,
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <Ionicons name="person" size={24} color="black" />
+            tabBarIcon: null,
+            
+            tabBarIcon: ({ focused }) => {
+              
+              return focused ? (
+                <MaterialIcons name="account-circle" size={24} color="black" />
               ) : (
-                <Ionicons name="person-outline" size={24} color="black" />
-              ),
+                <MaterialIcons name="account-circle" size={24} color="black" />
+              );
+            }
           }}
         />
       </Tab.Navigator>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button, Alert } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Camera } from 'expo-camera';
 
 const QrScanner = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -8,12 +8,12 @@ const QrScanner = ({ navigation }) => {
 
   // Prośba o uprawnienia do kamery
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
+    const getCameraPermissions = async () => {
+      const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === 'granted');
     };
 
-    getBarCodeScannerPermissions();
+    getCameraPermissions();
   }, []);
 
   // Obsługa wyniku skanowania
@@ -34,8 +34,11 @@ const QrScanner = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <BarCodeScanner
+      <Camera
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        barCodeScannerSettings={{
+          barCodeTypes: ['qr'],  // Skonfiguruj kamerę do skanowania tylko kodów QR
+        }}
         style={{ height: '100%', width: '100%' }}
       />
       {scanned && (

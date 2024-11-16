@@ -1,4 +1,5 @@
 // FetchCoordinates.js
+
 import axios from 'axios';
 
 export const fetchCoordinates = async (locationName, city) => {

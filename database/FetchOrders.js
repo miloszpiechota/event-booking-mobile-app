@@ -1,6 +1,7 @@
+import { API_BASE_URL } from '@env';
 export const fetchOrders = async () => {
   try {
-    const response = await fetch("http://192.168.56.1:3000/api/orders/read");
+    const response = await fetch(`${API_BASE_URL}/api/orders/read`);
 
     if (!response.ok) {
       throw new Error("Failed to fetch orders");

@@ -5,8 +5,7 @@ import { UserContext } from "../UserContext";
 import OrderTicketCard from "../components/OrderTicketCard";
 import { fetchOrderTickets } from "../database/FetchOrderTickets";
 import { useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ShopCartScreen = () => {
   const { user } = useContext(UserContext);
@@ -27,10 +26,11 @@ const ShopCartScreen = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     const loadSelectedEventData = async () => {
       try {
-        const data = await AsyncStorage.getItem('selectedEventData');
+        const data = await AsyncStorage.getItem("selectedEventData");
         if (data) {
           setSelectedEventData(JSON.parse(data));
         }
@@ -38,15 +38,13 @@ const ShopCartScreen = () => {
         console.error("Error loading selected event data:", error);
       }
     };
-  
+
     loadSelectedEventData();
   }, []);
-  
 
-  // Use useFocusEffect to reload orders every time this screen is focused
   useFocusEffect(
     React.useCallback(() => {
-      setLoading(true); // Show loading indicator while refreshing
+      setLoading(true);
       loadOrders();
     }, [user.userId])
   );
@@ -56,35 +54,21 @@ const ShopCartScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Your Tickets</Text>
-      <Text style={styles.greeting}>Hello, {user.userName}</Text>
+      <Text style={styles.header}>Cześć, {user.userName}!{"\n"}Twoje bilety są dostępne tutaj:</Text>
       
+      
+
       <FlatList
         data={orders}
         renderItem={({ item }) => (
           <OrderTicketCard
             order={item}
             userName={user.userName}
-            title={selectedEventData?.title}
-            locationName={selectedEventData?.locationName}
-            cityName={selectedEventData?.cityName}
-            startDate={selectedEventData?.startDate}
-            endDate={selectedEventData?.endDate}
-            numberOfTickets={selectedEventData?.numberOfTickets}
-            grandTotal={selectedEventData?.grandTotal}
-            fee={selectedEventData?.fee}
-            categoryType={selectedEventData?.categoryType}
-            userId={user.userId}
-            selectedCategory={selectedEventData?.selectedCategory}
-            selectedPrice={selectedEventData?.selectedPrice}
-            quantity={selectedEventData?.quantity}
-            selectedPaymentMethod={selectedEventData?.selectedPaymentMethod}
-            isSeatCategorized={selectedEventData?.isSeatCategorized}
-            
+            {...selectedEventData}
           />
         )}
         keyExtractor={(item) => item.idorder_ticket.toString()}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={styles.contentContainer}
       />
     </View>
   );
@@ -101,12 +85,16 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 4,
     color: "#333",
+    marginTop: 34
   },
   greeting: {
     fontSize: 18,
     color: "#666",
     marginBottom: 20,
+  },
+  contentContainer: {
+    paddingBottom: 100,
   },
 });

@@ -26,7 +26,9 @@ const OrderTicketCard = ({
   selectedPrice = "Brak",
   quantity = "N/A",
   selectedPaymentMethod = "N/A",
-  isSeatCategorized = "N/A"  
+  isSeatCategorized = "N/A",
+  photo = "N/A",
+  decription = "N/A"  
 }) => {
   const [showQr, setShowQr] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -126,14 +128,15 @@ const OrderTicketCard = ({
       <View style={styles.card}>
         <TouchableOpacity style={styles.ticketInfo} onPress={() => setModalVisible(true)}>
         
+        
           <Text style={styles.label}>NAZWA</Text>
           <Text style={styles.value}>{order.ticket_name || "N/A"}</Text>
-
+          <Text style={styles.label}>PLACE</Text>
+          <Text style={styles.value}>{locationName}, {cityName}</Text>
           <Text style={styles.label}>DURATION</Text>
           <Text style={styles.value}>{calculateDaysLeft(startDate)} days</Text>
 
-          <Text style={styles.label}>PLACE</Text>
-          <Text style={styles.value}>{locationName}, {cityName}</Text>
+        
 
           <Text style={styles.label}>ORDERED BY</Text>
           <Text style={styles.value}>{userName} on {order.order_date ? formatDate(order.order_date) : "N/A"}</Text>

@@ -1,27 +1,30 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import { Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
+
+console.log("Device width:", width);
+console.log("Device height:", height);
 
 const WelcomeScreen = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    // Możesz dodać logikę logowania tutaj, a następnie nawigować do HomeScreen
     navigation.navigate("LoginScreen");
   };
 
   const handleSignup = () => {
-    // Możesz dodać logikę rejestracji tutaj, a następnie nawigować do HomeScreen
     navigation.navigate("SignUpScreen");
   };
 
   return (
     <View style={styles.container}>
-      
       <Image source={require("../assets/pl.jpg")} style={styles.bannerImage} />
       <Text style={styles.title}>Event Booking App</Text>
       <Text style={styles.subTitle}>
-      Event Booking App to idealne narzędzie dla wszystkich, którzy chcą być na bieżąco z lokalnymi wydarzeniami. 
+        Event Booking App to idealne narzędzie dla wszystkich, którzy chcą być na bieżąco z lokalnymi wydarzeniami.
       </Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -46,60 +49,50 @@ export default WelcomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff', // kolor biały
+    backgroundColor: '#ffffff',
     alignItems: "center",
-    justifyContent: "center", // Wyśrodkowanie w pionie
-  },
-  logo: {
-    height: 40,
-    width: 140,
-    marginVertical: 30,
+    justifyContent: "center",
   },
   bannerImage: {
-    marginTop: 40, // Dodany odstęp od góry
+    height: 120,
+    width: 350,
     marginVertical: 20,
-    height: 140,
-    width: 400,
   },
   title: {
-    fontSize: 40,
-    // Usunięto konkretną czcionkę
+    fontSize: Math.min(40, width * 0.1),
     paddingHorizontal: 20,
     textAlign: "center",
-    color: 'black', // kolor czarny
+    color: 'black',
     marginTop: 40,
   },
   subTitle: {
-    fontSize: 18,
+    fontSize: Math.min(18, width * 0.05),
     paddingHorizontal: 20,
     textAlign: "center",
-    color: '#7f8c8d', // kolor szary
-    // Usunięto konkretną czcionkę
+    color: '#7f8c8d',
     marginVertical: 20,
   },
   buttonContainer: {
     marginTop: 20,
     flexDirection: "row",
     borderWidth: 2,
-    borderColor: '#ccd0d1', // kolor szary
+    borderColor: '#ccd0d1',
     width: "80%",
     height: 58,
-    borderRadius: 100,
+    borderRadius: Math.min(100, 58 / 2),
   },
   loginButtonWrapper: {
     justifyContent: "center",
     alignItems: "center",
     width: "50%",
-    borderRadius: 100,
+    borderRadius: Math.min(100, width * 0.25),
   },
   loginButtonText: {
-    color: '#ffffff', 
-    fontSize: 18,
-    // Usunięto konkretną czcionkę
+    color: '#ffffff',
+    fontSize: Math.min(18, width * 0.05),
   },
   signupButtonText: {
-    color: '#060707', 
-    fontSize: 18,
-    // Usunięto konkretną czcionkę
+    color: '#060707',
+    fontSize: Math.min(18, width * 0.05),
   },
 });

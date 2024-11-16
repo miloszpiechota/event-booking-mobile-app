@@ -2,17 +2,21 @@
   "expo": {
     "name": "event-booking-app",
     "slug": "event-booking-app",
+    "privacy": "public",
+    "description": "Event Booking Mobile App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.miloszpiechota.eventbookingapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,6 +26,21 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "abe27c13-3c72-4657-8a12-d0ebe2627643",
+        "API_BASE_URL": "http://192.168.56.1:3000"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/abe27c13-3c72-4657-8a12-d0ebe2627643"
+    },
+    "plugins": [
+      "expo-barcode-scanner"
+    ]
   }
 }

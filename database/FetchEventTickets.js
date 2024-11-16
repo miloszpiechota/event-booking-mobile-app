@@ -1,6 +1,9 @@
+import { API_BASE_URL } from '@env';
 export const fetchEventTickets = async () => {
     try {
-      const response = await fetch("http://192.168.56.1:3000/api/event_tickets/read");
+      console.log("API_BASE_URL:", API_BASE_URL);
+
+      const response = await fetch(`${API_BASE_URL}/api/event_tickets/read`);
   
       console.log("Response status:", response.status); // Log response status
   

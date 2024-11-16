@@ -1,6 +1,7 @@
+import { API_BASE_URL } from '@env';
 export const fetchCategories = async () => {
     try {
-      const response = await fetch("http://192.168.56.1:3000/api/categories/read");
+      const response = await fetch(`${API_BASE_URL}/api/categories/read`);
   
       console.log("Response status:", response.status);
   

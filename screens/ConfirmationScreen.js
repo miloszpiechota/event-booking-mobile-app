@@ -15,10 +15,10 @@ import { UserContext } from "../UserContext";
 import { SelectedEventContext } from "../SelectedEventContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from "./ConfiramtionScreen.styles";
-
+import { API_BASE_URL } from '@env';
 const fetchPaymentMethods = async () => {
   try {
-    const response = await fetch("http://192.168.56.1:3000/api/payment/read");
+    const response = await fetch(`${API_BASE_URL}/api/payment/read`);
     const data = await response.json();
     return data.data || [];
   } catch (error) {
@@ -28,6 +28,8 @@ const fetchPaymentMethods = async () => {
 };
 
 const ConfirmationScreen = () => {
+  console.log('API_BASE_URL:', API_BASE_URL);
+
   const saveSelectedEventData = async (data) => {
     try {
       await AsyncStorage.setItem('selectedEventData', JSON.stringify(data));
@@ -128,7 +130,7 @@ const ConfirmationScreen = () => {
   
       // Send request to backend to create an order
       const response = await axios.post(
-        "http://192.168.56.1:3000/api/orders/create",
+        `${API_BASE_URL}/api/orders/create`,
         orderData
       );
   
@@ -136,7 +138,7 @@ const ConfirmationScreen = () => {
         Alert.alert("Płatność potwierdzona", "Twoje zamówienie zostało złożone pomyślnie");
   
         // Send ticket information email
-        const emailResponse = await axios.post("http://192.168.56.1:3000/api/send-ticket-info", {
+        const emailResponse = await axios.post(`${API_BASE_URL}/api/send-ticket-info`, {
           userEmail: user.userEmail,
           eventDetails: {
             title,
@@ -192,6 +194,8 @@ const ConfirmationScreen = () => {
           fee,
           isSeatCategorized,
           categoryType,
+          photo,
+          description,
         });
         
         navigation.navigate("Shopping");

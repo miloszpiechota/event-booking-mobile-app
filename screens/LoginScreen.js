@@ -13,6 +13,8 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
 import { fetchUserData } from '../database/FetchUserData';
 import { UserContext } from '../UserContext';
+import { API_BASE_URL } from '@env';
+
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
@@ -26,7 +28,7 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://192.168.56.1:3000/api/users/login", { 
+      const response = await fetch(`${API_BASE_URL}/api/users/login`, { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
