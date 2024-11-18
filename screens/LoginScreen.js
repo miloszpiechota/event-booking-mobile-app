@@ -102,6 +102,7 @@ const LoginScreen = () => {
           userName: userData.name,
           userEmail: userData.email,
           userType: userType,
+          token: token,
         });
   
         // Nawigacja do ekranu głównego

@@ -26,7 +26,7 @@ import { fetchLocations } from "../database/FetchLocations";
 import { fetchEventTickets } from "../database/FetchEventTickets";
 import styles from "./HomeScreen.styles";
 import SearchBar from "./SearchBar";
-
+import { UserContext } from '../UserContext';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const opacityAnim = useRef(new Animated.Value(0)).current;
@@ -36,46 +36,55 @@ const HomeScreen = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
   const [searchQuery, setSearchQuery] = useState("");
+  const { user } = useContext(UserContext);
 
   // Load data on component mount
   useEffect(() => {
     const loadData = async () => {
       try {
-        const fetchedEvents = await fetchEvents();
-        const fetchedCategories = await fetchCategories();
-        const fetchedLocations = await fetchLocations();
-        const fetchedTickets = await fetchEventTickets();
-
-        const eventsWithTickets = fetchedEvents.map((event) => {
-          const tickets = fetchedTickets.filter(
-            (ticket) => ticket.idevent === event.idevent
-          );
-          const category = fetchedCategories.find(
-            (cat) => cat.idevent_category === event.idevent_category
-          );
-          const location = fetchedLocations.find(
-            (loc) => loc.id === event.idevent_location
-          );
-
-          return {
-            ...event,
-            eventTickets: tickets,
-            categoryType: category ? category.category_type : "Unknown",
-            location_name: location ? location.name : "Unknown Location",
-            city_name: location ? location.city : "Unknown City",
-            country_name: location ? location.country : "Unknown Country",
-          };
-        });
-
-        setEvents(eventsWithTickets);
-        setCategories(fetchedCategories);
+        if (user && user.token) {
+          const token = user.token;
+  
+          const fetchedEvents = await fetchEvents(token);
+          const fetchedCategories = await fetchCategories(); // Jeśli wymagają tokena, przekaż token
+          const fetchedLocations = await fetchLocations();   // Jeśli wymagają tokena, przekaż token
+          const fetchedTickets = await fetchEventTickets();  // Jeśli wymagają tokena, przekaż token
+  
+          const eventsWithTickets = fetchedEvents.map((event) => {
+            const tickets = fetchedTickets.filter(
+              (ticket) => ticket.idevent === event.idevent
+            );
+            const category = fetchedCategories.find(
+              (cat) => cat.idevent_category === event.idevent_category
+            );
+            const location = fetchedLocations.find(
+              (loc) => loc.id === event.idevent_location
+            );
+  
+            return {
+              ...event,
+              eventTickets: tickets,
+              categoryType: category ? category.category_type : "Unknown",
+              location_name: location ? location.name : "Unknown Location",
+              city_name: location ? location.city : "Unknown City",
+              country_name: location ? location.country : "Unknown Country",
+            };
+          });
+  
+          setEvents(eventsWithTickets);
+          setCategories(fetchedCategories);
+        } else {
+          console.error("User is not authenticated.");
+          // Możesz przekierować użytkownika do ekranu logowania lub podjąć inne działania
+        }
       } catch (error) {
         console.error("Error loading data:", error);
       }
     };
-
+  
     loadData();
-  }, []);
+  }, [user]);
+  
 
   const applyCategoryFilter = (eventsList) => {
     if (!selectedCategory || selectedCategory === "All") {

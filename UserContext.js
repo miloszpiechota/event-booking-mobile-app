@@ -8,6 +8,7 @@ export const UserProvider = ({ children }) => {
     userId: null,
     userName: null,
     userEmail: null,
+    token: null,
   });
 
   const loadUserData = async () => {
@@ -20,6 +21,7 @@ export const UserProvider = ({ children }) => {
       console.log("Error loading user data", error);
     }
   };
+  
 
   const storeUserData = async (userData) => {
     try {
@@ -28,7 +30,6 @@ export const UserProvider = ({ children }) => {
       console.log("Error storing user data", error);
     }
   };
-
   const clearUserData = async () => {
     try {
       await AsyncStorage.removeItem('user');
