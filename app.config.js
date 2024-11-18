@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 export default ({ config }) => ({
     ...config, // Zachowujemy istniejącą konfigurację Expo
     extra: {

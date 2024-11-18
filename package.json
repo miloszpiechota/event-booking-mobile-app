@@ -9,6 +9,9 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@babel/helpers": "^7.26.0",
+    "@babel/template": "^7.25.9",
+    "@babel/traverse": "^7.25.9",
     "@expo/vector-icons": "^14.0.4",
     "@hookform/resolvers": "^3.9.1",
     "@react-native-async-storage/async-storage": "1.23.1",
@@ -22,6 +25,7 @@
     "@types/react": "~18.3.12",
     "@xmldom/xmldom": "^0.9.5",
     "axios": "^1.7.7",
+    "base-64": "^1.0.0",
     "core-js": "^3.39.0",
     "dotenv": "^16.4.5",
     "expo": "^52.0.7",
@@ -34,6 +38,8 @@
     "expo-sharing": "~13.0.0",
     "expo-status-bar": "~2.0.0",
     "expo-updates": "~0.26.7",
+    "lodash.pick": "^4.4.0",
+    "lodash.template": "^4.5.0",
     "moment": "^2.30.1",
     "papaparse": "^5.4.1",
     "react": "18.3.1",
@@ -43,10 +49,11 @@
     "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-get-random-values": "^1.11.0",
+    "react-native-jwt-decode": "^1.0.3",
     "react-native-maps": "1.18.0",
     "react-native-modal": "^13.0.1",
-    "react-native-modals": "^0.22.3",
     "react-native-pdf-lib": "^1.0.0",
+    "react-native-qrcode-scanner": "^1.5.5",
     "react-native-qrcode-svg": "^6.3.12",
     "react-native-razorpay": "^2.3.0",
     "react-native-reanimated": "^3.16.1",
@@ -59,8 +66,9 @@
     "react-native-web": "^0.19.13",
     "react-router-dom": "^6.28.0",
     "typescript": "^5.6.3",
-    "yup": "^1.4.0",
-    "undefined": "expo-camera/next"
+    "uuid": "^8.3.2",
+    "xml2js": "^0.6.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",

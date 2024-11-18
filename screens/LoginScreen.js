@@ -7,66 +7,115 @@ import {
   View,
   Alert,
 } from "react-native";
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
-import { fetchUserData } from '../database/FetchUserData';
-import { UserContext } from '../UserContext';
-import { API_BASE_URL } from '@env';
+import { fetchUserData } from "../database/FetchUserData";
+import { UserContext } from "../UserContext";
+import { API_BASE_URL } from "@env";
+
+import { decode } from "base-64";
+global.atob = decode;
+
+// import jwt_decode from "react-native-jwt-decode";
+
+// console.log("jwt_decode:", jwt_decode);
+const decodeJWT = (token) => {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+    return null;
+  }
+};
+
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setUser } = useContext(UserContext); 
-
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
+  const { setUser } = useContext(UserContext);
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/users/login`, { 
-        method: 'POST',
+      console.log("API_BASE_URL:", API_BASE_URL);
+  
+      const url = `${API_BASE_URL}/api/users/login`;
+      console.log("Request URL:", url);
+  
+      const response = await fetch(url, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
   
-      const data = await response.json();
+      console.log("Response Status:", response.status);
   
-      if (response.ok) {
+      const rawResponse = await response.text();
+      console.log("Raw Response:", rawResponse);
+  
+      if (!response.ok) {
+        console.error("HTTP Error:", response.status);
+        Alert.alert("Server Error", `HTTP Error: ${response.status}`);
+        return;
+      }
+  
+      let data;
+      try {
+        data = JSON.parse(rawResponse);
+      } catch (error) {
+        console.error("JSON Parse Error:", error);
+        Alert.alert("Server Error", "Invalid server response format.");
+        return;
+      }
+  
+      console.log("Parsed Response:", data);
+  
+      if (data.success) {
         const token = data.token;
-        console.log("Login Successful", token);
-        
-        // Fetch user data using the token
+        console.log("Login Successful. Token:", token);
+  
+        // Dekodowanie tokena JWT
+        const decodedToken = decodeJWT(token);
+        console.log("Decoded Token:", decodedToken);
+  
+        const userType = decodedToken.iduser_type;
+  
+        // Pobieranie danych użytkownika za pomocą tokena (opcjonalne)
         const userData = await fetchUserData(token);
   
-
-        // Set user data in UserContext
+        // Ustawienie danych użytkownika w UserContext
         setUser({
           userId: userData.iduser,
           userName: userData.name,
           userEmail: userData.email,
+          userType: userType,
         });
-        // Pass the user data to HomeScreen via navigation params
-        // navigation.navigate("HomeScreen", {
-        //   userId: userData.iduser,
-        //   userName: userData.name,
-        //   userEmail: userData.email,
-        // });
-        navigation.navigate("HomeScreen")
+  
+        // Nawigacja do ekranu głównego
+        navigation.navigate("HomeScreen");
       } else {
-        Alert.alert("Login Failed", data.msg || "An error occurred");
+        Alert.alert("Login Failed", data.msg || "Invalid credentials.");
       }
     } catch (error) {
       console.error("Error during login:", error);
       Alert.alert("Login Failed", "An error occurred. Please try again.");
     }
   };
+  
+  
   
 
   const handleSignup = () => {
@@ -76,7 +125,7 @@ const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.headingText}>User Login</Text>
-      
+
       {/* form  */}
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
@@ -111,10 +160,13 @@ const LoginScreen = () => {
         <TouchableOpacity>
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButtonWrapper} onPress={handleLogin}>
+        <TouchableOpacity
+          style={styles.loginButtonWrapper}
+          onPress={handleLogin}
+        >
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
-       
+
         <View style={styles.footerContainer}>
           <Text style={styles.accountText}>Don’t have an account?</Text>
           <TouchableOpacity onPress={handleSignup}>

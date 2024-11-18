@@ -18,9 +18,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Place } from "../PlacesContext";
 import EventCard from "../components/EventCard";
 import Header from "../components/Header";
-import { BottomModal, ModalContent } from "react-native-modals";
+import Modal from "react-native-modal"; // Replaced from 'react-native-modals'
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { SlideAnimation } from "react-native-modals";
 import { fetchEvents } from "../database/FetchEvents";
 import { fetchCategories } from "../database/FetchCategories";
 import { fetchLocations } from "../database/FetchLocations";
@@ -186,17 +185,14 @@ const HomeScreen = () => {
         </Pressable>
 
         {/* Modal filtering interface */}
-        <BottomModal
-          onBackDropPress={() => setModalVisible(!modalVisible)}
+        <Modal
+          isVisible={modalVisible}
+          onBackdropPress={() => setModalVisible(!modalVisible)}
           swipeDirection={["up", "down"]}
           swipeThreshold={200}
-          modalAnimation={new SlideAnimation({ slideFrom: "bottom" })}
-          visible={modalVisible}
-          onHardwareBackPress={() => setModalVisible(!modalVisible)}
-          onTouchOutside={() => setModalVisible(!modalVisible)}
           style={styles.modalStyle}
         >
-          <ModalContent style={styles.modalContent}>
+          <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Event Category</Text>
             <View style={styles.filterContainer}>
               <Pressable
@@ -230,8 +226,8 @@ const HomeScreen = () => {
                 <Text>No categories available</Text>
               )}
             </View>
-          </ModalContent>
-        </BottomModal>
+          </View>
+        </Modal>
       </View>
     </>
   );
