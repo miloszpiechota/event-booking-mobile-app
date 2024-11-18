@@ -22,5 +22,8 @@ export default ({ config }) => ({
     android: {
       ...config.android, // Zachowujemy istniejącą konfigurację Android
     },
+    "plugins": [
+    "expo-barcode-scanner"
+  ]
   });
   

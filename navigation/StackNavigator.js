@@ -65,6 +65,7 @@ function ProfileStackScreens() {
     <ProfileStack.Navigator>
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
       <ProfileStack.Screen name="Shopping" component={ShoppingScreen} />
+      <ProfileStack.Screen name="QrScanner" component={QrScanner} />
     </ProfileStack.Navigator>
   );
 }

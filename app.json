@@ -1,8 +1,9 @@
 {
   "expo": {
+    
     "name": "event-booking-app",
     "slug": "event-booking-app",
-    "privacy": "public",
+    
     "description": "Event Booking Mobile App",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -28,14 +29,17 @@
               "NSExceptionMinimumTLSVersion": "TLSv1.2"
             }
           }
-        }
+        },
+        "NSCameraUsageDescription": "Ta aplikacja wymaga dostępu do aparatu, aby skanować kody QR."
       }
+       
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["CAMERA"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -51,9 +55,7 @@
     },
     "updates": {
       "url": "https://u.expo.dev/abe27c13-3c72-4657-8a12-d0ebe2627643"
-    },
-    "plugins": [
-      "expo-barcode-scanner"
-    ]
+    }
+    
   }
 }
