@@ -106,7 +106,7 @@ const ConfirmationScreen = () => {
 
   const confirmPayment = async () => {
     try {
-      // Prepare data to send to the backend for order creation
+      // Przygotowanie danych do wysłania na backend
       const orderData = {
         total_amount: grandTotal,
         total_tax_amount: fee,
@@ -121,45 +121,85 @@ const ConfirmationScreen = () => {
         })),
         payments: [
           {
-            idpayment_method: selectedPaymentMethod,
+            // Konwertowanie `selectedPaymentMethod` na liczbę całkowitą
+            idpayment_method: parseInt(selectedPaymentMethod, 10), // Upewnij się, że jest liczbą
             payment_status: "completed",
           },
         ],
         data: new Date().toISOString(),
       };
   
-      // Send request to backend to create an order
+      console.log("Order data being sent:", orderData);
+  
+      // Wysłanie żądania POST do utworzenia zamówienia
       const response = await axios.post(
         `${API_BASE_URL}/api/orders/create`,
-        orderData
+        orderData,
+        {
+          headers: {
+            "Content-Type": "application/json", // Ważne dla iOS
+          },
+        }
       );
   
+      console.log("Response from order creation:", response.data);
+  
       if (response.data.success) {
-        Alert.alert("Płatność potwierdzona", "Twoje zamówienie zostało złożone pomyślnie");
+        Alert.alert(
+          "Płatność potwierdzona",
+          "Twoje zamówienie zostało złożone pomyślnie"
+        );
   
-        // Send ticket information email
-        const emailResponse = await axios.post(`${API_BASE_URL}/api/send-ticket-info`, {
-          userEmail: user.userEmail,
-          eventDetails: {
-            title,
-            startDate,
-            endDate,
-            locationName,
-            cityName,
-            selectedCategory,
-            quantity,
-            totalAmount: grandTotal,
-          },
-        });
+        // Wysłanie e-maila z informacją o bilecie
+        try {
+          const emailResponse = await axios.post(
+            `${API_BASE_URL}/api/send-ticket-info`,
+            {
+              userEmail: user.userEmail,
+              eventDetails: {
+                title,
+                startDate,
+                endDate,
+                locationName,
+                cityName,
+                selectedCategory,
+                quantity,
+                totalAmount: grandTotal,
+              },
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
   
-        if (emailResponse.data.success) {
-          Alert.alert("Informacja o bilecie wysłana", "Na Twój adres e-mail wysłano szczegóły biletu.");
-        } else {
-          console.warn("Ticket information email failed:", emailResponse.data.message);
-          Alert.alert("Uwaga", "Nie udało się wysłać e-maila z informacją o bilecie. Sprawdź swoje połączenie.");
+          console.log("Email response:", emailResponse.data);
+  
+          if (emailResponse.data.success) {
+            Alert.alert(
+              "Informacja o bilecie wysłana",
+              "Na Twój adres e-mail wysłano szczegóły biletu."
+            );
+          } else {
+            console.warn(
+              "Ticket information email failed:",
+              emailResponse.data.message
+            );
+            Alert.alert(
+              "Uwaga",
+              "Nie udało się wysłać e-maila z informacją o bilecie. Sprawdź swoje połączenie."
+            );
+          }
+        } catch (emailError) {
+          console.error("Error sending ticket email:", emailError);
+          Alert.alert(
+            "Błąd",
+            "Nie udało się wysłać e-maila z informacją o bilecie."
+          );
         }
   
-        // Save the selected event data and navigate
+        // Zapis danych wybranego wydarzenia i nawigacja
         setSelectedEventData({
           selectedCategory,
           selectedPrice,
@@ -177,7 +217,7 @@ const ConfirmationScreen = () => {
           isSeatCategorized,
           categoryType,
         });
-        
+  
         saveSelectedEventData({
           selectedCategory,
           selectedPrice,
@@ -197,16 +237,22 @@ const ConfirmationScreen = () => {
           photo,
           description,
         });
-        
+  
         navigation.navigate("Shopping");
       } else {
+        console.warn("Order creation failed:", response.data);
         Alert.alert("Błąd", "Wystąpił problem z przetworzeniem płatności");
       }
     } catch (error) {
-      console.error("Error confirming payment:", error);
+      console.error("Error confirming payment:", error.response || error.message);
+      if (error.response) {
+        console.error("Error response data:", error.response.data);
+      }
       Alert.alert("Błąd", "Wystąpił problem z połączeniem z serwerem");
     }
   };
+  
+  
   
 
   return (
