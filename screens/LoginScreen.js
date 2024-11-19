@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { fetchUserData } from "../database/FetchUserData";
 import { UserContext } from "../UserContext";
 import { API_BASE_URL } from "@env";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { decode } from "base-64";
 global.atob = decode;
 
@@ -87,16 +87,19 @@ const LoginScreen = () => {
         const token = data.token;
         console.log("Login Successful. Token:", token);
   
-        // Dekodowanie tokena JWT
+        // Save token to AsyncStorage
+        await AsyncStorage.setItem("userToken", token);
+  
+        // Decode the JWT token
         const decodedToken = decodeJWT(token);
         console.log("Decoded Token:", decodedToken);
   
         const userType = decodedToken.iduser_type;
   
-        // Pobieranie danych użytkownika za pomocą tokena (opcjonalne)
+        // Fetch additional user data if needed
         const userData = await fetchUserData(token);
   
-        // Ustawienie danych użytkownika w UserContext
+        // Set user data in UserContext
         setUser({
           userId: userData.iduser,
           userName: userData.name,
@@ -105,7 +108,7 @@ const LoginScreen = () => {
           token: token,
         });
   
-        // Nawigacja do ekranu głównego
+        // Navigate to the home screen
         navigation.navigate("HomeScreen");
       } else {
         Alert.alert("Login Failed", data.msg || "Invalid credentials.");
@@ -115,6 +118,7 @@ const LoginScreen = () => {
       Alert.alert("Login Failed", "An error occurred. Please try again.");
     }
   };
+  
   
   
   

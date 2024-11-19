@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Correct import
+import React, { createContext, useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const UserContext = createContext();
 
@@ -13,33 +13,36 @@ export const UserProvider = ({ children }) => {
 
   const loadUserData = async () => {
     try {
-      const userData = await AsyncStorage.getItem('user');
+      const userData = await AsyncStorage.getItem("user");
+      const token = await AsyncStorage.getItem("userToken");
+
       if (userData) {
-        setUser(JSON.parse(userData));
+        const parsedData = JSON.parse(userData);
+        setUser({ ...parsedData, token }); // Ensure the token is added to the user context
       }
     } catch (error) {
       console.log("Error loading user data", error);
     }
   };
-  
 
   const storeUserData = async (userData) => {
     try {
-      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      await AsyncStorage.setItem("user", JSON.stringify(userData));
     } catch (error) {
       console.log("Error storing user data", error);
     }
   };
+
   const clearUserData = async () => {
     try {
-      await AsyncStorage.removeItem('user');
+      await AsyncStorage.multiRemove(["user", "userToken"]);
     } catch (error) {
       console.log("Error clearing user data", error);
     }
   };
 
   useEffect(() => {
-    loadUserData();
+    loadUserData(); // Load user data when the app starts
   }, []);
 
   return (
@@ -51,7 +54,7 @@ export const UserProvider = ({ children }) => {
           storeUserData(newUser);
         },
         logout: async () => {
-          setUser({ userId: null, userName: null, userEmail: null });
+          setUser({ userId: null, userName: null, userEmail: null, token: null });
           await clearUserData();
         },
       }}

@@ -16,8 +16,19 @@ const ShopCartScreen = () => {
 
   const loadOrders = async () => {
     try {
-      const fetchedOrders = await fetchOrderTickets();
+      // Retrieve the token from AsyncStorage
+      const token = await AsyncStorage.getItem("userToken");
+
+      if (!token) {
+        throw new Error("User token is missing");
+      }
+
+      // Fetch orders using the token
+      const fetchedOrders = await fetchOrderTickets(token);
+
+      // Filter orders for the current user
       const userOrders = fetchedOrders.filter(order => order.user_id === user.userId);
+
       setOrders(userOrders);
     } catch (err) {
       setError("Failed to load orders");
@@ -55,8 +66,6 @@ const ShopCartScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Cześć, {user.userName}!{"\n"}Twoje bilety są dostępne tutaj:</Text>
-      
-      
 
       <FlatList
         data={orders}
@@ -88,7 +97,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 4,
     color: "#333",
-    marginTop: 34
+    marginTop: 34,
   },
   greeting: {
     fontSize: 18,

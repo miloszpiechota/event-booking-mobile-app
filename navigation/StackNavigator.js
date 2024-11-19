@@ -10,6 +10,10 @@ import LoginScreen from "../screens/LoginScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import ShoppingScreen from "../screens/ShopCartScreen";
 import QrScanner from "../screens/QrScanner";
+import EventScreen from "../screens/EventScreen";
+import SeatCategoryScreen from "../screens/SeatCategoryScreen";
+import ConfirmationScreen from "../screens/ConfirmationScreen";
+import ShopCartScreen from "../screens/ShopCartScreen";
 import { UserContext } from "../UserContext";
 import { Ionicons, FontAwesome5, MaterialIcons, Entypo } from "@expo/vector-icons";
 
@@ -42,6 +46,26 @@ function HomeStackScreens({ isLoggedIn }) {
         options={{ title: "" }}
       />
       <HomeStack.Screen name="Places" component={PlacesScreen} />
+      <HomeStack.Screen
+        name="Event"
+        component={EventScreen} // Import and use your EventScreen here
+        options={({ route }) => ({ title: route.params?.title || "Event" })}
+      />
+      <HomeStack.Screen
+        name="SeatCategory"
+        component={SeatCategoryScreen} // Import and use your EventScreen here
+        options={({ route }) => ({ title: route.params?.title || "SeatCategory" })}
+      />
+      <HomeStack.Screen
+        name="Confirmation"
+        component={ConfirmationScreen} // Import and use your EventScreen here
+        options={({ route }) => ({ title: route.params?.title || "Confirmation" })}
+      />
+      <HomeStack.Screen
+        name="ShopCart"
+        component={ShopCartScreen} // Import and use your EventScreen here
+        options={({ route }) => ({ title: route.params?.title || "ShopCart" })}
+      />
     </HomeStack.Navigator>
   );
 }
