@@ -64,6 +64,7 @@ const ShopCartScreen = () => {
           <OrderTicketCard
             order={item}
             userName={user.userName}
+            idorder_ticket={item.idorder_ticket} 
             {...selectedEventData}
           />
         )}

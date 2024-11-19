@@ -28,7 +28,8 @@ const OrderTicketCard = ({
   selectedPaymentMethod = "N/A",
   isSeatCategorized = "N/A",
   photo = "N/A",
-  decription = "N/A"  
+  decription = "N/A",
+  idorder_ticket  
 }) => {
   const [showQr, setShowQr] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,8 +46,9 @@ const OrderTicketCard = ({
   };
 
   const qrData = JSON.stringify({
-    userId: userId,
+    
     userName: userName,
+    idorder_ticket: idorder_ticket,
     orderName: order.ticket_name,
     categoryType: categoryType,
     orderDate: order.order_date,
@@ -83,6 +85,7 @@ const OrderTicketCard = ({
             <p><strong>ORDERED BY:</strong> ${userName} on ${order.order_date ? formatDate(order.order_date) : "N/A"}</p>
             <p><strong>VALID UNTIL:</strong> ${formatDate(endDate)}</p>
             <p><strong>DAYS LEFT:</strong> ${calculateDaysLeft(endDate)} days</p>
+            <p><strong>ID Zamówienia: </strong> ${idorder_ticket} days</p>
             <img src="data:image/png;base64,${qrImageBase64}" style="width:150px;height:150px;"/>
           </body>
         </html>
@@ -130,7 +133,7 @@ const OrderTicketCard = ({
         
         
           <Text style={styles.label}>NAZWA</Text>
-          <Text style={styles.value}>{order.ticket_name || "N/A"}</Text>
+          <Text style={styles.value}>{idorder_ticket || "N/A"}</Text>
           <Text style={styles.label}>PLACE</Text>
           <Text style={styles.value}>{locationName}, {cityName}</Text>
           <Text style={styles.label}>DURATION</Text>
