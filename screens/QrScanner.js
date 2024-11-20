@@ -22,11 +22,12 @@ const QrScanner = () => {
 
     const loadOrders = async () => {
       try {
-        const fetchedOrders = await fetchOrderTickets();
-        setOrders(fetchedOrders); // Ustaw wszystkie zamówienia bez filtrowania
+        // Use fetchOrderTickets with the user's token
+        const fetchedOrders = await fetchOrderTickets(user.token);
+        setOrders(fetchedOrders); // Set all orders
       } catch (err) {
         console.error("Error loading orders:", err);
-        Alert.alert("Błąd", "Nie udało się załadować zamówień.");
+        Alert.alert("Error", "Unable to load orders. Please try again later.");
       }
     };
 
@@ -69,6 +70,7 @@ const QrScanner = () => {
         method: "PUT", // Użyj PATCH lub PUT w zależności od API
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({ ticket_status: "ticket validated" }), 
       });

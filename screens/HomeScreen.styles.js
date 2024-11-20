@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   cityName: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#555",
+    color: "red",
   },
   filterButton: {
     position: 'absolute',
